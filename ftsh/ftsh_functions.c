@@ -2,11 +2,11 @@
 
 	@file         ftsh_functions.c
 
-  @author       Max Bronckers
+	@author       Max Bronckers
 
 	@date         Thursday,  1 May 2018
 
-  @brief        FTSH functions
+	@brief        FTSH functions
 
 *******************************************************************************/
 
@@ -14,16 +14,16 @@
 #include "ftsh_functions.h"
 
 /*
-  List of builtin commands, followed by their corresponding functions.
+	List of builtin commands, followed by their corresponding functions.
  */
 char *builtin_str[] = {
-  "help",
-  "exit"
+	"help",
+	"exit"
 };
 
 int (*builtin_func[]) (char **) = {
-  &ftsh_help,
-  &ftsh_exit
+	&ftsh_help,
+	&ftsh_exit
 };
 
 /**
@@ -33,17 +33,17 @@ int (*builtin_func[]) (char **) = {
  */
 int ftsh_help(char **args)
 {
-  int i;
-  printf("full-text shell\n");
-  printf("Type program names and arguments, and hit enter.\n");
-  printf("The following are built in:\n");
+	int i;
+	printf("full-text shell\n");
+	printf("Type program names and arguments, and hit enter.\n");
+	printf("The following are built in:\n");
 
-  for (i = 0; i < ftsh_num_builtins(); i++) {
-    printf("  %s\n", builtin_str[i]);
-  }
+	for (i = 0; i < ftsh_num_builtins(); i++) {
+		printf("  %s\n", builtin_str[i]);
+	}
 
-  printf("Use the man command for information on other programs.\n");
-  return 1;
+	printf("Use the man command for information on other programs.\n");
+	return 1;
 }
 
 /**
@@ -53,7 +53,7 @@ int ftsh_help(char **args)
  */
 int ftsh_exit(char **args)
 {
-  return 0;
+	return 0;
 }
 
 
@@ -62,28 +62,28 @@ int ftsh_exit(char **args)
 	@return Returns number of functions.
  */
 int ftsh_num_builtins() {
-  return sizeof(builtin_str) / sizeof(char *);
+	return sizeof(builtin_str) / sizeof(char *);
 }
 
 /**
-   @brief Execute shell built-in or launch program.
-   @param args Null terminated list of arguments.
-   @return 1 if the shell should continue running, 0 if it should terminate
+	 @brief Execute shell built-in or launch program.
+	 @param args Null terminated list of arguments.
+	 @return 1 if the shell should continue running, 0 if it should terminate
  */
 int ftsh_execute(char **args)
 {
-  int i;
+	int i;
 
-  if (args[0] == NULL) {
-    // An empty command was entered.
-    return 1;
-  }
+	if (args[0] == NULL) {
+		// An empty command was entered.
+		return 1;
+	}
 
-  for (i = 0; i < ftsh_num_builtins(); i++) {
-    if (strcmp(args[0], builtin_str[i]) == 0) {
-      return (*builtin_func[i])(args);
-    }
-  }
+	for (i = 0; i < ftsh_num_builtins(); i++) {
+		if (strcmp(args[0], builtin_str[i]) == 0) {
+			return (*builtin_func[i])(args);
+		}
+	}
 
-  return ftsh_launch(args);
+	return ftsh_launch(args);
 }

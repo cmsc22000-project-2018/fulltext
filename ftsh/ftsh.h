@@ -5,11 +5,11 @@
 
 	@file         ftsh_functions.h
 
-  @author       Max Bronckers
+	@author       Max Bronckers
 
 	@date         Thursday,  1 May 2018
 
-  @brief        FTSH main header file
+	@brief        FTSH main header file
 
 *******************************************************************************/
 
