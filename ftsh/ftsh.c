@@ -28,15 +28,15 @@ char** ftsh_get_input(char *input) {
 
 	/* Error handling */
 	if (args == NULL) {
-			perror("malloc failed");
-			exit(1);
+		perror("ftsh malloc failed");
+		exit(1);
 	}
 
 	parsed = strtok(input, separator);
 
 	while (parsed != NULL) {
-			args[index++] = parsed;
-			parsed = strtok(NULL, separator); 
+		args[index++] = parsed;
+		parsed = strtok(NULL, separator); 
 	}
 
 	args[index] = NULL;
@@ -57,9 +57,9 @@ int ftsh_launch(char **args)
 	if (pid == 0) {
 		// Child process
 		if (execvp(args[0], args) == -1) {
-			printf("Your command was not recognized by our system. ");
+			printf("Your command was not recognized by our system.\n");
 			printf("Please type 'help' to get an overview of the commands.\n");
-			perror("ftsh: command execution error");
+			perror("ftsh command execution error");
 		}
 		exit(EXIT_FAILURE);
 	} else if (pid < 0) {

@@ -8,7 +8,9 @@ OBJS = $(SRCS:.c=.o)
 
 BINS = ftsh
 
-RM = rm -f
+DSYM = *.dSYM
+
+RM = rm -rf
 
 .PHONY: ftsh
 ftsh:
@@ -16,4 +18,4 @@ ftsh:
 
 .PHONY: clean
 clean:
-	-$(RM) $(OBJS) $(BINS)
+	-$(RM) $(OBJS) $(BINS) $(DSYM)

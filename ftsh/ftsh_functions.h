@@ -19,8 +19,6 @@
 #include <stdio.h>
 #include <string.h>
 
-char *builtin_str[];
-
 int ftsh_help(char **args);
 
 int ftsh_exit(char **args);
