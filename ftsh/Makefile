@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -g -lreadline -Wall -Wextra -O3 -I ./include/
+CFLAGS = -g -lreadline -Wall -O3 -I ./include/
 
 SRCS = src/ftsh.c src/ftsh_functions.c
 
