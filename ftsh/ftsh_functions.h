@@ -7,7 +7,7 @@
 
 	@author       Max Bronckers
 
-	@date         Thursday,  1 May 2018
+	@date         Thursday, 1 May 2018
 
 	@brief        FTSH supported commands header file
 

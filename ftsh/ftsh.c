@@ -4,11 +4,11 @@
 
 	@author       Max Bronckers
 
-	@date         Thursday,  1 May 2018
+	@date         Thursday, 1 May 2018
 
 	@brief        FTSH (Full-Text SHell)
 
-	@compile      gcc -g -lreadline ftsh.c -o ftsh
+	@compile      make ftsh
 
 *******************************************************************************/
 
