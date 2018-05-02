@@ -1,8 +1,8 @@
 CC = gcc
 
-CFLAGS = -g -lreadline -Wall
+CFLAGS = -g -lreadline -Wall -Wextra -O3 -I ./include/
 
-SRCS = ftsh.c ftsh_functions.c
+SRCS = src/ftsh.c src/ftsh_functions.c
 
 OBJS = $(SRCS:.c=.o)
 
