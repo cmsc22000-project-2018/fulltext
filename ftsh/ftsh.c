@@ -8,7 +8,7 @@
 
 	@brief        FTSH (Full-Text SHell)
 
-	@compile      gcc -g -lreadline ftsh.c -o ftsh
+	@compile      gcc -g -Wall -lreadline ftsh_functions.c ftsh.c -o ftsh
 
 *******************************************************************************/
 
