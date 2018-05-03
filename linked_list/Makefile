@@ -5,11 +5,11 @@ CC = gcc
 CFLAGS = `pkg-config --cflags --libs glib-2.0` -g -Wall -O3 
 #LDLIBS = `pkg-config --libs glib-2.0`
 
-SRCS = dll_test.c
+SRCS = src/dll_test.c
 
 OBJS = $(SRCS:.c=.o)
 
-BINS = dll_test
+BINS = src/dll_test
 
 RM = rm -rf
 
