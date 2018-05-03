@@ -5,7 +5,7 @@ Mock Trie with trie_show()
 
 		""
 	a	b
-  an  at  be
+  an  at      be
 and        
 
 ---

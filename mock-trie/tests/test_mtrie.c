@@ -1,6 +1,7 @@
 #include <criterion/criterion.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "mtrie.h"
 #include "match.h"
 
 void check_is_key_in_trie(trie_t *unused, const char *key, bool expected)
@@ -20,8 +21,8 @@ Test(trie, key_in_trie)
 	trie_t unused;
 	check_is_key_in_trie(&unused, "a");
 	check_is_key_in_trie(&unused, "an");
-	check_is_key_in_trie(&unused, "at");
 	check_is_key_in_trie(&unused, "and");
+	check_is_key_in_trie(&unused, "at");
 	check_is_key_in_trie(&unused, "b");
 	check_is_key_in_trie(&unused, "be");
 }

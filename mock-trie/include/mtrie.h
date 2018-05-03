@@ -18,17 +18,16 @@ typedef struct trie_t
 
 
 // Returns 1 if key presents in trie, else 0
-bool is_key_in_trie(trie_t *t, const char *key);
+bool is_key_in_trie(trie_t *trie, const char *key);
 
 // If not present, inserts key into trie
-// If the key is prefix of trie node, just marks leaf node
-trie_t *trie_insert(trie_t *t, const char *key);
+trie_t *trie_insert(trie_t *trie, const char *key);
 
 // Returns number of prefix matches
-int num_matches(trie_t *t, const char *key);
+int num_matches(trie_t *trie, const char *key);
 
 // Prints out content of trie
-void trie_show(trie_t *t);
+void trie_show(trie_t *trie);
 
 // Mock integration with match_t, returns string of matches
 char *return_matches_m(trie_t *trie, const char *key);
