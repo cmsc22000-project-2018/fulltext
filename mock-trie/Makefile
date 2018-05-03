@@ -1,10 +1,13 @@
 CC = gcc
-CFLAGS = -g -O2 -Wall -Wextra
+CFLAGS = -g -O2 -Wall -Wextra -I ./include
+SRCS = src/mtrie.c
+OBJS = src/mtrie.o
+BIN = mtrie
 
-mtrie: mtrie.c
+$(BIN): $(SRCS)
 	$(CC) $^ $(CFLAGS) -o $@
 
-mtrie.o: mtrie.h
+$(OBJS): mtrie.h
 
 clean:
-	$(RM) mtrie.o mtrie
+	$(RM) $(OBJS) $(BIN)

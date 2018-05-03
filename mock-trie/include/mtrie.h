@@ -12,6 +12,7 @@
  
 typedef struct trie_t
 {
+	char *value;
     struct trie_t *children[ALPHABET_SIZE];
 } trie_t;
 
@@ -22,16 +23,17 @@ trie_t *trie_new(void);
 // If the key is prefix of trie node, just marks leaf node
 trie_t *trie_insert(trie_t *trie, const char *key);
 
-bool is_word(trie_t *trie, const char *key);
+// specific insert for second layer
+trie_t *trie_insert_second_gen(trie_t *trie, const char *key);
 
-// Returns true if key presents in trie, else false
-bool trie_search(trie_t *trie, const char *key);
+// Returns 1 if key presents in trie, else 0
+int trie_search(trie_t *trie, const char *key);
 
 // Returns number of prefix matches
-int num_matches(trie_t *trie, const char *key)
+int num_matches(trie_t *trie, const char *key);
 
 // Prints out content of trie
-void trie_show(trie_t *trie)
+void trie_show(trie_t *trie);
 
 #endif  /* __TRIE_H__  */
  
