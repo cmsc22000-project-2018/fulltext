@@ -2,40 +2,39 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "mtrie.h"
-#include "match.h"
+// #include "match.h"
 
 void check_is_key_in_trie(trie_t *unused, const char *key, bool expected)
 {
 	trie_t t;
-	bool result = is_key_in_trie(&t, key)
+	bool result = is_key_in_trie(&t, key);
 	cr_assert_eq(result, expected, 
-		"%s is "
-		result ? "in " : "not in "
-		"trie but got "
-		expected ? "in" : "not in",
-		key);
+		"%s is %s trie but got %s",
+                key,
+		result ? "in " : "not in ",
+		expected ? "in" : "not in");
 }
 
 Test(trie, key_in_trie)
 {
 	trie_t unused;
-	check_is_key_in_trie(&unused, "a");
-	check_is_key_in_trie(&unused, "an");
-	check_is_key_in_trie(&unused, "and");
-	check_is_key_in_trie(&unused, "at");
-	check_is_key_in_trie(&unused, "b");
-	check_is_key_in_trie(&unused, "be");
+	check_is_key_in_trie(&unused, "a", 1);
+	check_is_key_in_trie(&unused, "an", 1);
+	check_is_key_in_trie(&unused, "and", 1);
+	check_is_key_in_trie(&unused, "at", 1);
+	check_is_key_in_trie(&unused, "b", 1);
+	check_is_key_in_trie(&unused, "be", 1);
 }
 
 Test(trie, not_key_in_trie)
 {
 	trie_t unused;
-	check_is_key_in_trie(&unused, "ant");
-	check_is_key_in_trie(&unused, "bee");
-	check_is_key_in_trie(&unused, "o");
-	check_is_key_in_trie(&unused, "of");
-	check_is_key_in_trie(&unused, "off");
-	check_is_key_in_trie(&unused, "z");
+	check_is_key_in_trie(&unused, "ant", 0);
+	check_is_key_in_trie(&unused, "bee", 0);
+	check_is_key_in_trie(&unused, "o", 0);
+	check_is_key_in_trie(&unused, "of", 0);
+	check_is_key_in_trie(&unused, "off", 0);
+	check_is_key_in_trie(&unused, "z", 0);
 }
 
 Test(trie, insert)

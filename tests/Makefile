@@ -1,23 +1,31 @@
-CC = gcc
-CFLAGS = -fPIC -g -O2 -Wall -Wextra -I ../include
-RM = rm -rf
-LDLIBS = -lcriterion
-LDFLAGS = -L../ -Wl,-rpath,.
-SRCS = main.c test_mtrie.c eyeball_test_mtrie.c
-OBJS = $(SRCS:.c:.o)
-BINS = mtrie-tests
+# Makefile based on template at https://gist.github.com/xuhdev/1873316
 
+CC = gcc 
+CFLAGS = -fPIC -Wall -Wextra -O2 -g -I../include/
+LDFLAGS = -L../ -Wl,-rpath,.
+RM = rm -f
+BIN = test-mtrie
+LDLIBS = -lcriterion -lmtrie
+
+SRCS = main.c test_mtrie.c
+OBJS = $(SRCS:.c=.o)
 
 .PHONY: all
-all: $(BINS)
+all: ${BIN}
 
-$(BINS): $(OBJS)
-	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
+$(BIN): $(OBJS)
+	$(CC) $(LDFLAGS) $(OBJS) -o$(BIN) $(LDLIBS) 
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(TARGET_LIB): $(OBJS)
+	$(CC) ${LDFLAGS} -o $@ $^
+
+$(SRCS:.c=.d):%.d:%.c
+	$(CC) $(CFLAGS) -MM $< >$@
+
+include $(SRCS:.c=.d)
 
 .PHONY: clean
-clean: 
-	$(RM) $(OBJS) $(BIN)
+clean:
+	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.c=.d)
+
 
