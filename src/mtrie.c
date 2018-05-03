@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mtrie.h"
+// #include "match.h"
 
 // Returns 1 if key presents in trie, else 0
 bool is_key_in_trie(trie_t *unused_t, const char *key)
@@ -86,7 +87,7 @@ int num_matches(trie_t *unused_t, const char *key)
 // Mock integration with match_t, returns string of matches
 char *return_matches_m(trie_t *unused_t, const char *key)
 {
-    char *list;
+    char *list = NULL;
     if (strcmp(key, "a") == 0) list = "a, an, and, at";
     if (strcmp(key, "an") == 0) list = "an, and";
     if (strcmp(key, "and") == 0) list = "and";
@@ -95,6 +96,39 @@ char *return_matches_m(trie_t *unused_t, const char *key)
     if (strcmp(key, "be") == 0) list = "be";
     return list;
 }
+
+// Integration with match, returns a dbll of matches
+// assuming words of different level (i.e. length)
+// start on new line
+// match *return_matches(trie_t *trie, const char *key)
+// {
+//     match *result = NULL;
+//     if (strcmp(key, "a") == 0) {
+//         result = new_match("a", 1);
+//     }
+//     if (strcmp(key, "an") == 0) {
+//         result = new_match("a", 1);
+//         init_match(result, "an", 2);
+//     }
+//     if (strcmp(key, "and") == 0) {
+//         result = new_match("a", 1);
+//         init_match(result, "an", 2);
+//         init_match(result, "and", 3);
+//     } 
+//     if (strcmp(key, "at") == 0) {
+//         result = new_match("a", 1);
+//         init_match(result, "at", 2);
+//     }
+//     if (strcmp(key, "b") == 0) {
+//         result = new_match("b", 1);
+//     }
+//     if (strcmp(key, "be") == 0) {
+//         result = new_match("b", 1);
+//         init_match(result, "be", 2);
+//     }
+
+//     return result;
+// }
 
 // Prints out content of trie
 void trie_show(trie_t *trie)
@@ -109,36 +143,4 @@ void trie_show(trie_t *trie)
     if (!trie->children[2]) return;
     printf("%s\n", trie->children[2]->value);
     trie_show(trie->children[2]);
-}
-
-int main()
-{
-    trie_t root;
-    root.value = "";
-
-    trie_t node_a;
-    trie_t node_b;
-
-    node_a.value = "a";
-    node_b.value = "b";
-
-    root.children[0] = &node_a;
-    root.children[1] = &node_b;
-    root.children[2] = NULL;
-
-    printf("Initial Trie:\n");
-    printf("eye-ball tests for trie_show\nexpect a, b\n");
-    trie_show(&root);
-    printf("\n");
-
-    root = trie_insert(&root, "off");
-
-    printf("Insert: off\n");
-    printf("eye-ball tests for trie_show\nexpect a, b\n");
-    trie_show(&root);
-
-    printf("eye-ball tests for trie_show\nexpect a, b\n");
-    trie_show(&root);
-    
-    return 0;
 }

@@ -14,3 +14,12 @@ ant
 o
 of; this also triggers insertion of o 
 off; this also triggers insertion of o, of
+
+---
+Mock File for Parsing
+
+a
+an at
+and
+b
+be

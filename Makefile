@@ -1,14 +1,19 @@
+LIB = libmtrie.so
 CC = gcc
-CFLAGS = -g -O2 -Wall -Wextra -I ./include
+CFLAGS = -g -O2 -Wall -Wextra -I ./include -I ./src -fPIC -c
+RM = rm -f
 SRCS = src/mtrie.c
 OBJS = $(SRCS:.c:.o)
-BIN = mtrie
-RM = rm -rf
+
+all: $(LIB)
 
 .PHONY: $(BIN)
 
-$(BIN): $(SRCS)
-	$(CC) $^ $(CFLAGS) -o $@
+$(LIB): $(OBJS)
+	$(CC) -shared -o $(LIB) $(OBJS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS) $(BIN)
