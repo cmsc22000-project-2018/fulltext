@@ -32,6 +32,12 @@ char** ftsh_get_input(char *input) {
 		exit(1);
 	}
 
+	/* Exit on Ctrl-D */
+	if (input == NULL) {  
+      	printf("\n");
+      	exit(0);
+    }
+
 	parsed = strtok(input, separator);
 
 	while (parsed != NULL) {
