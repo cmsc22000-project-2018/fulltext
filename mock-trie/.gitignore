@@ -1,0 +1,11 @@
+# Compiled Source #
+##################
+mtrie
+mtrie-tests
+*.o
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+mtrie.dSYM
