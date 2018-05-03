@@ -1,0 +1,38 @@
+*** LAST MODIFIED: MAY 02 2018 BY LIAM KIM ***
+*** VERSION: 0.1                           ***
+***                                        ***
+***           INTERACTIVE MODE             ***
+
+BEGIN MODE
+
+display text file
+   displays a pre-processed version of the given text file
+      [NC: display_file_i()]
+
+display available commands
+   displays a set of rudimentary commands
+   man command for further documentation
+      [NC: display_commands()]
+
+accept commands
+   [MATCH: new_match()]
+   [MATCH: init_match()]
+
+   if (pressed n)
+      [MATCH: next_match()]
+      [MATCH: get_word()]
+   
+   if (pressed p)
+      [MATCH: prev_match()]
+      [MATCH: get_word()]
+
+   if (pressed f)
+      [MATCH: get_at_index(first)]
+      [MATCH: get_word()]
+
+   if (pressed l)
+      [MATCH: get_at_index(last)]
+      [MATCH: get_last()]
+
+   if (pressed q)
+      TERMINATE MODE
