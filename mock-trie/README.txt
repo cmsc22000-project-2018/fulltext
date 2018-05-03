@@ -1,18 +1,16 @@
 Sprint 2 Mock Trie
 
-Attempted to implement the following mock trie:
+---
+Mock Trie with trie_show()
 
 		""
-	a	b	o
-  an	at	be	of
-and ant		bee
+	a	b
+  an  at  be
+and        
 
-Start in mtrie.c main() with:
-
-		""
-	a	b	o
-
-With insert:
-if key == an, at, and, ant;
-if key == be, bee;
-if key == of
+---
+Inserts include:
+ant
+o
+of; this also triggers insertion of o 
+off; this also triggers insertion of o, of

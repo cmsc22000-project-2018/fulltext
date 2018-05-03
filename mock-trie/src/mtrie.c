@@ -5,20 +5,30 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include "mtrie.h"
 
-void trie_show(trie_t *trie)
+// Returns 1 if key presents in trie, else 0
+bool is_in_trie(trie_t *t, const char *key)
 {
-    if (!trie || !trie->children[0])
-        return;
-    printf("%s\n", trie->children[0]->value);
-    trie_show(trie->children[0]);
-    printf("%s\n", trie->children[1]->value);
-    trie_show(trie->children[1]);
-    printf("%s\n", trie->children[2]->value);
-    trie_show(trie->children[2]);
+    if (strcmp(key, "a") == 0) return 1;
+    if (strcmp(key, "b") == 0) return 1;
+    if (strcmp(key, "c") == 0) return 1;
 }
+
+
+// Three helpers for trie_insert
+// Specific insert for second layer; two-char string
+trie_t *trie_insert_len_one(trie_t *t, const char *key);
+
+// Specific insert for second layer; two-char string
+trie_t *trie_insert_len_two(trie_t *t, const char *key);
+
+// Specific insert for second layer; two-char string
+trie_t *trie_insert_len_three(trie_t *t, const char *key);
+
+
 
 trie_t *trie_insert(trie_t *trie, const char *key)
 {
@@ -52,6 +62,18 @@ trie_t *trie_insert_third_gen(trie_t *trie, const char *key)
     return trie;
 }
 
+void trie_show(trie_t *trie)
+{
+    if (!trie || !trie->children[0])
+        return;
+    printf("%s\n", trie->children[0]->value);
+    trie_show(trie->children[0]);
+    printf("%s\n", trie->children[1]->value);
+    trie_show(trie->children[1]);
+    printf("%s\n", trie->children[2]->value);
+    trie_show(trie->children[2]);
+}
+
 int main()
 {
     trie_t root;
@@ -69,8 +91,14 @@ int main()
     root.children[1] = &node_b;
     root.children[2] = &node_o;
 
+    printf("eye-ball tests for trie_show\nexpect a, b, o\n");
     trie_show(&root);
 
+    printf("eye-ball tests for trie_show\nexpect a, b, o\n");
+    trie_show(&root);
+
+    printf("eye-ball tests for trie_show\nexpect a, b, o\n");
+    trie_show(&root);
     
     return 0;
 }
