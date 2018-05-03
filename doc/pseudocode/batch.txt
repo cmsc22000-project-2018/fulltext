@@ -1,0 +1,33 @@
+*** LAST MODIFIED: MAY 02 2018 BY LIAM KIM      ***
+*** VERSION: 0.1                                ***
+***                                             ***
+***              BATCH MODE                     ***
+
+BEGIN MODE
+
+accept number of lines before/after
+   [NC: no_lines()]
+
+accept output method
+- std output
+- .txt file format
+   [NC: output_method()]
+
+process batch_file
+   with the given number of lines, produce a corresponding, searched txt
+   may require further calls to trie and original txt file
+   save as a certain txt (data type TBD)
+
+display number of occurrences to stdout
+   [NC: display_occurrences()]
+
+if (output = stdout)
+   [NC: display_batch_stdout()]
+
+else
+   ask for output directory
+      [NC: accept_output_dir()]
+   produce file
+      [NC: produce_batch_output()]
+
+TERMINATE MODE

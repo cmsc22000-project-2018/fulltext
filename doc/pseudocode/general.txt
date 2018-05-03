@@ -1,0 +1,30 @@
+** THIS IS A GENERAL PSEUDOCODE - AKA AS SOON AS FULLTEXT BEGINS **
+
+BEGIN PROGRAM
+- no file designation: (./fulltext)
+- with file designation (./fulltext sample.txt)
+   [FILE: open_file()]
+
+LOOP
+   if (no file designation)
+      ask to enter file directory
+         [FILE: open_file()]
+
+   process file
+      parse file and return a tie struct of words
+         [IO: parse_input(file)]
+         [TRIE: functions to be specified]
+
+   get list of word(s)
+      [NC: get_words()]
+         save these words to an array of words
+
+   get mode
+      [NC: get_mode()]
+         specify which mode to run the program with
+   run (specified) mode
+
+   set file = no designation (to allow for selecting new files)
+TERMINATE LOOP
+
+TERMINATE PROGRAM
