@@ -31,16 +31,16 @@ match* next_match(match* match);
 match* prev_match(match* match);
 
 /* Insert at specific index in match struct */
-void insert_at(match* match, match* new, int index);
+void insert_at(match* newMatch, int index, GList matches);
 
 /* Insert at end of match struct */
-void append(match* match, match* new);
+void append(match* newMatch, GList matches);
 
 /* Remove at specific index in match struct */
-void remove_at(match* match, int index);
+void remove_at(int index, GList matches);
 
 /* Return the match at the given index */
-match* get_at_index(match* match, int index);
+match* get_at_index(int index, GList matches);
 
 /* Get the index of current match */
 int get_index(match* match);
