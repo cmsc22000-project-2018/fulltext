@@ -2,7 +2,7 @@
 
 CC = gcc 
 CFLAGS = -fPIC -Wall -Wextra -O2 -g -I../include/
-LDFLAGS = -L../ -Wl,-rpath,.
+LDFLAGS = -L../ -Wl,-rpath,../
 RM = rm -f
 BIN = test-mtrie
 LDLIBS = -lcriterion -lmtrie
@@ -14,7 +14,7 @@ OBJS = $(SRCS:.c=.o)
 all: ${BIN}
 
 $(BIN): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o$(BIN) $(LDLIBS) 
+	$(CC) $(LDFLAGS) $(OBJS) -o $(BIN) $(LDLIBS) 
 
 $(TARGET_LIB): $(OBJS)
 	$(CC) ${LDFLAGS} -o $@ $^
@@ -26,6 +26,6 @@ include $(SRCS:.c=.d)
 
 .PHONY: clean
 clean:
-	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.c=.d)
+	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.c=.d) $(BIN)
 
 
