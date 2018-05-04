@@ -1,15 +1,13 @@
-#cc dll_test.c `pkg-config --cflags --libs glib-2.0` -o dll_test
-
 CC = gcc
 
 CFLAGS = `pkg-config --cflags --libs glib-2.0` -g -Wall -O3 -I ./include/
 #LDLIBS = `pkg-config --libs glib-2.0`
 
-SRCS = src/match.c #src/dll_test.c 
+SRCS = src/match.c tests/match_test.c #src/dll_test.c 
 
 OBJS = $(SRCS:.c=.o)
 
-BINS = src/match #src/dll_test 
+BINS = match_test #src/dll_test 
 
 RM = rm -rf
 

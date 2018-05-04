@@ -91,7 +91,7 @@ match* prev_match(match* match, GList* matches);
  *  - int index: index to insert the match into dll
  *  - GList* matches: dll of matches
  */
-void insert_at(match* newMatch, int index, GList* matches);
+GList* insert_at(match* newMatch, int index, GList* matches);
 
 /* 
  * Inserts at end of match struct 
@@ -100,7 +100,7 @@ void insert_at(match* newMatch, int index, GList* matches);
  *  - match* newMatch: pointer to new match struct
  *  - GList* matches: dll of matches
  */
-void append(match* newMatch, GList* matches);
+GList* append_(match* newMatch, GList* matches);
 
 /* 
  * Removes at specific index in match struct 
@@ -109,7 +109,7 @@ void append(match* newMatch, GList* matches);
  *  - int index: index of match to remove
  *  - GList* matches: dll of matches
  */
-void remove_at(int index, GList* matches);
+GList* remove_at(int index, GList* matches);
 
 /* 
  * Returns the match at the given index 

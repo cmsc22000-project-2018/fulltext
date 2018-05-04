@@ -45,6 +45,7 @@ int get_line(match* match)
 match* next_match(match* match, GList* matches)
 {
     GList* cur = g_list_find(matches, match->word);
+    if (cur->next == NULL) return (g_list_first(matches))->data;
     return (cur->next)->data;
 }
 
@@ -52,22 +53,25 @@ match* next_match(match* match, GList* matches)
 match* prev_match(match* match, GList* matches)
 {
     GList* cur = g_list_find(matches, match->word);
+    if (cur->prev == NULL) return (g_list_last(matches))->data;
     return (cur->prev)->data;
 }
-//changed inputs
-void insert_at(match* newMatch, int index, GList* matches)
+//changed inputs, return type
+GList* insert_at(match* newMatch, int index, GList* matches)
 {
     matches = g_list_insert(matches, newMatch, index);
+    return matches;
 }
 
-//changed inputs
-void append(match* newMatch, GList* matches)
+//changed inputs, return type
+GList* append_(match* newMatch, GList* matches)
 {
     matches = g_list_append(matches, newMatch);
+    return matches;
 }
 
-//changed inputs
-void remove_at(int index, GList* matches)
+//changed inputs, return type
+GList* remove_at(int index, GList* matches)
 {
     //get element at position
     GList *toDelete = g_list_nth(matches, index);
@@ -88,4 +92,16 @@ int get_index(match* match, GList* matches)
 {
     int position = g_list_index(matches, match);
     return position;
+}
+
+//just for testing
+void pretty_print(GList* l)
+{
+    GList *list = l;
+    while (list != NULL){
+        GList *next = list->next;
+        printf("list data: %s\n", list->data);
+        list = next;
+    }
+    printf("\n");
 }
