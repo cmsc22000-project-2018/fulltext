@@ -6,7 +6,7 @@
 
 void check_is_key_in_trie(trie_t *unused, char *key, bool expected)
 {
-	bool result = is_key_in_trie(&unused, key);
+	bool result = is_key_in_trie(unused, key);
 	cr_assert_eq(result, expected, 
 		"%s is %s trie but got %s",
                 key,
