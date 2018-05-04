@@ -40,18 +40,24 @@ char *get_inserted_key(trie_t *trie, char *key)
 {
 	if (!trie || !trie->children) return NULL;
 	if (strcmp(key, "bee") == 0) {
-		return trie->children[1]->children[0]->
-        children[0]->value;
+		if (trie->children[1]->children[0]->
+        children[0])
+			return trie->children[1]->children[0]->
+        		children[0]->value;
 	}
 	if (strcmp(key, "off") == 0) {
-		return trie->children[2]->children[0]->
-        children[0]->value;
+		if (trie->children[2]->children[0]->
+        children[0])
+			return trie->children[2]->children[0]->
+        		children[0]->value;
 	}
 	if (strcmp(key, "of") == 0) {
-		return trie->children[2]->children[0]->value;
+		if (trie->children[2]->children[0])
+			return trie->children[2]->children[0]->value;
 	}
 	if (strcmp(key, "o") == 0) {
-		return trie->children[2]->value;
+		if (trie->children[2])
+			return trie->children[2]->value;
 	}
 	return NULL;
 }
@@ -121,38 +127,6 @@ void check_no_insert(trie_t *trie, char *key)
 Test(trie, no_insert)
 {
 	trie_t root;
-    root.value = "";
-
-    trie_t node_a, node_b, node_o;
-    trie_t node_an, node_and, node_at;
-    trie_t node_be, node_bee;
-    trie_t node_of, node_off;
-
-    node_a.value = "a";
-    node_b.value = "b";
-    node_o.value = NULL;
-
-    root.children[0] = &node_a;
-    root.children[1] = &node_b;
-    root.children[2] = &node_o;
-
-    node_an.value = "an";
-    node_and.value = "and";
-    node_at.value = "at";
-
-    node_a.children[0] = &node_an;
-    node_a.children[1] = &node_at;
-    node_an.children[0] = &node_and;
-
-    node_be.value = "be";
-    node_bee.value = NULL;
-    node_b.children[0] = &node_be;
-    node_b.children[1] = &node_bee;
-
-    node_of.value = NULL;
-    node_off.value = NULL;
-    node_o.children[0] = &node_of;
-    node_of.children[0] = &node_off;
 
 	check_no_insert(&root, "a");
 	check_no_insert(&root, "an");
@@ -163,17 +137,45 @@ Test(trie, no_insert)
 
 }
 
+void check_num_matches(trie_t, *trie, char *key, int expected)
+{
+	int result = num_matches(trie, key);
+	cr_assert_eq(result, expected,
+		"with key %s, expected %d matches, got %d",
+		key, expected, result);
+}
+
 Test(trie, num_matches)
 {
+	trie_t root;
+	check_num_matches(&root, "a", 4);
+	check_num_matches(&root, "an", 2);
+	check_num_matches(&root, "and", 1);
+	check_num_matches(&root, "at", 1);
+	check_num_matches(&root, "b", 2);
+	check_num_matches(&root, "be", 1);
 
 }
 
-void check_return_matches_m()
+void check_return_matches_m(trie_t *trie, char *key, char *expected)
 {
-
+	char *result = return_matches_m(trie, key);
+	cr_assert_not_null(result, 
+		"inserted %s, expected %s, but got NULL",
+		key, expected);
+	cr_assert_str_eq(result, expected,
+		"inserted %s, expected %s, but got %s",
+		key, expected, result);
 }
 
 Test(trie, return_matches_m)
 {
+	trie_t root;
+	check_return_matches_m(&root, "a", "a, an, and, at");
+	check_return_matches_m(&root, "an", "an, and");
+	check_return_matches_m(&root, "and", "and");
+	check_return_matches_m(&root, "at", "at");
+	check_return_matches_m(&root, "b", "b, be");
+	check_return_matches_m(&root, "be", "be");
 
 }

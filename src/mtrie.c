@@ -15,7 +15,7 @@ bool is_key_in_trie(trie_t *unused_t, char *key)
 {
 	// just to silence warning
 	trie_t *temp = unused_t;
-	temp = NULL;
+	unused_t = temp;
     if (strcmp(key, "a") == 0) return 1;
     if (strcmp(key, "an") == 0) return 1;
     if (strcmp(key, "and") == 0) return 1;
@@ -80,7 +80,7 @@ trie_t *trie_insert(trie_t *trie, char *key)
 int num_matches(trie_t *unused_t, char *key)
 {
 	trie_t *temp = unused_t;
-	temp = NULL;
+	unused_t = temp;
     if (strcmp(key, "a") == 0) return 4;
     if (strcmp(key, "an") == 0) return 2;
     if (strcmp(key, "and") == 0) return 1;
@@ -94,13 +94,13 @@ int num_matches(trie_t *unused_t, char *key)
 char *return_matches_m(trie_t *unused_t, char *key)
 {
 	trie_t *temp = unused_t;
-	temp = NULL;
+	unused_t = temp;
 
     char *list = NULL;
     if (strcmp(key, "a") == 0) list = "a, an, and, at";
     if (strcmp(key, "an") == 0) list = "an, and";
     if (strcmp(key, "and") == 0) list = "and";
-    if (strcmp(key, "at") == 0) list = "a, at";
+    if (strcmp(key, "at") == 0) list = "at";
     if (strcmp(key, "b") == 0) list = "b, be";
     if (strcmp(key, "be") == 0) list = "be";
     return list;
@@ -114,7 +114,7 @@ char *return_matches_m(trie_t *unused_t, char *key)
 // {
 // 	// just to silence warning
 // 	trie_t *temp = trie;
-// 	temp = NULL;
+//	unused_t = temp;
 
 //     match *result = NULL;
 //     if (strcmp(key, "a") == 0) {
