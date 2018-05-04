@@ -1,5 +1,10 @@
 Sprint 2 Mock Trie
 
+File Usage
+run 'make' in fulltext/
+run 'make' in fulltext/tests
+run './test-mtrie' in fulltext/tests
+
 ---
 Mock Trie with trie_show()
 
@@ -10,7 +15,7 @@ and
 
 ---
 Inserts include:
-ant
+bee
 o
 of; this also triggers insertion of o 
 off; this also triggers insertion of o, of

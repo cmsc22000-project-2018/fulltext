@@ -11,8 +11,11 @@
 // #include "match.h"
 
 // Returns 1 if key presents in trie, else 0
-bool is_key_in_trie(trie_t *unused_t, const char *key)
+bool is_key_in_trie(trie_t *unused_t, char *key)
 {
+	// just to silence warning
+	trie_t *temp = unused_t;
+	temp = NULL;
     if (strcmp(key, "a") == 0) return 1;
     if (strcmp(key, "an") == 0) return 1;
     if (strcmp(key, "and") == 0) return 1;
@@ -24,7 +27,7 @@ bool is_key_in_trie(trie_t *unused_t, const char *key)
 
 // Three helpers for trie_insert
 // Specific insert for second layer; two-char string
-trie_t *trie_insert_len_one(trie_t *trie, const char *key)
+trie_t *trie_insert_len_one(trie_t *trie, char *key)
 {
     if (strcmp(key, "o") == 0)
         trie->children[2]->value = key;
@@ -32,7 +35,7 @@ trie_t *trie_insert_len_one(trie_t *trie, const char *key)
 }
 
 // Specific insert for second layer; two-char string
-trie_t *trie_insert_len_two(trie_t *trie, const char *key)
+trie_t *trie_insert_len_two(trie_t *trie, char *key)
 {
     if (strcmp(key, "of") == 0)
         trie->children[2]->children[0]->value = key;
@@ -40,7 +43,7 @@ trie_t *trie_insert_len_two(trie_t *trie, const char *key)
 }
 
 // Specific insert for second layer; two-char string
-trie_t *trie_insert_len_three(trie_t *trie, const char *key)
+trie_t *trie_insert_len_three(trie_t *trie, char *key)
 {
     if (strcmp(key, "off") == 0) {
         trie->children[2]->children[0]->
@@ -54,7 +57,8 @@ trie_t *trie_insert_len_three(trie_t *trie, const char *key)
 }
 
 // If not present, inserts key into trie
-trie_t *trie_insert(trie_t *trie, const char *key)
+// for minimal implementation, return NULL if key present
+trie_t *trie_insert(trie_t *trie, char *key)
 {
     if (strcmp(key, "o") == 0)
         return trie_insert_len_one(trie, key);
@@ -73,8 +77,10 @@ trie_t *trie_insert(trie_t *trie, const char *key)
 }
 
 // Returns number of prefix matches
-int num_matches(trie_t *unused_t, const char *key)
+int num_matches(trie_t *unused_t, char *key)
 {
+	trie_t *temp = unused_t;
+	temp = NULL;
     if (strcmp(key, "a") == 0) return 4;
     if (strcmp(key, "an") == 0) return 2;
     if (strcmp(key, "and") == 0) return 1;
@@ -85,8 +91,11 @@ int num_matches(trie_t *unused_t, const char *key)
 }
 
 // Mock integration with match_t, returns string of matches
-char *return_matches_m(trie_t *unused_t, const char *key)
+char *return_matches_m(trie_t *unused_t, char *key)
 {
+	trie_t *temp = unused_t;
+	temp = NULL;
+
     char *list = NULL;
     if (strcmp(key, "a") == 0) list = "a, an, and, at";
     if (strcmp(key, "an") == 0) list = "an, and";
@@ -100,31 +109,36 @@ char *return_matches_m(trie_t *unused_t, const char *key)
 // Integration with match, returns a dbll of matches
 // assuming words of different level (i.e. length)
 // start on new line
-// match *return_matches(trie_t *trie, const char *key)
+// ISSUE: Ordering?
+// match *return_matches(trie_t *trie, char *key)
 // {
+// 	// just to silence warning
+// 	trie_t *temp = trie;
+// 	temp = NULL;
+
 //     match *result = NULL;
 //     if (strcmp(key, "a") == 0) {
 //         result = new_match("a", 1);
+//         append(result, "an", 2);
+//         append(result, "at", 2);
+//         append(result, "and", 3);
 //     }
 //     if (strcmp(key, "an") == 0) {
-//         result = new_match("a", 1);
-//         init_match(result, "an", 2);
+//         result = new_match("an", 2);
+//         append(result, "and", 3);
 //     }
 //     if (strcmp(key, "and") == 0) {
-//         result = new_match("a", 1);
-//         init_match(result, "an", 2);
-//         init_match(result, "and", 3);
+//         result = new_match("and", 3);
 //     } 
 //     if (strcmp(key, "at") == 0) {
-//         result = new_match("a", 1);
-//         init_match(result, "at", 2);
+//         result = new_match("at", 2);
 //     }
 //     if (strcmp(key, "b") == 0) {
 //         result = new_match("b", 1);
+//         append(result, "be", 2);
 //     }
 //     if (strcmp(key, "be") == 0) {
-//         result = new_match("b", 1);
-//         init_match(result, "be", 2);
+//         result = new_match("be", 2);
 //     }
 
 //     return result;
