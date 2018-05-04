@@ -13,9 +13,12 @@ LDLIBS = -lreadline
 RM = rm -rf
 
 .PHONY: ftsh
-ftsh:
+ftsh: 
 	$(CC) $(CFLAGS) $(SRCS) -o $(BINS) $(LDLIBS)
+
+parser: 
+	$(CC) $(FLAGS) src/parser.c -o $@
 
 .PHONY: clean
 clean:
-	-$(RM) $(OBJS) $(BINS)
+	-$(RM) $(OBJS) $(BINS) parser
