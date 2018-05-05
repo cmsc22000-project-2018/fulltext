@@ -54,7 +54,7 @@ stringArray *parse_to_arr(FILE *fp)
 	arr->array = malloc(sizeof(char*)*MAXWORDNUM);
     assert(arr != NULL);
 
-    int len;
+    int len = 0;
     char *s = NULL;
     for (int i = 0; i < MAXWORDNUM; i++) {
         if (!read_string(&s)) break;
@@ -79,7 +79,7 @@ int main()
     stringArray *arr;
     arr = parse_to_arr(ptr_file);
 
-    len = arr->len;
+    int len = arr->len;
     printf("Parsing text file with %d words\n", len);
     for (int j = 0; j < len; j++) {
     	printf("%s\n", arr->array[j]);	

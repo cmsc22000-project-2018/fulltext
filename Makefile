@@ -2,11 +2,11 @@ CC = gcc
 
 CFLAGS = -g -Wall -O3 -I ./include/
 
-SRCS = src/ftsh.c src/ftsh_functions.c src/parser.c
+SRCS = src/ftsh.c src/ftsh_functions.c
 
 OBJS = $(SRCS:.c=.o)
 
-BINS = ftsh parser
+BINS = ftsh 
 
 LDLIBS = -lreadline
 
@@ -14,7 +14,7 @@ RM = rm -rf
 
 all: ftsh parser
 
-.PHONY: all
+.PHONY: ftsh
 ftsh: 
 	$(CC) $(CFLAGS) $(SRCS) -o $(BINS) $(LDLIBS)
 
