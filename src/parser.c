@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define MAXWORDNUM 100000
+#define MAXWORDNUM 10000
 #define MAXWORDLEN 100
 #define LINE_MAX 2048
 
@@ -27,11 +27,11 @@ void next_token(FILE *fp)
         // leave room so that we can insert extra space before the newline
         char* s = fgets(buffer, LINE_MAX, fp);
         if (s == NULL) {
-            if (ferror(stdin)) {
+            if (ferror(fp)) {
                 fprintf(stderr, "Error reading input\n");
                 exit(1);
             }
-            assert(feof(stdin));
+            assert(feof(fp));
             break;
         }
         
@@ -85,7 +85,7 @@ int main()
     	return 1;
 
     stringArray *arr;
-    arr = parse_to_arr(fp);
+    arr = parse_to_arr(ptr_file);
 
     printf("Test in main\n");
     for (int j = 0; j < arr->len; j++) {
