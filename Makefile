@@ -12,6 +12,8 @@ LDLIBS = -lreadline
 
 RM = rm -rf
 
+all: ftsh parser
+
 .PHONY: ftsh
 ftsh: 
 	$(CC) $(CFLAGS) $(SRCS) -o $(BINS) $(LDLIBS)

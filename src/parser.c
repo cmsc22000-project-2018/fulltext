@@ -7,6 +7,11 @@
 #define MAXWORDLEN 100
 #define LINE_MAX 2048
 
+typedef struct stringArray {
+	char **array;
+	int len;
+} stringArray;
+
 char* SEP = " \t\n";
 
 char* token = NULL;
@@ -45,21 +50,31 @@ void init_parser(FILE *fp)
     next_token(fp);
 }
 
-char **parse_txt(FILE *fp)
+stringArray *parse_to_arr(FILE *fp)
 {
 	init_parser(fp);
-	char **stringArray;
-    stringArray = malloc(sizeof(char*)*MAXWORDNUM);
-    assert(stringArray != NULL);
+	stringArray *arr;
+	arr = malloc(sizeof(stringArray));
+	arr->array = malloc(sizeof(char*)*MAXWORDNUM);
+    assert(arr != NULL);
 
+    int len;
     char *s = NULL;
     while (int i = 0; i < MAXWORDNUM; i++) {
-        if (!read_string(&s)) return NULL;
-    	printf("%s\n", s);
-    	stringArray[i] = s;
+        if (!read_string(&s)) break;
+        arr->array[i] = malloc(sizeof(char)*MAXWORDLEN);
+    	strcpy(arr->array[i], s);
+    	len++;
     	next_token(fp);	
     }
-    return NULL;
+
+    printf("Test in parse\n");
+    while (int j = 0; j < len; j++) {
+    	printf("%s\n", arr->array[j]);	
+    }
+    arr->len = len;
+    assert(arr != NULL);
+    return arr;
 }
 
 int main()
@@ -69,8 +84,13 @@ int main()
     if (!ptr_file)
     	return 1;
 
-    char **stringArray;
-    stringArray = parse_txt();
+    stringArray *arr;
+    arr = parse_to_arr();
+
+    printf("Test in main\n");
+    while (int j = 0; j < arr->len; j++) {
+    	printf("%s\n", arr->array[j]);	
+    }
 
     fclose(ptr_file);
     return 0;
