@@ -2,15 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "parser.h"
 
 #define MAXWORDNUM 10000
 #define MAXWORDLEN 100
 #define LINE_MAX 2048
-
-typedef struct stringArray {
-	char **array;
-	int len;
-} stringArray;
 
 char* SEP = " \t\n";
 
@@ -68,10 +64,6 @@ stringArray *parse_to_arr(FILE *fp)
     	next_token(fp);	
     }
 
-    printf("Test in parse\n");
-    for (int j = 0; j < len; j++) {
-    	printf("%s\n", arr->array[j]);	
-    }
     arr->len = len;
     assert(arr != NULL);
     return arr;
@@ -87,8 +79,9 @@ int main()
     stringArray *arr;
     arr = parse_to_arr(ptr_file);
 
-    printf("Test in main\n");
-    for (int j = 0; j < arr->len; j++) {
+    len = arr->len;
+    printf("Parsing text file with %d words\n", len);
+    for (int j = 0; j < len; j++) {
     	printf("%s\n", arr->array[j]);	
     }
 
