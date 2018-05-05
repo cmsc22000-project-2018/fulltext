@@ -11,9 +11,8 @@ char* SEP = " \t\n";
 
 char* token = NULL;
 char buffer[LINE_MAX];
-FILE *ptr_file = fopen("my.txt","r");
 
-void next_token()
+void next_token(FILE *fp)
 {
     if (token != NULL) {
         token = strtok(NULL, SEP);
@@ -21,7 +20,7 @@ void next_token()
     
     while (token == NULL) {
         // leave room so that we can insert extra space before the newline
-        char* s = fgets(buffer, LINE_MAX, ptr_file);
+        char* s = fgets(buffer, LINE_MAX, fp);
         if (s == NULL) {
             if (ferror(stdin)) {
                 fprintf(stderr, "Error reading input\n");
@@ -41,14 +40,14 @@ int read_string(char** s)
     return token != NULL;
 }
 
-void init_parser()
+void init_parser(FILE *fp)
 {
-    next_token();
+    next_token(fp);
 }
 
-char **parse_txt(void)
+char **parse_txt(FILE *fp)
 {
-	init_parser();
+	init_parser(fp);
 	char **stringArray;
     stringArray = malloc(sizeof(char*)*MAXWORDNUM);
     assert(stringArray != NULL);
@@ -58,15 +57,15 @@ char **parse_txt(void)
         if (!read_string(&s)) return NULL;
     	printf("%s\n", s);
     	stringArray[i] = s;
-    	next_token();	
+    	next_token(fp);	
     }
     return NULL;
 }
 
 int main()
 {
-    // FILE *ptr_file;
-    // ptr_file =fopen("my.txt","r");
+    FILE *ptr_file;
+    ptr_file =fopen("my.txt","r");
     if (!ptr_file)
     	return 1;
 
