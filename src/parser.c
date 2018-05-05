@@ -47,22 +47,35 @@ int read_string(char** s)
 
 char **parse_txt(void)
 {
-    char **buf;
-    buf = malloc(sizeof(char[MAXWORDNUM][MAXWORDLEN]));
-    assert(buf != NULL);
+	char **stringArray;
+    stringArray = malloc(sizeof(char*)*MAXWORDNUM);
+    assert(stringArray != NULL);
+
     char *s = NULL;
     if (!read_string(&s)) return NULL;
+    printf("%s\n", s);
+    next_token();
+    if (!read_string(&s)) return NULL;
+    printf("%s\n", s);
+    next_token();
+    if (!read_string(&s)) return NULL;
+    printf("%s\n", s);
+    next_token();
+    if (!read_string(&s)) return NULL;
+    printf("%s\n", s);
+    next_token();
 }
 
 int main()
 {
     FILE *ptr_file;
     ptr_file =fopen("my.txt","r");
-  if (!ptr_file)
-      return 1;
-    
-  parse_txt();
+    if (!ptr_file)
+    	return 1;
 
-fclose(ptr_file);
-return 0;
+    char **stringArray;
+    stringArray = parse_txt();
+
+    fclose(ptr_file);
+    return 0;
 }
