@@ -60,7 +60,7 @@ stringArray *parse_to_arr(FILE *fp)
 
     int len;
     char *s = NULL;
-    while (int i = 0; i < MAXWORDNUM; i++) {
+    for (int i = 0; i < MAXWORDNUM; i++) {
         if (!read_string(&s)) break;
         arr->array[i] = malloc(sizeof(char)*MAXWORDLEN);
     	strcpy(arr->array[i], s);
@@ -69,7 +69,7 @@ stringArray *parse_to_arr(FILE *fp)
     }
 
     printf("Test in parse\n");
-    while (int j = 0; j < len; j++) {
+    for (int j = 0; j < len; j++) {
     	printf("%s\n", arr->array[j]);	
     }
     arr->len = len;
@@ -85,10 +85,10 @@ int main()
     	return 1;
 
     stringArray *arr;
-    arr = parse_to_arr();
+    arr = parse_to_arr(fp);
 
     printf("Test in main\n");
-    while (int j = 0; j < arr->len; j++) {
+    for (int j = 0; j < arr->len; j++) {
     	printf("%s\n", arr->array[j]);	
     }
 
