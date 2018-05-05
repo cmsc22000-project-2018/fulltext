@@ -12,11 +12,6 @@ static const char* SEP = " \t\n";
 static char* token = NULL;
 static char buffer[LINE_MAX];
 
-void init_parser()
-{
-    next_token();
-}
-
 void next_token()
 {
     if (token != NULL) {
@@ -45,8 +40,14 @@ int read_string(char** s)
     return token != NULL;
 }
 
+void init_parser()
+{
+    next_token();
+}
+
 char **parse_txt(void)
 {
+	init_parser();
 	char **stringArray;
     stringArray = malloc(sizeof(char*)*MAXWORDNUM);
     assert(stringArray != NULL);
@@ -64,6 +65,8 @@ char **parse_txt(void)
     if (!read_string(&s)) return NULL;
     printf("%s\n", s);
     next_token();
+
+    return NULL;
 }
 
 int main()
