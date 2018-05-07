@@ -68,23 +68,3 @@ stringArray *parse_to_arr(FILE *fp)
     assert(arr != NULL);
     return arr;
 }
-
-int main()
-{
-    FILE *ptr_file;
-    ptr_file =fopen("my.txt","r");
-    if (!ptr_file)
-    	return 1;
-
-    stringArray *arr;
-    arr = parse_to_arr(ptr_file);
-
-    int len = arr->len;
-    printf("Parsing text file with %d words\n", len);
-    for (int j = 0; j < len; j++) {
-    	printf("%s\n", arr->array[j]);	
-    }
-
-    fclose(ptr_file);
-    return 0;
-}
