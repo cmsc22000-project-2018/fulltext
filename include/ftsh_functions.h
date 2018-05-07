@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <string.h>
 
+FILE *fp;
+
 int ftsh_help(char **args);
 
 int ftsh_exit(char **args);

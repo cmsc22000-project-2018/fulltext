@@ -65,7 +65,6 @@ int ftsh_exit(char **args)
  */
 int ftsh_load(char **args)
 {
-	FILE *fp;
 	char ch;
 	char *path = args[1]; // second argument is filepath
 	
@@ -75,13 +74,16 @@ int ftsh_load(char **args)
 		perror("File could not be opened");
 	}
 
+	/* Test Function */ 
 	printf("The contents of the %s file are:\n", path);
  
    	while((ch = fgetc(fp)) != EOF) {
     	printf("%c", ch);
    	}
+   	printf("\n");
+   	/* End Test */
  
-   	fclose(fp);
+   	// fclose(fp);
 
    	return 1;
 }
