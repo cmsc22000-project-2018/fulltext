@@ -10,14 +10,8 @@ LDLIBS = -lcriterion
 SRCS = main.c test_ftsh_functions.c test_ftsh.c
 OBJS = $(SRCS:.c=.o)
 
-.PHONY: all
-all: ${BIN}
-
 $(BIN): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o$(BIN) $(LDLIBS) 
-
-$(TARGET_LIB): $(OBJS)
-	$(CC) ${LDFLAGS} -o $@ $^
+	$(CC) $(LDFLAGS) $(OBJS) -o $(BIN) $(LDLIBS) 
 
 $(SRCS:.c=.d):%.d:%.c
 	$(CC) $(CFLAGS) -MM $< >$@
