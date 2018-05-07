@@ -18,12 +18,14 @@
  */
 char *builtin_str[] = {
 	"help",
-	"exit"
+	"exit",
+	"load"
 };
 
 int (*builtin_func[]) (char **) = {
 	&ftsh_help,
-	&ftsh_exit
+	&ftsh_exit,
+	&ftsh_load
 };
 
 /**
@@ -55,6 +57,34 @@ int ftsh_exit(char **args)
 	return 0;
 }
 
+/**
+	@brief Builtin command: load [filepath]
+	@param args List of args. [filepath]
+	@return Always returns 1, to continue execution.
+	@credit: https://www.programmingsimplified.com/c-program-read-file
+ */
+int ftsh_load(char **args)
+{
+	FILE *fp;
+	char ch;
+	char *path = args[1]; // second argument is filepath
+	
+	fp = fopen(path, "r");
+
+	if (fp == NULL) {
+		perror("File could not be opened");
+	}
+
+	printf("The contents of the %s file are:\n", path);
+ 
+   	while((ch = fgetc(fp)) != EOF) {
+    	printf("%c", ch);
+   	}
+ 
+   	fclose(fp);
+
+   	return 1;
+}
 
 /**
 	@brief Number of built-in functions.
