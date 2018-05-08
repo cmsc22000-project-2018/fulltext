@@ -21,6 +21,5 @@ clean:
 	-$(RM) $(OBJS) $(BINS)
 	make -C ./tests clean
 
-// broken
 tests: $(OBJS)
 	make -C ./tests
