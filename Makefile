@@ -5,7 +5,7 @@ BINS = ftsh
 LDLIBS = -lreadline
 RM = rm -rf
 LIB = libmtrie.so
-CFLAGS = -g -O2 -Wall -I ./include/ -I ./src/ -fPIC
+CFLAGS = -g -O2 -Wall -I ./include/ -I ./src/ -fPIC -std=c99
 MT_SRCS = src/mtrie.c
 MT_OBJS = src/mtrie.o
 
