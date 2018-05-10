@@ -4,7 +4,8 @@ before_script:
     - echo "Running Travis CI tests on /dev branch build"
 
 script:
-    - pwd
+    # pwd: fulltext
+    - make ftsh clean && make -C tests clean
 
 after_script:
     - echo "Finished Travis CI tests on /dev branch build"
