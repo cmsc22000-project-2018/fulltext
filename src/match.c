@@ -53,7 +53,7 @@ char* get_word(match* match)
 
 int get_line(match* match)
 {
-    if(match == NULL) return NULL;
+    if(match == NULL) return -1;
     return match->line;
 }
 
@@ -121,7 +121,7 @@ void pretty_print(GList* l)
     GList *list = l;
     while (list != NULL){
         GList *next = list->next;
-        printf("list data: %s\n", list->data);
+        printf("list data: %s\n", (char*)list->data);
         list = next;
     }
     printf("\n");
