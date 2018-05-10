@@ -1,0 +1,10 @@
+language: c
+compiler: gcc
+before_script:
+    - echo "Running Travis CI tests on /dev branch build"
+
+script:
+    - pwd
+
+after_script:
+    - echo "Finished Travis CI tests on /dev branch build"
