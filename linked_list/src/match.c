@@ -10,41 +10,58 @@
 match* new_match(char* word, int line)
 {
     match* m = malloc(sizeof(match));
+    int rc;
     
-    if (m == NULL) return NULL;
+    if (m == NULL) 
+    {
+        printf("could not allocate memory for match\n");
+        return NULL;
+    }
     
-    init_match(m, word, line);
+    rc = init_match(m, word, line);
+    if (rc != 0) 
+    {
+        printf("Could not init match word %s on line %d\n", word, line);
+        return NULL;
+    }
 
     return m;
 }
 
-void init_match(match* match, char* word, int line)
+int init_match(match* match, char* word, int line)
 {
-    if (match == NULL) return;
+    if(match == NULL) return -1;
 
     match->word = word;
     match->line = line;
+    
+    return 0;
 }
 
-void free_match(match* match)
+int free_match(match* match)
 {
+    if(match == NULL) return -1;
     free(match);
+    return 0;
 }
 
 char* get_word(match* match)
 {
+    if(match == NULL) return NULL;
     return match->word;
 }
 
 int get_line(match* match)
 {
+    if(match == NULL) return NULL;
     return match->line;
 }
 
 //changed inputs
 match* next_match(match* match, GList* matches)
 {
-    GList* cur = g_list_find(matches, match->word);
+    if (match == NULL) return NULL;
+    GList* cur = g_list_find(matches, match);
     if (cur->next == NULL) return (g_list_first(matches))->data;
     return (cur->next)->data;
 }
@@ -52,7 +69,8 @@ match* next_match(match* match, GList* matches)
 //changed inputs
 match* prev_match(match* match, GList* matches)
 {
-    GList* cur = g_list_find(matches, match->word);
+    if (match == NULL) return NULL;
+    GList* cur = g_list_find(matches, match);
     if (cur->prev == NULL) return (g_list_last(matches))->data;
     return (cur->prev)->data;
 }
@@ -78,12 +96,15 @@ GList* remove_at(int index, GList* matches)
     
     //remove position at element
     matches = g_list_delete_link(matches, toDelete);
+    return matches;
 }
 
 //changed inputs
 match* get_at_index(int index, GList* matches)
 {
+    if (g_list_length(matches) == 0) return NULL;
     GList *toReturn = g_list_nth(matches, index);
+    if (toReturn == NULL) return NULL;
     return toReturn -> data;
 }
 

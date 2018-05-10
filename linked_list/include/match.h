@@ -27,7 +27,7 @@ match* new_match(char* word, int line);
  *  - char* word: the match string
  *  - int line: the line the match is on
  */
-void init_match(match* match, char* word, int line);
+int init_match(match* match, char* word, int line);
 
 /* 
  * Frees match 
@@ -35,7 +35,7 @@ void init_match(match* match, char* word, int line);
  * Params:
  *  - match* match: pointer to match
  */
-void free_match(match* match);
+int free_match(match* match);
 
 /* 
  * Finds word in match struct 
