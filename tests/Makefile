@@ -1,4 +1,4 @@
-.RECIPEPREFIX +=
+# .RECIPEPREFIX +=
 # Makefile based on template at https://gist.github.com/xuhdev/1873316
 
 CC = gcc 
@@ -15,13 +15,13 @@ OBJS = $(SRCS:.c=.o)
 all: ${BIN}
 
 $(BIN): $(OBJS)
-  $(CC) $(LDFLAGS) $(OBJS) -o $(BIN) $(LDLIBS) 
+	$(CC) $(LDFLAGS) $(OBJS) -o$(BIN) $(LDLIBS) 
 
 $(TARGET_LIB): $(OBJS)
-  $(CC) ${LDFLAGS} -o $@ $^
+	$(CC) ${LDFLAGS} -o $@ $^
 
 $(SRCS:.c=.d): %.d:%.c
-  $(CC) $(CFLAGS) -MM $< >$@
+	$(CC) $(CFLAGS) -MM $< >$@
 
 include $(SRCS:.c=.d)
 
