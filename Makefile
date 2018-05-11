@@ -1,4 +1,4 @@
-.RECIPEPREFIX +=
+# .RECIPEPREFIX +=
 CC = gcc
 SRCS = src/ftsh.c src/ftsh_functions.c
 OBJS = $(SRCS:.c=.o)

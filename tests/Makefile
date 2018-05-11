@@ -23,8 +23,6 @@ $(TARGET_LIB): $(OBJS)
 $(SRCS:.c=.d): %.d:%.c
 	$(CC) $(CFLAGS) -MM $< >$@
 
-include $(SRCS:.c=.d)
-
 .PHONY: clean
 clean:
 	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.c=.d) $(BIN)

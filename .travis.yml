@@ -5,7 +5,8 @@ before_script:
 
 script:
     # pwd: fulltext
-    - make ftsh clean && make -C tests clean
+    - make all && make -C tests clean all
+    - ./tests/test-fulltext
 
 after_script:
     - echo "Finished Travis CI tests on /dev branch build"
