@@ -20,7 +20,7 @@ $(BIN): $(OBJS)
 $(TARGET_LIB): $(OBJS)
   $(CC) ${LDFLAGS} -o $@ $^
 
-$(SRCS:.c=.d):%.d:%.c
+$(SRCS:.c=.d): %.d:%.c
   $(CC) $(CFLAGS) -MM $< >$@
 
 include $(SRCS:.c=.d)
