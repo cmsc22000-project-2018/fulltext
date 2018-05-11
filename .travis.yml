@@ -9,6 +9,7 @@ before_script:
 script:
     # pwd: fulltext
     - make all && make -C tests clean all
+    - echo $TARGET_LIB
     - ./tests/test-fulltext
 
 after_script:
