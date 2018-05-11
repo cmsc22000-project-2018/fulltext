@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <readline/readline.h>
+#include <sys/types.h>
 
 char** ftsh_get_input(char *input);
 

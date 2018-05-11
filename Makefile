@@ -6,8 +6,7 @@ BINS = ftsh
 LDLIBS = -lreadline `pkg-config --libs glib-2.0`
 RM = rm -rf
 LIB = libmtrie.so
-CFLAGS = -g -O2 -Wall -Wextra -I ./include/ -I ./src/ -fPIC `pkg-config --cflags --libs glib-2.0`
-
+CFLAGS = -g -O2 -Wall -std=c99 -I ./include/ -I ./src/ -fPIC `pkg-config --cflags --libs glib-2.0`
 MT_SRCS = src/mtrie.c
 MT_OBJS = src/mtrie.o
 
@@ -25,7 +24,7 @@ $(LIB): $(MT_OBJS)
 
 $(MT_OBJS): $(MT_SRCS)
 	$(CC) $(CFLAGS) -c $< -o $@
-
+ 
 .PHONY: match
 match:
 	$(CC) $(MATCH_SRCS) $(CFLAGS) -c -o $(MATCH_BINS) $(LDLIBS)
