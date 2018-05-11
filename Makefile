@@ -20,24 +20,24 @@ all: $(LIB) ftsh $(MATCH_LIB)
 
 .PHONY: $(LIB)
 $(LIB): $(MT_OBJS)
-  $(CC) -shared $(MT_OBJS) -o $(LIB)
+	$(CC) -shared $(MT_OBJS) -o $(LIB)
 
 $(MT_OBJS): $(MT_SRCS)
-  $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
  
 .PHONY: match
 match:
-  $(CC) $(MATCH_SRCS) $(CFLAGS) -c -o $(MATCH_BINS) $(LDLIBS)
+	$(CC) $(MATCH_SRCS) $(CFLAGS) -c -o $(MATCH_BINS) $(LDLIBS)
 
 .PHONY: $(MATCH_LIB)
 $(MATCH_LIB): match
-  $(CC) -shared -o $(MATCH_LIB) $(MATCH_OBJS)
+	$(CC) -shared -o $(MATCH_LIB) $(MATCH_OBJS)
 
 .PHONY: ftsh
 ftsh:
-  $(CC) $(CFLAGS) $(SRCS) -o $(BINS) $(LDLIBS)
+	$(CC) $(CFLAGS) $(SRCS) -o $(BINS) $(LDLIBS)
 
 .PHONY: clean
 clean:
-  -$(RM) $(OBJS) $(BINS) $(MT_OBJS) $(LIB) $(MATCH_OBJS) $(MATCH_LIB)
-  make -C ./tests clean
+	-$(RM) $(OBJS) $(BINS) $(MT_OBJS) $(LIB) $(MATCH_OBJS) $(MATCH_LIB)
+	make -C ./tests clean
