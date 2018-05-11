@@ -1,29 +1,44 @@
 .RECIPEPREFIX +=
 CC = gcc
-
-CFLAGS = -O2 -Wall -Wextra -g -I ./include/ -fPIC -c `pkg-config --cflags --libs glib-2.0`
-LDLIBS = `pkg-config --libs glib-2.0`
-
-SRCS = src/match.c
-
+SRCS = src/ftsh.c src/ftsh_functions.c
 OBJS = $(SRCS:.c=.o)
-
-BINS = src/match.o
-
+BINS = ftsh
+LDLIBS = -lreadline `pkg-config --libs glib-2.0`
 RM = rm -rf
+LIB = libmtrie.so
+CFLAGS = -g -O2 -Wall -Wextra -I ./include/ -I ./src/ -fPIC `pkg-config --cflags --libs glib-2.0`
 
-LIB = libmatch.so
+MT_SRCS = src/mtrie.c
+MT_OBJS = src/mtrie.o
 
-all: match
-  $(CC) -shared -o $(LIB) $(OBJS)
+MATCH_SRCS = src/match.c
+MATCH_OBJS = $(MATCH_SRCS:.c=.o)
+MATCH_BINS = src/match.o
+MATCH_LIB = libmatch.so
 
+
+all: $(LIB) ftsh $(MATCH_LIB)
+
+.PHONY: $(LIB)
+$(LIB): $(MT_OBJS)
+  $(CC) -shared $(MT_OBJS) -o $(LIB)
+
+$(MT_OBJS): $(MT_SRCS)
+  $(CC) $(CFLAGS) -c $< -o $@
+ 
+.PHONY: match
 match:
-  $(CC) $(SRCS) $(CFLAGS) -o $(BINS) $(LDLIBS)
+  $(CC) $(MATCH_SRCS) $(CFLAGS) -c -o $(MATCH_BINS) $(LDLIBS)
+
+.PHONY: $(MATCH_LIB)
+$(MATCH_LIB): match
+  $(CC) -shared -o $(MATCH_LIB) $(MATCH_OBJS)
+
+.PHONY: ftsh
+ftsh:
+  $(CC) $(CFLAGS) $(SRCS) -o $(BINS) $(LDLIBS)
 
 .PHONY: clean
 clean:
-  -${RM} ${LIB} ${OBJS} $(BIN)
+  -$(RM) $(OBJS) $(BINS) $(MT_OBJS) $(LIB) $(MATCH_OBJS) $(MATCH_LIB)
   make -C ./tests clean
-
-tests: ${TARGET_LIB}
-  make -C ./tests

@@ -1,16 +1,18 @@
 .RECIPEPREFIX +=
+# Makefile based on template at https://gist.github.com/xuhdev/1873316
+
 CC = gcc 
-CFLAGS = -Wall -Wextra -O2 -g -I../include/ -fPIC `pkg-config --cflags --libs glib-2.0`
+CFLAGS = -fPIC -Wall -Wextra -O2 -g -I../include/ `pkg-config --cflags --libs glib-2.0`
 LDFLAGS = -L../ -Wl,-rpath,../ `pkg-config --libs glib-2.0`
 RM = rm -f
-BIN = test-match
-LDLIBS = -lcriterion -lmatch -lglib-2.0
+BIN = test-fulltext
+LDLIBS = -lcriterion -lmtrie -lmatch -lglib-2.0
 
-SRCS = main.c match_test.c
+SRCS = main.c test_mtrie.c match_test.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all
-all: $(BIN)
+all: ${BIN}
 
 $(BIN): $(OBJS)
   $(CC) $(LDFLAGS) $(OBJS) -o $(BIN) $(LDLIBS) 

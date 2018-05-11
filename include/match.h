@@ -26,6 +26,9 @@ match* new_match(char* word, int line);
  *  - match* match: pointer to match
  *  - char* word: the match string
  *  - int line: the line the match is on
+ *
+ * Returns:
+ *  - 0 for success
  */
 int init_match(match* match, char* word, int line);
 
@@ -34,6 +37,9 @@ int init_match(match* match, char* word, int line);
  *
  * Params:
  *  - match* match: pointer to match
+ *
+ * Returns:
+ *  - -1 for failure, 0 for success
  */
 int free_match(match* match);
 
@@ -90,6 +96,9 @@ match* prev_match(match* match, GList* matches);
  *  - match* newMatch: pointer to new match struct
  *  - int index: index to insert the match into dll
  *  - GList* matches: dll of matches
+ *
+ * Returns:
+ *  - pointer of GList representing list of all matches
  */
 GList* insert_at(match* newMatch, int index, GList* matches);
 
@@ -99,6 +108,9 @@ GList* insert_at(match* newMatch, int index, GList* matches);
  * Params:
  *  - match* newMatch: pointer to new match struct
  *  - GList* matches: dll of matches
+ *
+ * Returns:
+ *  - pointer of GList representing list of all matches
  */
 GList* append_(match* newMatch, GList* matches);
 
@@ -108,6 +120,9 @@ GList* append_(match* newMatch, GList* matches);
  * Params:
  *  - int index: index of match to remove
  *  - GList* matches: dll of matches
+ *
+ * Returns:
+ *  - pointer of GList representing list of all matches
  */
 GList* remove_at(int index, GList* matches);
 
