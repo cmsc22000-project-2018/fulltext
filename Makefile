@@ -1,4 +1,4 @@
-.RECIPEPREFIX +=
+# .RECIPEPREFIX +=
 CC = gcc
 SRCS = src/ftsh.c src/ftsh_functions.c
 OBJS = $(SRCS:.c=.o)
@@ -37,7 +37,10 @@ $(MATCH_LIB): match
 ftsh:
 	$(CC) $(CFLAGS) $(SRCS) -o $(BINS) $(LDLIBS)
 
-.PHONY: clean
+.PHONY: clean 
 clean:
 	-$(RM) $(OBJS) $(BINS) $(MT_OBJS) $(LIB) $(MATCH_OBJS) $(MATCH_LIB)
 	make -C ./tests clean
+
+tests: $(OBJS)
+	make -C ./tests

@@ -23,6 +23,8 @@ int ftsh_help(char **args);
 
 int ftsh_exit(char **args);
 
+int ftsh_load(char **args);
+
 int ftsh_num_builtins();
 
 int ftsh_execute(char **args);
