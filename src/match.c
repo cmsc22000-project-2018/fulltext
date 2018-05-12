@@ -1,63 +1,128 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+#include <gmodule.h>
 #include "match.h"
 
 /* See match.h for descriptions of functions */
 
 match* new_match(char* word, int line)
 {
+    match* m = malloc(sizeof(match));
+    int rc;
+    
+    if (m == NULL) 
+    {
+        printf("could not allocate memory for match\n");
+        return NULL;
+    }
+    
+    rc = init_match(m, word, line);
+    if (rc != 0) 
+    {
+        printf("Could not init match word %s on line %d\n", word, line);
+        return NULL;
+    }
 
+    return m;
 }
 
-void init_match(match* match, char* word, int line)
+int init_match(match* match, char* word, int line)
 {
+    if(match == NULL) return -1;
 
+    match->word = word;
+    match->line = line;
+    
+    return 0;
 }
 
-void free_match(match* match)
+int free_match(match* match)
 {
-
+    if(match == NULL) return -1;
+    free(match);
+    return 0;
 }
 
 char* get_word(match* match)
 {
-    return "to do";
+    if(match == NULL) return NULL;
+    return match->word;
 }
 
 int get_line(match* match)
 {
-    return 0;
+    if(match == NULL) return -1;
+    return match->line;
 }
 
-match* next_match(match* match)
+//changed inputs
+match* next_match(match* match, GList* matches)
 {
-
+    if (match == NULL) return NULL;
+    GList* cur = g_list_find(matches, match);
+    if (cur->next == NULL) return (g_list_first(matches))->data;
+    return (cur->next)->data;
 }
 
-match* prev_match(match* match)
+//changed inputs
+match* prev_match(match* match, GList* matches)
 {
-
+    if (match == NULL) return NULL;
+    GList* cur = g_list_find(matches, match);
+    if (cur->prev == NULL) return (g_list_last(matches))->data;
+    return (cur->prev)->data;
+}
+//changed inputs, return type
+GList* insert_at(match* newMatch, int index, GList* matches)
+{
+    matches = g_list_insert(matches, newMatch, index);
+    return matches;
 }
 
-void insert_at(match* match, match* new, int index)
+//changed inputs, return type
+GList* append_(match* newMatch, GList* matches)
 {
-
+    matches = g_list_append(matches, newMatch);
+    return matches;
 }
 
-void append(match* match, match* new)
+//changed inputs, return type
+GList* remove_at(int index, GList* matches)
 {
-
+    //get element at position
+    GList *toDelete = g_list_nth(matches, index);
+    
+    //remove position at element
+    matches = g_list_delete_link(matches, toDelete);
+    return matches;
 }
 
-void remove_at(match* match, int index)
+//changed inputs
+match* get_at_index(int index, GList* matches)
 {
-
+    if (g_list_length(matches) == 0) return NULL;
+    GList *toReturn = g_list_nth(matches, index);
+    if (toReturn == NULL) return NULL;
+    return toReturn -> data;
 }
 
-match* get_at_index(match* match, int index)
+//changed inputs
+int get_index(match* match, GList* matches)
 {
-
+    int position = g_list_index(matches, match);
+    return position;
 }
 
-int get_index(match* match)
+//just for testing
+void pretty_print(GList* l)
 {
-    return 0;
+    GList *list = l;
+    while (list != NULL){
+        GList *next = list->next;
+        printf("list data: %s\n", (char*)list->data);
+        list = next;
+    }
+    printf("\n");
 }
