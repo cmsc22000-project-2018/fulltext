@@ -11,7 +11,7 @@ script:
     - make all && make -C tests clean all
     - ls -a
     - ls tests
-    - ./tests/test-fulltext
+    - cd tests && ./test-fulltext
 
 after_script:
     - echo "Finished Travis CI tests on /dev branch build"
