@@ -9,8 +9,6 @@ before_install:
 script:
     # pwd: fulltext
     - make all && make -C tests clean all
-    - ls -a
-    - ls tests
     - cd tests && ./test-fulltext
 
 after_script:
