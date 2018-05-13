@@ -12,6 +12,7 @@
 
 #include "ftsh.h"
 #include "ftsh_functions.h"
+#include "parser.h"
 
 /*
  * Global variable for parsed file in stringArray struct
