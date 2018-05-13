@@ -1,6 +1,7 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
 
+
 stringArray *pf = NULL;
 
 /*
@@ -41,7 +42,6 @@ int ftsh_exit(char **args)
     return 0;
 }
 
-
 int ftsh_load(char **args)
 {
     char ch;
@@ -54,13 +54,7 @@ int ftsh_load(char **args)
         exit(1);
     }
  
-<<<<<<< 9f1043a626b751b6b7984c90dde11efdc6ca4f53
     // fclose(fp);
-=======
-	pf = parse_to_arr(fp);
-
-   	fclose(fp);
->>>>>>> Initial linkage of parser and shell
 
     return 1;
 }
@@ -86,5 +80,9 @@ int ftsh_execute(char **args)
         }
     }
 
+<<<<<<< c6f28d3a863531f363089bd7663e422f8cb0a22e
     return ftsh_launch(args);
+=======
+	return ftsh_launch(args);
+>>>>>>> Fixed Makefile
 }

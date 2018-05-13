@@ -1,6 +1,6 @@
 # .RECIPEPREFIX +=
 CC = gcc
-SRCS = src/ftsh.c src/ftsh_functions.c
+SRCS = src/ftsh.c src/ftsh_functions.c src/parser.c
 OBJS = $(SRCS:.c=.o)
 FTSH_BIN = ftsh
 LDLIBS = -lreadline `pkg-config --libs glib-2.0`
