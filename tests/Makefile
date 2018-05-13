@@ -17,13 +17,11 @@ all: ${BIN}
 $(BIN): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o$(BIN) $(LDLIBS) 
 
-$(TARGET_LIB): $(OBJS)
-	$(CC) ${LDFLAGS} -o $@ $^
+# $(TARGET_LIB): $(OBJS)
+#	$(CC) ${LDFLAGS} -o $@ $^
 
 $(SRCS:.c=.d): %.d:%.c
 	$(CC) $(CFLAGS) -MM $< >$@
-
-include $(SRCS:.c=.d)
 
 .PHONY: clean
 clean:
