@@ -1,10 +1,12 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
 
+stringArray *pf = NULL;
 
 /*
-    List of builtin commands, followed by their corresponding functions.
+ * List of builtin commands, followed by their corresponding functions.
  */
+
 char *builtin_str[] = {
     "help",
     "exit",
@@ -52,7 +54,13 @@ int ftsh_load(char **args)
         exit(1);
     }
  
+<<<<<<< 9f1043a626b751b6b7984c90dde11efdc6ca4f53
     // fclose(fp);
+=======
+	pf = parse_to_arr(fp);
+
+   	fclose(fp);
+>>>>>>> Initial linkage of parser and shell
 
     return 1;
 }

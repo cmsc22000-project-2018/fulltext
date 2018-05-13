@@ -18,6 +18,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "parser.h"
+
+/*
+ * Variable for parsed file in stringArray struct
+ */
+stringArray* pf;
 
 /**
     @brief Builtin command: print help.
