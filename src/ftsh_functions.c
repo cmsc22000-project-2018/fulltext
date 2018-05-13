@@ -14,6 +14,11 @@
 #include "ftsh_functions.h"
 
 /*
+ * Global variable for parsed file in stringArray struct
+ */
+stringArray *pf = NULL;
+
+/*
 	List of builtin commands, followed by their corresponding functions.
  */
 char *builtin_str[] = {
@@ -75,7 +80,9 @@ int ftsh_load(char **args)
 		exit(1);
 	}
  
-   	// fclose(fp);
+	pf = parse_to_arr(fp);
+
+   	fclose(fp);
 
    	return 1;
 }

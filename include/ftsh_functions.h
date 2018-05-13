@@ -18,6 +18,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "parser.h"
+
+/*
+ * Global variable for parsed file in stringArray struct
+ */
+extern stringArray* pf;
 
 int ftsh_help(char **args);
 
