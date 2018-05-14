@@ -1,14 +1,19 @@
 // Sprint 2 Mock Trie Implementation
 // Ruolin Zheng
 
+// Sprint 3 Mock Trie - Match Integration
+// May 13, 2018
+
 // minimal C implementation of a mock trie
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <assert.h>
+#include <gmodule.h>
 #include "mtrie.h"
-// #include "match.h"
+#include "match.h"
 
 // Returns 1 if key presents in trie, else 0
 bool is_key_in_trie(trie_t *unused_t, char *key)
@@ -106,43 +111,54 @@ char *return_matches_m(trie_t *unused_t, char *key)
     return list;
 }
 
-// Integration with match, returns a dbll of matches
-// assuming words of different level (i.e. length)
-// start on new line
-// ISSUE: Ordering?
-// match *return_matches(trie_t *trie, char *key)
-// {
-// 	// just to silence warning
-// 	trie_t *temp = trie;
-//	unused_t = temp;
+// Integration with match
+// Returns: pointer of GList representing list of all matches
+// 
+// Ordering Issue:
+// Text: and there was an ant; searches for 'an'
+// GList: and->an->ant
+// rank according to relative position in text or alphabetically?
+GList *return_matches(trie_t *trie, char *key)
+{
+	// just to silence warning
+	trie_t *temp = trie;
+	trie = temp;
 
-//     match *result = NULL;
-//     if (strcmp(key, "a") == 0) {
-//         result = new_match("a", 1);
-//         append(result, "an", 2);
-//         append(result, "at", 2);
-//         append(result, "and", 3);
-//     }
-//     if (strcmp(key, "an") == 0) {
-//         result = new_match("an", 2);
-//         append(result, "and", 3);
-//     }
-//     if (strcmp(key, "and") == 0) {
-//         result = new_match("and", 3);
-//     } 
-//     if (strcmp(key, "at") == 0) {
-//         result = new_match("at", 2);
-//     }
-//     if (strcmp(key, "b") == 0) {
-//         result = new_match("b", 1);
-//         append(result, "be", 2);
-//     }
-//     if (strcmp(key, "be") == 0) {
-//         result = new_match("be", 2);
-//     }
+    GList *result = NULL;
+    // a->an->at->and
+    if (strcmp(key, "a") == 0) {
+        match *m_a = new_match("a", 1);
+        match *m_an = new_match("an", 2);
+        match *m_at = new_match("at", 2);
+        match *m_and = new_match("and", 3);
+        result = append_(m_and, append_(m_at, append_(m_an, append_(m_a, NULL))));
+    }
+    // an->and
+    if (strcmp(key, "an") == 0) {
+        match *m_an = new_match("an", 2);
+        match *m_and = new_match("and", 3);
+        result = append_(m_and, append_(m_an, NULL));
+    }
+    if (strcmp(key, "and") == 0) {
+        match *m_and = new_match("and", 3);
+        result = append_(m_and, NULL);
+    } 
+    if (strcmp(key, "at") == 0) {
+        match *m_at = new_match("at", 2);
+        result = append_(m_at, NULL);
+    }
+    if (strcmp(key, "b") == 0) {
+        match *m_b = new_match("b", 1);
+        match *m_be = new_match("be", 2);
+        result = append_(m_be, append_(m_b, NULL));
+    }
+    if (strcmp(key, "be") == 0) {
+        match *m_be = new_match("be", 2);
+        result = append_(m_be, NULL);
+    }
 
-//     return result;
-// }
+    return result;
+}
 
 // Prints out content of trie
 void trie_show(trie_t *trie)
