@@ -49,7 +49,6 @@ int ftsh_exit(char **args);
  */
 int ftsh_load(char **args);
 
-<<<<<<< HEAD
 
 /**
     @brief Number of built-in functions.

@@ -1,13 +1,10 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
-#include "parser.h"
-#include "string.h"
 
 /*
  * Variable for parsed file in stringArray struct
  */
 stringArray *pf = NULL;
-
 
 /*
  * List of builtin commands, followed by their corresponding functions.
@@ -84,6 +81,26 @@ int ftsh_find(char **args)
 }
 
 /**
+	@brief runs search for provided words in args on loaded file
+	@param args List of words to search for in file
+	@return Return 1 in case of succesfull execution.
+ */
+int ftsh_find(char **args) 
+{
+	int SET_SIZE = 0;
+	char** word_set = malloc(8 * sizeof(char *));
+
+    for (int i = 0; args[i] != NULL; i++) {
+        word_set[i] = strdup(args[i]);
+        SET_SIZE++;
+    }
+
+    word_set[SET_SIZE] = NULL; // mark end of word set
+
+	return 1;
+}
+
+/**
 	@brief Builtin command: exit.
 	@param args List of args.  Not examined.
 	@return Always returns 0, to terminate execution.
@@ -104,8 +121,8 @@ int ftsh_load(char **args)
         perror("File could not be opened");
         exit(1);
     }
- 
-    fclose(fp);
+    
+        fclose(fp);
 
     return 1;
 }
@@ -131,5 +148,9 @@ int ftsh_execute(char **args)
         }
     }
 
+<<<<<<< HEAD
     return ftsh_launch(args);
+=======
+	return ftsh_launch(args);
+>>>>>>> a1185557e17d1bad6f63de37df2aa7ffdea3c812
 }
