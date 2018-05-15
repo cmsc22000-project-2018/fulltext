@@ -32,34 +32,6 @@ char** ftsh_get_input(char *input) {
 }
 
 
-int ftsh_launch(char **args)
-{
-    pid_t pid;
-    int status;
-
-    pid = fork();
-    if (pid == 0) {
-        // Child process
-        if (execvp(args[0], args) == -1) {
-            printf("Your command was not recognized by our system.\n");
-            printf("Please type 'help' to get an overview of the commands.\n");
-            perror("ftsh command execution error");
-        }
-        exit(EXIT_FAILURE);
-    } else if (pid < 0) {
-        // Error forking
-        perror("ftsh: forking error");
-    } else {
-        // Parent process
-        do {
-            waitpid(pid, &status, WUNTRACED);
-        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-    }
-
-    return 1;
-}
-
-
 void ftsh_loop(void)
 {
     char *input;

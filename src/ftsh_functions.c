@@ -28,6 +28,7 @@ int (*builtin_func[]) (char **) = {
 
 int ftsh_help(char **args)
 {
+    printf("------------------------------------------------\n");
     printf("Full-Text Shell:\n");
     printf("Type program names and arguments, and hit enter.\n");
     printf("The following are built in:\n");
@@ -36,7 +37,8 @@ int ftsh_help(char **args)
         printf("  %s\n", builtin_str[i]);
     }
 
-    printf("Use the man command for information on other programs.\n");
+    printf("------------------------------------------------\n");
+
     return 1;
 }
 
@@ -97,6 +99,7 @@ int ftsh_num_builtins() {
 int ftsh_execute(char **args)
 {
     int i;
+    int function_called = 0;
 
     if (args[0] == NULL) {
         // An empty command was entered.
@@ -106,8 +109,13 @@ int ftsh_execute(char **args)
     for (i = 0; i < ftsh_num_builtins(); i++) {
         if (strcmp(args[0], builtin_str[i]) == 0) {
             return (*builtin_func[i])(args);
+            function_called = 1;
         }
     }
 
-    return ftsh_launch(args);
+    if (function_called == 0) {
+        printf("Your command was not recognized by our system.\n");
+        printf("Please type 'help' to get an overview of the commands.\n");
+    }
+    return 1;
 }
