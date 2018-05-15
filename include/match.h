@@ -8,10 +8,10 @@ typedef struct {
 } match;
 
 /**
-	@brief Creates new match.
-	@param word: the match string. 
+  @brief Creates new match.
+  @param word: the match string. 
   @param line: the line the match is on
-	@return a pointer to the match.
+  @return a pointer to the match.
 */
 match* new_match(char* word, int line);
 
