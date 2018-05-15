@@ -1,5 +1,5 @@
-#ifndef INCLUDE_MATCH_H_
-#define INCLUDE_MATCH_H_
+#ifndef _FULLTEXT_MATCH_H_
+#define _FULLTEXT_MATCH_H_
 
 /* Match struct */
 typedef struct {
@@ -150,4 +150,4 @@ match* get_at_index(int index, GList* matches);
  */
 int get_index(match* match, GList* matches);
 
-#endif /* INCLUDE_MATCH_H_ */
+#endif /* _FULLTEXT_MATCH_H_ */
