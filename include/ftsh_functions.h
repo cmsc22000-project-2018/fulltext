@@ -20,16 +20,13 @@
 #include <string.h>
 #include "parser.h"
 
-/*
- * Global variable for parsed file in stringArray struct
- */
-extern stringArray* pf;
-
 int ftsh_help(char **args);
 
 int ftsh_exit(char **args);
 
 int ftsh_load(char **args);
+
+int ftsh_find(char **args);
 
 int ftsh_num_builtins();
 
