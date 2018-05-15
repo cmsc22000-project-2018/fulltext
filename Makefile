@@ -2,7 +2,7 @@
 CC = gcc
 SRCS = src/ftsh.c src/ftsh_functions.c
 OBJS = $(SRCS:.c=.o)
-BINS = ftsh
+FTSH_BIN = ftsh
 LDLIBS = -lreadline `pkg-config --libs glib-2.0`
 RM = rm -rf
 LIB = libmtrie.so
@@ -16,7 +16,7 @@ MATCH_BINS = src/match.o
 MATCH_LIB = libmatch.so
 
 
-all: $(LIB) ftsh $(MATCH_LIB)
+all: $(LIB) $(FTSH_BIN) $(MATCH_LIB)
 
 .PHONY: $(LIB)
 $(LIB): $(MT_OBJS)
@@ -35,11 +35,11 @@ $(MATCH_LIB): match
 
 .PHONY: ftsh
 ftsh:
-	$(CC) $(CFLAGS) $(SRCS) -o $(BINS) $(LDLIBS)
+	$(CC) $(CFLAGS) $(SRCS) -o $(FTSH_BIN) $(LDLIBS)
 
 .PHONY: clean 
 clean:
-	-$(RM) $(OBJS) $(BINS) $(MT_OBJS) $(LIB) $(MATCH_OBJS) $(MATCH_LIB)
+	$(RM) $(OBJS) $(FTSH_BIN) $(MT_OBJS) $(LIB) $(MATCH_OBJS) $(MATCH_LIB)
 	make -C ./tests clean
 
 tests: $(OBJS)
