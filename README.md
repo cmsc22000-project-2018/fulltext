@@ -78,7 +78,7 @@ Search Purpose: The core class for full-text program.
 
 Below is documentation for a mock trie implementation,
 used to develop the fulltext program (will be deleted once 
-fulltext is fully implemented.)
+fulltext is fully implemented.) 
 -----------------------------------------------------
 Sprint 2 Mock Trie
 
