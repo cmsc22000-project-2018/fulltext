@@ -1,25 +1,7 @@
-/***************************************************************************//**
-
-    @file         ftsh.c
-
-    @author       Max Bronckers
-
-    @date         Thursday, 1 May 2018
-
-    @brief        FTSH (Full-Text SHell)
-
-    @compile      make ftsh
-
-*******************************************************************************/
-
 #include "ftsh.h"
 #include "ftsh_functions.h"
 
-/**
-    @brief Parse input into args.
-    @param input The input.
-    @return Null-terminated array of args.
- */
+
 char** ftsh_get_input(char *input) {
     char **args = malloc(8 * sizeof(char *));
     char *separator = " ";
@@ -49,11 +31,7 @@ char** ftsh_get_input(char *input) {
     return args;
 }
 
-/**
-    @brief Launch a program and wait for it to terminate.
-    @param args Null terminated list of arguments (including program).
-    @return Always returns 1, to continue execution.
- */
+
 int ftsh_launch(char **args)
 {
     pid_t pid;
@@ -81,9 +59,7 @@ int ftsh_launch(char **args)
     return 1;
 }
 
-/**
-     @brief Loop getting input and executing it.
- */
+
 void ftsh_loop(void)
 {
     char *input;
@@ -100,20 +76,11 @@ void ftsh_loop(void)
     } while (status);
 }
 
-/**
-     @brief Main entry point.
-     @param argc Argument count.
-     @param argv Argument vector.
-     @return status code
- */
+
 int main(int argc, char **argv)
 {
-    // Load config files, if any.
 
-    // Run command loop.
     ftsh_loop();
-
-    // Perform any shutdown/cleanup.
 
     return EXIT_SUCCESS;
 }
