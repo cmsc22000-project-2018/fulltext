@@ -14,7 +14,7 @@ char *builtin_str[] = {
 	"help",
 	"exit",
 	"load",
-    "find"
+    "find",
 };
 
 
@@ -84,6 +84,8 @@ int ftsh_load(char **args)
         perror("File could not be opened");
         exit(1);
     }
+
+    pf = parse_to_arr(fp);
     
     fclose(fp);
 

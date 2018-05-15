@@ -51,7 +51,6 @@ void ftsh_loop(void)
 
 int main(int argc, char **argv)
 {
-
     ftsh_loop();
 
     return EXIT_SUCCESS;
