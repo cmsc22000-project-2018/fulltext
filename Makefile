@@ -16,7 +16,7 @@ MATCH_BINS = src/match.o
 MATCH_LIB = libmatch.so
 
 
-all: $(LIB) ftsh $(MATCH_LIB)
+all: $(LIB) $(BINS) $(MATCH_LIB)
 
 .PHONY: $(LIB)
 $(LIB): $(MT_OBJS)
