@@ -8,7 +8,7 @@ RM = rm -f
 BIN = test-fulltext
 LDLIBS = -lcriterion -lmtrie -lmatch -lglib-2.0
 
-SRCS = main.c test_mtrie.c match_test.c
+SRCS = main.c test_mtrie.c test_match.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all
@@ -16,9 +16,6 @@ all: ${BIN}
 
 $(BIN): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o$(BIN) $(LDLIBS) 
-
-# $(TARGET_LIB): $(OBJS)
-#	$(CC) ${LDFLAGS} -o $@ $^
 
 $(SRCS:.c=.d): %.d:%.c
 	$(CC) $(CFLAGS) -MM $< >$@
