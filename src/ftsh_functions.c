@@ -1,7 +1,13 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
+#include "parser.h"
+#include "string.h"
 
+/*
+ * Variable for parsed file in stringArray struct
+ */
 stringArray *pf = NULL;
+
 
 /*
  * List of builtin commands, followed by their corresponding functions.
@@ -17,8 +23,8 @@ char *builtin_str[] = {
 
 int (*builtin_func[]) (char **) = {
 	&ftsh_help,
-    &ftsh_exit,
-    &ftsh_load,
+	&ftsh_exit,
+	&ftsh_load,
     &ftsh_find
 };
 
@@ -35,6 +41,26 @@ int ftsh_help(char **args)
 
     printf("Use the man command for information on other programs.\n");
     return 1;
+}
+
+/**
+	@brief runs search for provided words in args on loaded file
+	@param args List of words to search for in file
+	@return Return 1 in case of succesfull execution.
+ */
+int ftsh_find(char **args) 
+{
+	int SET_SIZE = 0;
+	char** word_set = malloc(8 * sizeof(char *));
+
+    for (int i = 0; args[i] != NULL; i++) {
+        word_set[i] = strdup(args[i]);
+        SET_SIZE++;
+    }
+
+    word_set[SET_SIZE] = NULL; // mark end of word set
+
+	return 1;
 }
 
 /**
