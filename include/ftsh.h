@@ -30,14 +30,6 @@ char** ftsh_get_input(char *input);
 
 
 /**
-    @brief Launch a program and wait for it to terminate.
-    @param args Null terminated list of arguments (including program).
-    @return Always returns 1, to continue execution.
- */
-int ftsh_launch(char **args);
-
-
-/**
      @brief Loop getting input and executing it.
  */
 void ftsh_loop(void);

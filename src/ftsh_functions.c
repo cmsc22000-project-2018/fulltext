@@ -85,7 +85,7 @@ int ftsh_load(char **args)
         exit(1);
     }
     
-        fclose(fp);
+    fclose(fp);
 
     return 1;
 }
