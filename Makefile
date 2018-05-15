@@ -34,7 +34,7 @@ $(MATCH_LIB): match
 	$(CC) -shared -o $(MATCH_LIB) $(MATCH_OBJS)
 
 .PHONY: ftsh
-ftsh:
+ftsh: $(SRCS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(FTSH_BIN) $(LDLIBS)
 
 .PHONY: clean 
