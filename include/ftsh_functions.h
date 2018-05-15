@@ -56,6 +56,11 @@ int ftsh_load(char **args);
  */
 int ftsh_num_builtins();
 
+/**
+    @brief Builtin command: find [word1] [word2] [word3]
+    @return Always returns 1, to continue execution
+ */
+int ftsh_find(char **args);
 
 /**
      @brief Execute shell built-in or launch program.

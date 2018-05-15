@@ -1,7 +1,6 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
 
-
 stringArray *pf = NULL;
 
 /*
@@ -9,16 +8,18 @@ stringArray *pf = NULL;
  */
 
 char *builtin_str[] = {
-    "help",
-    "exit",
-    "load"
+	"help",
+	"exit",
+	"load",
+    "find"
 };
 
 
 int (*builtin_func[]) (char **) = {
-    &ftsh_help,
+	&ftsh_help,
     &ftsh_exit,
-    &ftsh_load
+    &ftsh_load,
+    &ftsh_find
 };
 
 
@@ -36,7 +37,31 @@ int ftsh_help(char **args)
     return 1;
 }
 
+/**
+	@brief runs search for provided words in args on loaded file
+	@param args List of words to search for in file
+	@return Return 1 in case of succesfull execution.
+ */
+int ftsh_find(char **args) 
+{
+	int SET_SIZE = 0;
+	char** word_set = malloc(8 * sizeof(char *));
 
+    for (int i = 0; args[i] != NULL; i++) {
+        word_set[i] = strdup(args[i]);
+        SET_SIZE++;
+    }
+
+    word_set[SET_SIZE] = NULL; // mark end of word set
+
+	return 1;
+}
+
+/**
+	@brief Builtin command: exit.
+	@param args List of args.  Not examined.
+	@return Always returns 0, to terminate execution.
+ */
 int ftsh_exit(char **args)
 {
     return 0;
@@ -54,7 +79,7 @@ int ftsh_load(char **args)
         exit(1);
     }
  
-    // fclose(fp);
+    fclose(fp);
 
     return 1;
 }
@@ -80,9 +105,5 @@ int ftsh_execute(char **args)
         }
     }
 
-<<<<<<< c6f28d3a863531f363089bd7663e422f8cb0a22e
     return ftsh_launch(args);
-=======
-	return ftsh_launch(args);
->>>>>>> Fixed Makefile
 }
