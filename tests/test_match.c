@@ -194,10 +194,8 @@ Test(match, insert_at_regular)
     
     insert_at(toInsert, 2, matches);
     
-    /*GList* retrieved = g_list_nth(matches, 2);
-    match* fromRet = retrieved->data;
-    
-    cr_assert_eq(fromRet, toInsert, "Expected %s but got %s", toInsert->word, fromRet->word);*/
+    match* cur = list_get_at(matches, 2);
+    cr_assert_eq(cur, toInsert, "Expected %s but got %s", toInsert->word, cur->word);
 }
 
 /* Testing insert_at() for negative input*/
@@ -221,10 +219,8 @@ Test(match, insert_at_negative)
     
     insert_at(toInsert, -1, matches);
     
-    /*GList* retrieved = g_list_nth(matches, 3);
-    match* fromRet = retrieved->data;
-    
-    cr_assert_eq(fromRet, toInsert, "Expected %s but got %s", toInsert->word, fromRet->word);*/
+    match* cur = list_get_at(matches, 3);
+    cr_assert_eq(cur, toInsert, "Expected %s but got %s", toInsert->word, cur->word);
 }
 
 /* Testing insert_at() for too large input*/
@@ -248,10 +244,8 @@ Test(match, insert_at_large)
     
     insert_at(toInsert, 5, matches);
     
-    /*GList* retrieved = g_list_nth(matches, 3);
-    match* fromRet = retrieved->data;
-    
-    cr_assert_eq(fromRet, toInsert, "Expected %s but got %s", toInsert->word, fromRet->word);*/
+    match* cur = list_get_at(matches, 3);
+    cr_assert_eq(cur, toInsert, "Expected %s but got %s", toInsert->word, cur->word);
 }
 
 /* Testing append_() function */
@@ -270,17 +264,14 @@ Test(match, append)
     
     cr_assert_not_null(matches, "matches is null");
     
-    /*GList* aRet = g_list_nth(matches, 0);
-    match* aFromRet = aRet->data;
-    cr_assert_eq(aFromRet, a, "Expected %s but got %s", a->word, aFromRet->word);
+    match* aRet = list_get_at(matches, 0);
+    cr_assert_eq(aRet, a, "Expected %s but got %s", a->word, aRet->word);
     
-    GList* bRet = g_list_nth(matches, 1);
-    match* bFromRet = bRet->data;
-    cr_assert_eq(bFromRet, b, "Expected %s but got %s", b->word, bFromRet->word);
+    match* bRet = list_get_at(matches, 1);
+    cr_assert_eq(bRet, b, "Expected %s but got %s", b->word, bRet->word);
     
-    GList* cRet = g_list_nth(matches, 2);
-    match* cFromRet = cRet->data;
-    cr_assert_eq(cFromRet, c, "Expected %s but got %s", c->word, cFromRet->word);*/
+    match* cRet = list_get_at(matches, 2);
+    cr_assert_eq(cRet, c, "Expected %s but got %s", c->word, cRet->word);
 }
 
 /* Testing remove_at for valid input */
@@ -325,17 +316,14 @@ Test(match, remove_at_invalid)
     
     remove_at(3, matches);
     
-    /*GList* aRet = g_list_nth(matches, 0);
-    match* aFromRet = aRet->data;
-    cr_assert_eq(aFromRet, a, "Expected %s but got %s", a->word, aFromRet->word);
+    match* aRet = list_get_at(matches, 0);
+    cr_assert_eq(aRet, a, "Expected %s but got %s", a->word, aRet->word);
     
-    GList* bRet = g_list_nth(matches, 1);
-    match* bFromRet = bRet->data;
-    cr_assert_eq(bFromRet, b, "Expected %s but got %s", b->word, bFromRet->word);
+    match* bRet = list_get_at(matches, 1);
+    cr_assert_eq(bRet, b, "Expected %s but got %s", b->word, bRet->word);
     
-    GList* cRet = g_list_nth(matches, 2);
-    match* cFromRet = cRet->data;
-    cr_assert_eq(cFromRet, c, "Expected %s but got %s", c->word, cFromRet->word);*/
+    match* cRet = list_get_at(matches, 2);
+    cr_assert_eq(cRet, c, "Expected %s but got %s", c->word, cRet->word);
 }
 
 /* Testing get_at_index for valid input */

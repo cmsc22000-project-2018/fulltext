@@ -97,8 +97,8 @@ void remove_at(int index, list_t* matches)
 match* get_at_index(int index, list_t* matches)
 {
     if (list_size(matches) == 0) return NULL;
-    match* next = list_get_at(matches, index);
-    return next;
+    match* cur = list_get_at(matches, index);
+    return cur;
 }
 
 //changed inputs
