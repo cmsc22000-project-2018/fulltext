@@ -50,6 +50,10 @@ int ftsh_exit(char **args);
 int ftsh_load(char **args);
 
 
+int ftsh_next(char **args);
+
+int ftsh_prev(char **args);
+
 /**
     @brief Number of built-in functions.
     @return Returns number of functions.

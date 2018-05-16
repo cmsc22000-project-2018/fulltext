@@ -1,5 +1,5 @@
-#ifndef _FULLTEXT_FTSH_FUNCTIONS_H
-#define _FULLTEXT_FTSH_FUNCTIONS_H
+#ifndef _FULLTEXT_SEARCH_H 
+#define _FULLTEXT_SEARCH_H 
 
 /***************************************************************************//**
 
@@ -22,11 +22,11 @@
 /**
     @brief Stub function for searching a parsed file for words
     @param word_set Set of words to search for
+    @param SET_SIZE Number of words to search for
     @param pf Parsed text file to search through
     @return (Stub: void) a linked list of matches
  */
-void search(char** word_set, stringArray* pf);
-
+void search(char** word_set, int SET_SIZE stringArray* pf);
 
 
 #endif
