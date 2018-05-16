@@ -1,8 +1,8 @@
-Program Description
+# Program Description
 
 Goal: Implement a full-text search tool for text files with interactive user navigation of the file.
 
-Operation Modes:
+# Operation Modes:
 
 Interactive Mode: User must be able to open a text file, specify word(s) to be searched, and interactively navigate the file by skipping from matched word to next/previous matched word.
 
@@ -12,53 +12,46 @@ We will be implementing the full-text search feature using a prefix trie by impl
 
 For an in-depth explanation of Aho-Corasick, visit https://www.geeksforgeeks.org/aho-corasick-algorithm-pattern-searching/. For more information on regex, visit https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference.
 
-Implementation
+# Implementation
 
-Classes Match File Trie IO Search
+## Classes: Match, FTSH, Trie, Search
 
-Match Purpose: A class for operations related to matches.
+### Match
+
+Purpose: A class for operations related to matches.
 
 match struct:
 
-char* word int line match* next match* prev
+- char* word 
+- int line
+- match* next
+- match* prev
 
-Operations for match:
+Operations:
 
-match* new_match(char* word, int line) void init_match(match* match, char* word, int line) void free_match(match* match) char* get_word(match* match) int get_line(match* match)
+match* new_match(char* word, int line)
+void init_match(match* match, char* word, int line)
+void free_match(match* match)
+char* get_word(match* match)
+int get_line(match* match)
 
 Linked list operations on match:
 
-match* next_match(match* match) match* prev_match(match* match) void insert_at(match* match, match* new, int index) void append(match* match, match* new) void remove_at(match* match, int index) match* get_at_index(match* match, int index) int get_index(match* match)
+- match* next_match(match* match)
+- match* prev_match(match* match)
+- void insert_at(match* match, match* new, int index)
+- void append(match* match, match* new)
+- void remove_at(match* match, int index)
+- match* get_at_index(match* match, int index)
+- int get_index(match* match)
 
 Notes:
 
 Last match should point to first match as next match to include wrap-around functionality (and first match should point to last match as previous match).
 
-File
 
-file struct:
 
-char *name char *content
-
-Operations for file:
-
-void open_file() file* parse_file()
-
-Purpose: A class for operations related to the text file.
-
-Database for the lines Read file Process the text file into seperate lines
-
-Trie
-
-trie struct
-
-char current // The first node_t will be '/0' trie_t *children[ALPHABET_SIZE] int EOW; // if EOW is 1, reached end of a word ALPHABET_SIZE= 256;
-
-Purpose: A class for the trie data structure and trie related operations. Implemented from Trie team.
-
-Trie struct Trie operations
-
-Input/Output
+### Input/Output
 
 input struct:
 
@@ -74,7 +67,10 @@ list of options -b // batch mode -i // interactive mode (ie. fulltext -b [list o
 
 commands fulltext // starts the program n // jumps to next matched word in interactive mode p // jumps to previous matched word in interactive mode Purpose: A class for interactive user input and output to stdout or another file.
 
-Search Purpose: The core class for full-text program.
+### Search
+
+Purpose: The core class for full-text program.
+
 
 Below is documentation for a mock trie implementation,
 used to develop the fulltext program (will be deleted once 
