@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
-#include <gmodule.h>
+#include "simclist.c"
+#include "simclist.h"
 #include "match.h"
 
 /* See match.h for descriptions of functions */
@@ -58,71 +57,65 @@ int get_line(match* match)
 }
 
 //changed inputs
-match* next_match(match* match, GList* matches)
+match* next_match(match* match, list_t* matches)
 {
     if (match == NULL) return NULL;
-    GList* cur = g_list_find(matches, match);
-    if (cur->next == NULL) return (g_list_first(matches))->data;
-    return (cur->next)->data;
+    int rc = list_locate(matches, match);
+    if (rc < 0) return NULL;
+    int size = list_size(matches);
+    return list_get_at(matches, (rc + 1) % size);
 }
 
 //changed inputs
-match* prev_match(match* match, GList* matches)
+match* prev_match(match* match, list_t* matches)
 {
     if (match == NULL) return NULL;
-    GList* cur = g_list_find(matches, match);
-    if (cur->prev == NULL) return (g_list_last(matches))->data;
-    return (cur->prev)->data;
+    int rc = list_locate(matches, match);
+    if (rc < 0) return NULL;
+    int size = list_size(matches);
+    return list_get_at(matches, ((rc - 1) + size) % size);
 }
 //changed inputs, return type
-GList* insert_at(match* newMatch, int index, GList* matches)
+void insert_at(match* newMatch, int index, list_t* matches)
 {
-    matches = g_list_insert(matches, newMatch, index);
-    return matches;
-}
-
-//changed inputs, return type
-GList* append_(match* newMatch, GList* matches)
-{
-    matches = g_list_append(matches, newMatch);
-    return matches;
+    list_insert_at(matches, newMatch, index);
 }
 
 //changed inputs, return type
-GList* remove_at(int index, GList* matches)
+void append_(match* newMatch, list_t* matches)
 {
-    //get element at position
-    GList *toDelete = g_list_nth(matches, index);
-    
-    //remove position at element
-    matches = g_list_delete_link(matches, toDelete);
-    return matches;
+    list_append(matches, newMatch);
+}
+
+//changed inputs, return type
+void remove_at(int index, list_t* matches)
+{
+    list_delete_at(matches, index);  
 }
 
 //changed inputs
-match* get_at_index(int index, GList* matches)
+match* get_at_index(int index, list_t* matches)
 {
-    if (g_list_length(matches) == 0) return NULL;
-    GList *toReturn = g_list_nth(matches, index);
-    if (toReturn == NULL) return NULL;
-    return toReturn -> data;
+    if (list_size(matches) == 0) return NULL;
+    match* next = list_get_at(matches, index);
+    return next;
 }
 
 //changed inputs
-int get_index(match* match, GList* matches)
+int get_index(match* match, list_t* matches)
 {
-    int position = g_list_index(matches, match);
+    int position = list_locate(matches, match);
     return position;
 }
 
 //just for testing
-void pretty_print(GList* l)
+void pretty_print(list_t* l)
 {
-    GList *list = l;
-    while (list != NULL){
-        GList *next = list->next;
-        printf("list data: %s\n", (char*)list->data);
-        list = next;
+    printf("\n");
+    list_iterator_start(l);               /* starting an iteration "session" */
+    while (list_iterator_hasnext(l)) { /* tell whether more values available */
+        printf("%d\n", *(int *)list_iterator_next(l)); /* get the next value */
     }
+    list_iterator_stop(l);                 /* ending the iteration "session" */
     printf("\n");
 }

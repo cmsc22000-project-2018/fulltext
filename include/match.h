@@ -50,57 +50,54 @@ int get_line(match* match);
   @brief Goes to next item in linked list 
   @param match: pointer to match
   @param matches: doubly linked list (dll) of matches
-  @return pointer to next match
+  @return pointer to next match, or NULL if not found
 */
-match* next_match(match* match, GList* matches);
+match* next_match(match* match, list_t* matches);
 
 /** 
  @brief Goes to previous item in linked list 
  @param match* match: pointer to match
  @param matches: dll of matches
- @return pointer to previous match
+ @return pointer to previous match, or NULL if not found
 */
-match* prev_match(match* match, GList* matches);
+match* prev_match(match* match, list_t* matches);
 
 /** 
   @brief Inserts at specific index in match struct 
   @param newMatch: pointer to new match struct
   @param index: index to insert the match into dll
   @param matches: dll of matches
-  @return pointer of GList representing list of all matches
  */
-GList* insert_at(match* newMatch, int index, GList* matches);
+void insert_at(match* newMatch, int index, list_t* matches);
 
 /** 
   @brief Inserts at end of match struct 
   @param newMatch: pointer to new match struct
   @param matches: dll of matches
-  @return pointer of GList representing list of all matches
 */
-GList* append_(match* newMatch, GList* matches);
+void append_(match* newMatch, list_t* matches);
 
 /** 
   @brief Removes at specific index in match struct 
   @param index: index of match to remove
   @param matches: dll of matches
-  @return pointer of GList representing list of all matches
 */
-GList* remove_at(int index, GList* matches);
+void remove_at(int index, list_t* matches);
 
 /** 
   @brief Returns the match at the given index 
   @param index: index of desired match
   @param matches: dll of matches
-  @return pointer of match at the index
+  @return pointer of match at the index, or NULL if not found
 */
-match* get_at_index(int index, GList* matches);
+match* get_at_index(int index, list_t* matches);
 
 /** 
   @brief Gets the index of current match 
   @param match: match struct at unknown index
   @param matches: dll of matches
-  @return int index of match
+  @return int index of match, or negative if not found
 */
-int get_index(match* match, GList* matches);
+int get_index(match* match, list_t* matches);
 
 #endif /* _FULLTEXT_MATCH_H_ */
