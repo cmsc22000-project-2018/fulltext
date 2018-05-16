@@ -78,6 +78,14 @@ match* prev_match(match* match, list_t* matches)
 //changed inputs, return type
 void insert_at(match* newMatch, int index, list_t* matches)
 {
+    if (index > list_size(matches) - 1) 
+    {
+        list_append(matches, newMatch);
+    }
+    if (index < 0)
+    {
+        list_prepend(matches, newMatch);
+    }
     list_insert_at(matches, newMatch, index);
 }
 
