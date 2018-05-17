@@ -1,5 +1,5 @@
-#ifndef INCLUDE_INPUT_H_
-#define INCLUDE_INPUT_H_
+#ifndef _FULLTEXT_INPUT_H
+#define _FULLTEXT_INPUT_H
 
 /* Input struct */
 typedef struct {
