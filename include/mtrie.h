@@ -8,8 +8,8 @@
 // under the assumption that we need to support
 // partial searches
 
-#ifndef INCLUDE_FULLTEXT_TRIE_H_
-#define INCLUDE_FULLTEXT_TRIE_H_
+#ifndef _FULLTEXT_TRIE_H_
+#define _FULLTEXT_TRIE_H_
  
 // Alphabet size (# of symbols)
 #define ALPHABET_SIZE (26)
