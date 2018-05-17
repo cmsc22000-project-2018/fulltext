@@ -1,0 +1,1 @@
+This is a test file to load into the ftsh shell using ftsh_load().
