@@ -1,5 +1,5 @@
-#ifndef INCLUDE_FULLTEXT_PARSER_H_
-#define INCLUDE_FULLTEXT_PARSER_H_
+#ifndef _FULLTEXT_PARSER_H_
+#define _FULLTEXT_PARSER_H_
 
 // next_token, read_string, init_parser borrowed
 // from CS152 Win 18, project blockchain
