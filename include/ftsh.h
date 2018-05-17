@@ -1,5 +1,5 @@
-#ifndef _FULLTEXT_FTSH_H
-#define _FULLTEXT_FTSH_H
+#ifndef _FULLTEXT_FTSH_H_
+#define _FULLTEXT_FTSH_H_
 
 /***************************************************************************//**
 
