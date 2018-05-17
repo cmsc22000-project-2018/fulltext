@@ -128,10 +128,10 @@ list_t return_matches(trie_t *trie, char *key)
     list_init(&result);
     // a->an->at->and
     if (strcmp(key, "a") == 0) {
-        match *m_a = new_match("a", 1);
-        match *m_an = new_match("an", 2);
-        match *m_at = new_match("at", 2);
-        match *m_and = new_match("and", 3);
+        match *m_a = new_match("a", 1, 1);
+        match *m_an = new_match("an", 2, 1);
+        match *m_at = new_match("at", 2, 1);
+        match *m_and = new_match("and", 3, 1);
         
         append_(m_a, &result);
         append_(m_an, &result);
@@ -141,28 +141,28 @@ list_t return_matches(trie_t *trie, char *key)
     }
     // an->and
     if (strcmp(key, "an") == 0) {
-        match *m_an = new_match("an", 2);
-        match *m_and = new_match("and", 3);
+        match *m_an = new_match("an", 2, 1);
+        match *m_and = new_match("and", 3, 1);
         
         append_(m_an, &result);
         append_(m_and, &result);
     }
     if (strcmp(key, "and") == 0) {
-        match *m_and = new_match("and", 3);
+        match *m_and = new_match("and", 3, 1);
         append_(m_and, &result);
     } 
     if (strcmp(key, "at") == 0) {
-        match *m_at = new_match("at", 2);
+        match *m_at = new_match("at", 2, 1);
         append_(m_at, &result);
     }
     if (strcmp(key, "b") == 0) {
-        match *m_b = new_match("b", 1);
-        match *m_be = new_match("be", 2);
+        match *m_b = new_match("b", 1, 1);
+        match *m_be = new_match("be", 2, 1);
         append_(m_b, &result);
         append_(m_be, &result);
     }
     if (strcmp(key, "be") == 0) {
-        match *m_be = new_match("be", 2);
+        match *m_be = new_match("be", 2, 1);
         append_(m_be, &result);
     }
 

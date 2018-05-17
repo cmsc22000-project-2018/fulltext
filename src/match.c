@@ -6,7 +6,7 @@
 
 /* See match.h for descriptions of functions */
 
-match* new_match(char* word, int line)
+match* new_match(char* word, int line, int position)
 {
     match* m = malloc(sizeof(match));
     int rc;
@@ -17,22 +17,23 @@ match* new_match(char* word, int line)
         return NULL;
     }
     
-    rc = init_match(m, word, line);
+    rc = init_match(m, word, line, position);
     if (rc != 0) 
     {
-        printf("Could not init match word %s on line %d\n", word, line);
+        printf("Could not init match word %s on line %d position %d\n", word, line, position);
         return NULL;
     }
 
     return m;
 }
 
-int init_match(match* match, char* word, int line)
+int init_match(match* match, char* word, int line, int position)
 {
     if(match == NULL) return -1;
 
     match->word = word;
     match->line = line;
+    match->position = position;
     
     return 0;
 }
@@ -54,6 +55,12 @@ int get_line(match* match)
 {
     if(match == NULL) return -1;
     return match->line;
+}
+
+int get_position(match* match)
+{
+    if(match == NULL) return -1;
+    return match->position;
 }
 
 //changed inputs

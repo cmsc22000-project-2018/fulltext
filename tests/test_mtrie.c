@@ -237,12 +237,12 @@ Test(trie, return_matches_integrated_w_match)
     list_init(&matches_b_be);
     list_init(&matches_be);
     
-    match *m_a = new_match("a", 1);
-    match *m_an = new_match("an", 2);
-    match *m_at = new_match("at", 2);
-    match *m_and = new_match("and", 3);
-    match *m_b = new_match("b", 1);
-    match *m_be = new_match("be", 2);
+    match *m_a = new_match("a", 1, 1);
+    match *m_an = new_match("an", 2, 1);
+    match *m_at = new_match("at", 2, 1);
+    match *m_and = new_match("and", 3, 1);
+    match *m_b = new_match("b", 1, 1);
+    match *m_be = new_match("be", 2, 1);
      
     append_(m_a, &matches_a_an_at_and);
     append_(m_an, &matches_a_an_at_and);

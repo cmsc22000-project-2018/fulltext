@@ -5,24 +5,27 @@
 typedef struct {
     char* word;
     int line;
+    int position;
 } match;
 
 /**
   @brief Creates new match.
   @param word: the match string. 
   @param line: the line the match is on
+  @param position: the position of the match
   @return a pointer to the match.
 */
-match* new_match(char* word, int line);
+match* new_match(char* word, int line, int position);
 
 /** 
   @brief Initializes the match.
   @param match: pointer to match. 
   @param word: the match string. 
   @param line: the line the match is on
+  @param position: the position of the match
   @return 0 for success
 */
-int init_match(match* match, char* word, int line);
+int init_match(match* match, char* word, int line, int position);
 
 /** 
   @brief Frees match 
@@ -45,6 +48,13 @@ char* get_word(match* match);
   @return int representing line number
 */
 int get_line(match* match);
+
+/** 
+  @brief Returns the position number of match struct 
+  @param match: pointer to match
+  @return int representing position
+*/
+int get_position(match* match);
 
 /** 
   @brief Goes to next item in linked list 
