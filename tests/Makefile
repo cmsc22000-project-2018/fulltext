@@ -8,7 +8,7 @@ RM = rm -f
 BIN = test-fulltext
 LDLIBS = -lcriterion -ltrie -lmatch -lglib-2.0
 
-SRCS = main.c match_test.c test_trie.c
+SRCS = main.c test_match.c test_trie.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all
