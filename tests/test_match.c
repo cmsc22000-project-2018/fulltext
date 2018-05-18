@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <math.h>
-#include <gmodule.h>
+#include "simclist.h"
 #include "match.h"
 
 /* Testing match new function */
@@ -11,12 +10,13 @@ Test (match, new)
 {
     match* m;
     
-    m = new_match("one", 1);
+    m = new_match("one", 1, 1);
     
     cr_assert_not_null(m, "new_match() failed");
     
     cr_assert_eq(m->word, "one", "new_match() word incorrect");
     cr_assert_eq(m->line, 1, "new_match() line incorrect");
+    cr_assert_eq(m->position, 1, "new_match() position incorrect");
 }
 
 /* Testing match init function*/
@@ -25,12 +25,13 @@ Test (match, init)
     match m;
     int rc;
     
-    rc = init_match(&m, "one", 1);
+    rc = init_match(&m, "one", 1, 1);
     
     cr_assert_eq(rc, 0, "init_match failed");
 
     cr_assert_eq(m.word, "one", "init_match didn't set word");
     cr_assert_eq(m.line, 1, "init_match didn't set line");
+    cr_assert_eq(m.position, 1, "init_match didn't set position");
 }
 
 /* Testing free_match() function */
@@ -39,7 +40,7 @@ Test(match, free)
     match* m;
     int rc;
 
-    m = new_match("one", 1);
+    m = new_match("one", 1, 1);
 
     cr_assert_not_null(m, "new_match() failed");
 
@@ -49,11 +50,11 @@ Test(match, free)
 }
 
 /* Testing get_word() function */
-void test_get_word(char* word, int line, char* exp)
+void test_get_word(char* word, int line, int position, char* exp)
 {
     match m;
     
-    init_match(&m, word, line);
+    init_match(&m, word, line, position);
     
     char* the_word = get_word(&m);
     
@@ -62,17 +63,17 @@ void test_get_word(char* word, int line, char* exp)
 
 Test(match, get_word)
 {
-    test_get_word("seven", 1, "seven");
-    test_get_word("9", 1, "9");
-    test_get_word(",", 1, ",");
+    test_get_word("seven", 1, 1, "seven");
+    test_get_word("9", 1, 1, "9");
+    test_get_word(",", 1, 1, ",");
 }
 
 /* Testing get_line() function */
-void test_get_line(char* word, int line, int exp)
+void test_get_line(char* word, int line, int position, int exp)
 {
     match m;
     
-    init_match(&m, word, line);
+    init_match(&m, word, line, position);
     
     int the_line = get_line(&m);
     
@@ -81,28 +82,48 @@ void test_get_line(char* word, int line, int exp)
 
 Test(match, get_line)
 {
-    test_get_line("seven", 1, 1);
-    test_get_line("9", 73, 73);
-    test_get_line(",", -1, -1);
+    test_get_line("seven", 1, 1, 1);
+    test_get_line("9", 73, 1, 73);
+    test_get_line(",", -1, 1, -1);
+}
+
+/* Testing get_position() function */
+void test_get_position(char* word, int line, int position, int exp)
+{
+    match m;
+    
+    init_match(&m, word, line, position);
+    
+    int the_position = get_position(&m);
+    
+    cr_assert_eq(the_position, position, "Expected %d but got %d", exp, the_position);
+}
+
+Test(match, get_position)
+{
+    test_get_position("seven", 1, 1, 1);
+    test_get_position("9", 73, 73, 73);
+    test_get_position(",", -1, -1, -1);
 }
 
 /* Testing next_match() in a regular case */
 Test(match, next_match_regular)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
     //using lib functions to test instead of ones written in match.c
-    matches = g_list_append(matches, a);
-    matches = g_list_append(matches, b);
-    matches = g_list_append(matches, c);
+    list_append(&matches, a);
+    list_append(&matches, b);
+    list_append(&matches, c);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* nextMatch = next_match(a, matches);
+    match* nextMatch = next_match(a, &matches);
     
     cr_assert_eq(nextMatch, b, "Expected %s but got %s", b->word, nextMatch->word);
 }
@@ -110,20 +131,21 @@ Test(match, next_match_regular)
 /* Testing next_match for wraparound*/
 Test(match, next_match_wraparound)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
     //using lib functions to test instead of ones written in match.c
-    matches = g_list_append(matches, a);
-    matches = g_list_append(matches, b);
-    matches = g_list_append(matches, c);
+    list_append(&matches, a);
+    list_append(&matches, b);
+    list_append(&matches, c);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* nextMatch = next_match(c, matches);
+    match* nextMatch = next_match(c, &matches);
     
     cr_assert_eq(nextMatch, a, "Expected %s but got %s", a->word, nextMatch->word);
 }
@@ -131,20 +153,21 @@ Test(match, next_match_wraparound)
 /* Testing prev_match() in a regular case */
 Test(match, prev_match_regular)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
     //using lib functions to test instead of ones written in match.c
-    matches = g_list_append(matches, a);
-    matches = g_list_append(matches, b);
-    matches = g_list_append(matches, c);
+    list_append(&matches, a);
+    list_append(&matches, b);
+    list_append(&matches, c);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* prevMatch = prev_match(c, matches);
+    match* prevMatch = prev_match(c, &matches);
     
     cr_assert_eq(prevMatch, b, "Expected %s but got %s", b->word, prevMatch->word);
 }
@@ -152,20 +175,21 @@ Test(match, prev_match_regular)
 /* Testing prev_match for wraparound*/
 Test(match, prev_match_wraparound)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
     //using lib functions to test instead of ones written in match.c
-    matches = g_list_append(matches, a);
-    matches = g_list_append(matches, b);
-    matches = g_list_append(matches, c);
+    list_append(&matches, a);
+    list_append(&matches, b);
+    list_append(&matches, c);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* prevMatch = prev_match(a, matches);
+    match* prevMatch = prev_match(a, &matches);
     
     cr_assert_eq(prevMatch, c, "Expected %s but got %s", c->word, prevMatch->word);
 }
@@ -173,178 +197,172 @@ Test(match, prev_match_wraparound)
 /* Testing insert_at() for normal input*/
 Test(match, insert_at_regular)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
     //using lib functions to test instead of ones written in match.c
-    matches = g_list_append(matches, a);
-    matches = g_list_append(matches, b);
-    matches = g_list_append(matches, c);
+    list_append(&matches, a);
+    list_append(&matches, b);
+    list_append(&matches, c);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* toInsert = new_match("d", 1);
+    match* toInsert = new_match("d", 1, 1);
     
-    matches = insert_at(toInsert, 2, matches);
+    insert_at(toInsert, 2, &matches);
     
-    GList* retrieved = g_list_nth(matches, 2);
-    match* fromRet = retrieved->data;
-    
-    cr_assert_eq(fromRet, toInsert, "Expected %s but got %s", toInsert->word, fromRet->word);
+    match* cur = list_get_at(&matches, 2);
+    cr_assert_eq(cur, toInsert, "Expected %s but got %s", toInsert->word, cur->word);
 }
 
 /* Testing insert_at() for negative input*/
 Test(match, insert_at_negative)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
     //using lib functions to test instead of ones written in match.c
-    matches = g_list_append(matches, a);
-    matches = g_list_append(matches, b);
-    matches = g_list_append(matches, c);
+    list_append(&matches, a);
+    list_append(&matches, b);
+    list_append(&matches, c);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* toInsert = new_match("d", 1);
+    match* toInsert = new_match("d", 1, 1);
     
-    matches = insert_at(toInsert, -1, matches);
+    insert_at(toInsert, -1, &matches);
     
-    GList* retrieved = g_list_nth(matches, 3);
-    match* fromRet = retrieved->data;
-    
-    cr_assert_eq(fromRet, toInsert, "Expected %s but got %s", toInsert->word, fromRet->word);
+    match* cur = list_get_at(&matches, 0);
+    cr_assert_eq(cur, toInsert, "Expected %s but got %s", toInsert->word, cur->word);
 }
 
 /* Testing insert_at() for too large input*/
 Test(match, insert_at_large)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
     //using lib functions to test instead of ones written in match.c
-    matches = g_list_append(matches, a);
-    matches = g_list_append(matches, b);
-    matches = g_list_append(matches, c);
+    list_append(&matches, a);
+    list_append(&matches, b);
+    list_append(&matches, c);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* toInsert = new_match("d", 1);
+    match* toInsert = new_match("d", 1, 1);
     
-    matches = insert_at(toInsert, 5, matches);
+    insert_at(toInsert, 5, &matches);
     
-    GList* retrieved = g_list_nth(matches, 3);
-    match* fromRet = retrieved->data;
-    
-    cr_assert_eq(fromRet, toInsert, "Expected %s but got %s", toInsert->word, fromRet->word);
+    match* cur = list_get_at(&matches, 3);
+    cr_assert_eq(cur, toInsert, "Expected %s but got %s", toInsert->word, cur->word);
 }
 
 /* Testing append_() function */
 Test(match, append)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
-    matches = append_(a, matches);
-    matches = append_(b, matches);
-    matches = append_(c, matches);
+    append_(a, &matches);
+    append_(b, &matches);
+    append_(c, &matches);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    GList* aRet = g_list_nth(matches, 0);
-    match* aFromRet = aRet->data;
-    cr_assert_eq(aFromRet, a, "Expected %s but got %s", a->word, aFromRet->word);
+    match* aRet = list_get_at(&matches, 0);
+    cr_assert_eq(aRet, a, "Expected %s but got %s", a->word, aRet->word);
     
-    GList* bRet = g_list_nth(matches, 1);
-    match* bFromRet = bRet->data;
-    cr_assert_eq(bFromRet, b, "Expected %s but got %s", b->word, bFromRet->word);
+    match* bRet = list_get_at(&matches, 1);
+    cr_assert_eq(bRet, b, "Expected %s but got %s", b->word, bRet->word);
     
-    GList* cRet = g_list_nth(matches, 2);
-    match* cFromRet = cRet->data;
-    cr_assert_eq(cFromRet, c, "Expected %s but got %s", c->word, cFromRet->word);
+    match* cRet = list_get_at(&matches, 2);
+    cr_assert_eq(cRet, c, "Expected %s but got %s", c->word, cRet->word);
 }
 
 /* Testing remove_at for valid input */
 Test(match, remove_at_valid)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
-    matches = append_(a, matches);
-    matches = append_(b, matches);
-    matches = append_(c, matches);
+    append_(a, &matches);
+    append_(b, &matches);
+    append_(c, &matches);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    matches = remove_at(0, matches);
+    remove_at(0, &matches);
     
-    GList* firstItem = g_list_first(matches);
-    match* first = firstItem->data;
-    
+    match* first = list_get_at(&matches, 0);
     cr_assert_eq(first, b, "Expected first to be %s but got %s", b->word, first->word);
+    
 }
 
 /* Testing remove_at for invalid input */
 Test(match, remove_at_invalid)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
-    matches = append_(a, matches);
-    matches = append_(b, matches);
-    matches = append_(c, matches);
+    append_(a, &matches);
+    append_(b, &matches);
+    append_(c, &matches);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    matches = remove_at(3, matches);
+    remove_at(3, &matches);
     
-    GList* aRet = g_list_nth(matches, 0);
-    match* aFromRet = aRet->data;
-    cr_assert_eq(aFromRet, a, "Expected %s but got %s", a->word, aFromRet->word);
+    match* aRet = list_get_at(&matches, 0);
+    cr_assert_eq(aRet, a, "Expected %s but got %s", a->word, aRet->word);
     
-    GList* bRet = g_list_nth(matches, 1);
-    match* bFromRet = bRet->data;
-    cr_assert_eq(bFromRet, b, "Expected %s but got %s", b->word, bFromRet->word);
+    match* bRet = list_get_at(&matches, 1);
+    cr_assert_eq(bRet, b, "Expected %s but got %s", b->word, bRet->word);
     
-    GList* cRet = g_list_nth(matches, 2);
-    match* cFromRet = cRet->data;
-    cr_assert_eq(cFromRet, c, "Expected %s but got %s", c->word, cFromRet->word);
+    match* cRet = list_get_at(&matches, 2);
+    cr_assert_eq(cRet, c, "Expected %s but got %s", c->word, cRet->word);
 }
 
 /* Testing get_at_index for valid input */
 Test(match, get_at_index_valid)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
-    matches = append_(a, matches);
-    matches = append_(b, matches);
-    matches = append_(c, matches);
+    append_(a, &matches);
+    append_(b, &matches);
+    append_(c, &matches);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* getA = get_at_index(0, matches);
+    match* getA = get_at_index(0, &matches);
     
     cr_assert_eq(getA, a, "Expected %s but got %s", a->word, getA->word);
 }
@@ -352,19 +370,20 @@ Test(match, get_at_index_valid)
 /* Testing get_at_index for invalid input */
 Test(match, get_at_index_invalid)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
-    matches = append_(a, matches);
-    matches = append_(b, matches);
-    matches = append_(c, matches);
+    append_(a, &matches);
+    append_(b, &matches);
+    append_(c, &matches);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    match* getN = get_at_index(3, matches);
+    match* getN = get_at_index(3, &matches);
     
     cr_assert_null(getN, "Expected null but got %s", getN->word);
 }
@@ -372,19 +391,20 @@ Test(match, get_at_index_invalid)
 /* Testing get_index for valid input */
 Test(match, get_index_valid)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
     
-    matches = append_(a, matches);
-    matches = append_(b, matches);
-    matches = append_(c, matches);
+    append_(a, &matches);
+    append_(b, &matches);
+    append_(c, &matches);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    int index = get_index(a, matches);
+    int index = get_index(a, &matches);
     
     cr_assert_eq(index, 0, "Expected 0 but got %d", index);
 }
@@ -392,20 +412,21 @@ Test(match, get_index_valid)
 /* Testing get_index for invalid inputs */
 Test(match, get_index_invalid)
 {
-    GList* matches = NULL;
+    list_t matches;
+    list_init(&matches);
     
-    match* a = new_match("a", 1);
-    match* b = new_match("b", 1);
-    match* c = new_match("c", 1);
-    match* d = new_match("d", 1);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+    match* c = new_match("c", 1, 1);
+    match* d = new_match("d", 1, 1);
     
-    matches = append_(a, matches);
-    matches = append_(b, matches);
-    matches = append_(c, matches);
+    list_append(&matches, a);
+    list_append(&matches, b);
+    list_append(&matches, c);
     
-    cr_assert_not_null(matches, "matches is null");
+    cr_assert_not_null(&matches, "matches is null");
     
-    int index = get_index(d, matches);
+    int index = get_index(d, &matches);
     
     cr_assert_eq(index, -1, "Expected -1 but got %d", index);
 }

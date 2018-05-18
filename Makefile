@@ -3,10 +3,10 @@ CC = gcc
 SRCS = src/ftsh.c src/ftsh_functions.c
 OBJS = $(SRCS:.c=.o)
 FTSH_BIN = ftsh
-LDLIBS = -lreadline `pkg-config --libs glib-2.0`
+LDLIBS = -lreadline
 RM = rm -rf
 LIB = libmtrie.so
-CFLAGS = -g -O2 -Wall -std=c99 -I ./include/ -I ./src/ -fPIC `pkg-config --cflags --libs glib-2.0`
+CFLAGS = -g -O2 -Wall -std=c99 -I ./include/ -I ./src/ -fPIC 
 MT_SRCS = src/mtrie.c
 MT_OBJS = src/mtrie.o
 
@@ -27,7 +27,7 @@ $(MT_OBJS): $(MT_SRCS)
  
 .PHONY: match
 match:
-	$(CC) $(MATCH_SRCS) $(CFLAGS) -c -o $(MATCH_BINS) $(LDLIBS)
+	$(CC) $(CFLAGS) $(MATCH_SRCS) -c -o $(MATCH_BINS) 
 
 .PHONY: $(MATCH_LIB)
 $(MATCH_LIB): match
