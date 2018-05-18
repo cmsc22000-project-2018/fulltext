@@ -25,7 +25,8 @@ int ftsh_help(char **args)
     printf("Type program names and arguments, and hit enter.\n");
     printf("The following are built in:\n");
 
-    for (int i = 0; i < ftsh_num_builtins(); i++) {
+    int i = 0;
+    for (i = 0; i < ftsh_num_builtins(); i++) {
         printf("  %s\n", builtin_str[i]);
     }
 
