@@ -88,8 +88,10 @@ int insert_string(char *word, trie_t *t)
 int stringarray_to_trie(stringArray* strarr, trie_t* t)
 {
   int len = strarr->len;
-  for (int i=0; i < len; i++) {
-    int j = insert_string(strarr->array[i], t);
+  int i = 0;
+  int j = 0;
+  for (i=0; i < len; i++) {
+    j = insert_string(strarr->array[i], t);
     if (j == 1) return 1;
   }
   return 0;
