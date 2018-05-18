@@ -6,9 +6,9 @@ CFLAGS = -fPIC -Wall -Wextra -O2 -g -I../include/ `pkg-config --cflags --libs gl
 LDFLAGS = -L../ -Wl,-rpath,../ `pkg-config --libs glib-2.0`
 RM = rm -f
 BIN = test-fulltext
-LDLIBS = -lcriterion -lmtrie -lmatch -lglib-2.0
+LDLIBS = -lcriterion -ltrie -lmatch -lglib-2.0
 
-SRCS = main.c test_mtrie.c match_test.c
+SRCS = main.c match_test.c test_trie.c
 OBJS = $(SRCS:.c=.o)
 
 .PHONY: all

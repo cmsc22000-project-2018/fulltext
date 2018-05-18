@@ -5,11 +5,11 @@ OBJS = $(SRCS:.c=.o)
 BINS = ftsh
 LDLIBS = -lreadline `pkg-config --libs glib-2.0`
 RM = rm -rf
-LIB = libmtrie.so
+LIB = libtrie.so
 CFLAGS = -g -O2 -Wall -Wextra -I ./include/ -I ./src/ -fPIC `pkg-config --cflags --libs glib-2.0`
 
-MT_SRCS = src/mtrie.c
-MT_OBJS = src/mtrie.o
+MT_SRCS = src/trie.c
+MT_OBJS = src/trie.o
 
 MATCH_SRCS = src/match.c
 MATCH_OBJS = $(MATCH_SRCS:.c=.o)
