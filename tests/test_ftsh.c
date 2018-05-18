@@ -11,3 +11,9 @@
 *******************************************************************************/
 
 #include <criterion/criterion.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "ftsh.h"
+
+Test(ftsh, input)
+{

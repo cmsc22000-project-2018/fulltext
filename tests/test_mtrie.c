@@ -1,8 +1,14 @@
+// Unit tests for Mock Trie
+// Updated May 13, return_matches integrated with GList
+
 #include <criterion/criterion.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+#include <assert.h>
+#include <gmodule.h>
 #include "mtrie.h"
-// #include "match.h"
+#include "match.h"
 
 void check_is_key_in_trie(trie_t *unused, char *key, bool expected)
 {
@@ -168,7 +174,7 @@ void check_return_matches_m(trie_t *trie, char *key, char *expected)
 		key, expected, result);
 }
 
-Test(trie, return_matches_m)
+Test(trie, return_matches_mock)
 {
 	trie_t root;
 	check_return_matches_m(&root, "a", "a, an, and, at");
@@ -178,4 +184,77 @@ Test(trie, return_matches_m)
 	check_return_matches_m(&root, "b", "b, be");
 	check_return_matches_m(&root, "be", "be");
 
+}
+
+void check_single_match(GList *matches, int index, char *expectedWord, int expectedLine)
+{
+	GList* aRet = g_list_nth(matches, index);
+	match* aFromRet = aRet->data;
+	cr_assert_str_eq(expectedWord, aFromRet->word,
+	 "Expected word %s but got %s", expectedWord, aFromRet->word);
+    cr_assert_eq(expectedLine, aFromRet->line,
+     "Expected line %d but got %d", expectedLine, aFromRet->line);
+}
+
+void check_return_matches_GList(trie_t *trie, char *key, GList *expected)
+{
+	GList *matches = return_matches(trie, key);
+	if (strcmp(key, "a") == 0) {
+		// a->an->at->and
+		check_single_match(matches, 0, "a", 1);
+		check_single_match(matches, 1, "an", 2);
+		check_single_match(matches, 2, "at", 2);
+		check_single_match(matches, 3, "and", 3);
+	}
+	if (strcmp(key, "an") == 0) {
+        check_single_match(matches, 0, "an", 2);
+		check_single_match(matches, 1, "and", 3);
+    }
+    if (strcmp(key, "and") == 0) {
+		check_single_match(matches, 0, "and", 3);
+    } 
+    if (strcmp(key, "at") == 0) {
+		check_single_match(matches, 0, "at", 2);
+    }
+    if (strcmp(key, "b") == 0) {
+		check_single_match(matches, 0, "b", 1);
+		check_single_match(matches, 1, "be", 2);
+    }
+    if (strcmp(key, "be") == 0) {
+		check_single_match(matches, 0, "be", 2);
+    }
+
+}
+
+Test(trie, return_matches_integrated_w_match)
+{
+	trie_t root;
+
+	GList* matches_a_an_at_and = NULL;
+	GList* matches_an_and = NULL;
+	GList* matches_and = NULL;
+	GList* matches_at = NULL;
+	GList* matches_b_be = NULL;
+	GList* matches_be = NULL;
+    
+    match *m_a = new_match("a", 1);
+    match *m_an = new_match("an", 2);
+    match *m_at = new_match("at", 2);
+    match *m_and = new_match("and", 3);
+    match *m_b = new_match("b", 1);
+    match *m_be = new_match("be", 2);
+    
+    matches_a_an_at_and = append_(m_and, append_(m_at, append_(m_an, append_(m_a, NULL))));
+    matches_an_and = append_(m_and, append_(m_an, NULL));
+	matches_and = append_(m_and, NULL);
+	matches_at = append_(m_at, NULL);
+	matches_b_be = append_(m_be, append_(m_b, NULL));
+	matches_be = append_(m_be, NULL);
+
+	check_return_matches_GList(&root, "a", matches_a_an_at_and);
+	check_return_matches_GList(&root, "an", matches_an_and);
+	check_return_matches_GList(&root, "and", matches_and);
+	check_return_matches_GList(&root, "at", matches_at);
+	check_return_matches_GList(&root, "b", matches_b_be);
+	check_return_matches_GList(&root, "be", matches_be);
 }

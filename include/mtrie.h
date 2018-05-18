@@ -3,9 +3,13 @@
 
 
 // minimal C implementation of a mock trie
+// Comment:
+// Some functions, ex. num_of_matches was written 
+// under the assumption that we need to support
+// partial searches
 
-#ifndef __TRIE_H__
-#define __TRIE_H__
+#ifndef _FULLTEXT_TRIE_H_
+#define _FULLTEXT_TRIE_H_
  
 // Alphabet size (# of symbols)
 #define ALPHABET_SIZE (26)
@@ -16,25 +20,55 @@ typedef struct trie_t
     struct trie_t *children[ALPHABET_SIZE];
 } trie_t;
 
-
-// Returns 1 if key presents in trie, else 0
+/**
+    @brief Checks if given word is in trie.
+    @param trie: the trie containing search terms.
+    @param key: the word to be searched for.
+    @return a boolean value, 1 if key in trie, else 0
+ */
 bool is_key_in_trie(trie_t *trie, char *key);
 
+/**
+    @brief Inserts the word into trie if it is not already in.
+    @param trie: the trie containing search terms.
+    @param key: the word to be inserted.
+    @return the trie after insertion.
+ */
 // If not present, inserts key into trie
 trie_t *trie_insert(trie_t *trie, char *key);
 
+/**
+    @brief Returns number of prefix matches
+    @param trie: the trie containing search terms.
+    @param key: the word to be checked against.
+    @return an integer of match number.
+ */
 // Returns number of prefix matches
 int num_matches(trie_t *trie, char *key);
 
-// Prints out content of trie
+/**
+    @brief Prints out content of trie.
+    @param trie of type trie_t.
+    @return None.
+ */
 void trie_show(trie_t *trie);
 
-// Mock integration with match_t, returns string of matches
+/**
+    @brief Mock integration with match class;
+    @returns string of matches.
+    @param trie 
+    @param of type trie_t, searchkey of type string.
+    @return matches in the form of a string
+ */
 char *return_matches_m(trie_t *trie, char *key);
 
-// Integration with match_t
-// Returns a list of matches if key in trie, else NULL
-// match *return_matches(trie_t *trie, char *key);
+/**
+    @brief Integration with match; 
+    @returns a GList of matches if key in trie; NULL if no matches
+    @param trie of type trie_t, search key of type string
+    @return <return val(s)>.
+ */
+GList *return_matches(trie_t *trie, char *key);
 
-#endif  /* __TRIE_H__  */
+#endif  /* INCLUDE_FULLTEXT_TRIE_H_  */
  
