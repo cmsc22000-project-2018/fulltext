@@ -37,7 +37,8 @@ int trie_free(trie_t *t)
 {
     assert( t != NULL);
 
-    for (int i=0; i<256; i++ ){
+    int i = 0;
+    for (i=0; i<256; i++ ){
         if (t->children[i] !=NULL)
             trie_free(t->children[i]);
     }
