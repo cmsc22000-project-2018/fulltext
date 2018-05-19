@@ -1,0 +1,4 @@
+Hello world!
+Welcome to full test, this is a program.
+Hope you like it
+
