@@ -9,7 +9,7 @@
 
 // see search.h
 list_t *minimal_read_until_next_match(list_t *match_list, char *search_word,
-	FILE *targetfile_fp)
+	FILE *fp)
 {	
 	char *line = NULL;
 	char *token, *saveptr;

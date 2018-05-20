@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[]) 
 {
-	FILE *fp = fopen("filetest.txt", "r");
+	FILE *fp = fopen("tests/filetest.txt", "r");
 	int line_num = 0;
 	int pos = 0;
 
