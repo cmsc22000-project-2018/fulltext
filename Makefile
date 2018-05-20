@@ -33,6 +33,9 @@ match:
 $(MATCH_LIB): match
 	$(CC) -shared -o $(MATCH_LIB) $(MATCH_OBJS)
 
+print:
+	$(CC) $(CFLAGS) src/print.c -o print -lmatch
+
 .PHONY: ftsh
 ftsh: $(SRCS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(FTSH_BIN) $(LDLIBS)
