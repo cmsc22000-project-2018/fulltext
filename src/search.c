@@ -50,6 +50,7 @@ list_t *minimal_read_until_next_match(list_t *match_list, char *search_word,
 
 int main()
 {
+<<<<<<< HEAD
 	char buf[6];
 	list_t *match_list = NULL;
     //list_init(match_list);
@@ -59,3 +60,16 @@ int main()
     	minimal_read_until_next_match(match_list, "fulltext", fp);
     }
 }
+=======
+	list_t match_list;
+    list_init(&match_list);
+    match* a = new_match("a", 1, 1);
+    match* b = new_match("b", 1, 1);
+
+    list_append(&match_list, a);
+    list_append(&match_list, b);
+
+    match* nextMatch = next_match(a, &match_list);
+    printf("%s\n", nextMatch->word);
+}
+>>>>>>> eb1b9b78a9bb6354113ecaf9ed1e71680dbc8ce0

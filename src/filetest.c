@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
-#include <unistd.h>
 
 // This is a simple mimic of the file flow
 // following ftsh_load(), read_until_next_match(), print_match()
@@ -73,5 +72,6 @@ int main(int argc, char *argv[])
 
 	return 0;	
 }
+
 
 
