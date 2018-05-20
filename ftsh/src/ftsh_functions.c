@@ -4,7 +4,11 @@
 
 	@author       Max Bronckers
 
+<<<<<<< HEAD
 	@date         Thursday,  1 May 2018
+=======
+	@date         Thursday, 1 May 2018
+>>>>>>> 209c5a7c9b97c43e1bd2deb901289f52aded7d2f
 
 	@brief        FTSH functions
 
@@ -33,12 +37,20 @@ int (*builtin_func[]) (char **) = {
  */
 int ftsh_help(char **args)
 {
+<<<<<<< HEAD
 	int i;
 	printf("full-text shell\n");
 	printf("Type program names and arguments, and hit enter.\n");
 	printf("The following are built in:\n");
 
 	for (i = 0; i < ftsh_num_builtins(); i++) {
+=======
+	printf("Full-Text Shell:\n");
+	printf("Type program names and arguments, and hit enter.\n");
+	printf("The following are built in:\n");
+
+	for (int i = 0; i < ftsh_num_builtins(); i++) {
+>>>>>>> 209c5a7c9b97c43e1bd2deb901289f52aded7d2f
 		printf("  %s\n", builtin_str[i]);
 	}
 
