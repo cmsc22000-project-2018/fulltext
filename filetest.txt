@@ -1,4 +1,4 @@
 Hello world!
-Welcome to full test, this is a program.
-Hope you like it
+Welcome to fulltext. The fulltext program finds everything you need.
+Hope you like it.
 
