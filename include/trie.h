@@ -103,5 +103,5 @@ Details: Returns 1 if word is found. Returns 0 if word is not found at all and -
 */
 int trie_search(char *word, trie_t *t);
 
-int stringarray_to_trie(stringArray* strarray, trie_t* t);
+int stringarray_to_trie(char **strarray, trie_t *t);
 #endif
