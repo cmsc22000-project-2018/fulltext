@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 /**
     @brief Builtin command: print help.
     @param args List of args.  Not examined.
@@ -36,23 +37,13 @@ int ftsh_exit(char **args, FILE *pf);
 
 
 /**
-    @brief Builtin command: load [filepath]
-    @param args List of args. [filepath]
-    @param pf Pointer to text file.
-    @return Always returns 1, to continue execution.
-    @credit: https://www.programmingsimplified.com/c-program-read-file
- */
-int ftsh_load(char **args, FILE *pf);
-
-
-/**
-    @brief Builtin command: next
-           Finds the next matched word in the loaded file.
+    @brief Builtin command: find 
+           Finds the matched words in the loaded file.
     @param args List of args.
     @param pf Pointer to text file.
     @return Always return 1, to continue execution.
   */
-int ftsh_next(char **args, FILE *pf);
+int ftsh_find(char **args, FILE *pf);
 
 
 /**

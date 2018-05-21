@@ -1,6 +1,6 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
-
+#include "search.h"
 
 /*
     List of builtin commands, followed by their corresponding functions.
@@ -8,20 +8,20 @@
 char *builtin_str[] = {
     "help",
     "exit",
-    "next"
+    "find"
 };
 
 
 int (*builtin_func[]) (char **, FILE *pf) = {
     &ftsh_help,
     &ftsh_exit,
-    &ftsh_next
+    &ftsh_find
 };
 
 
 int ftsh_help(char **args, FILE *pf)
 {
-    printf("Full-Text Shell:\n");
+    printf("...full-text search...\n");
     printf("Type program names and arguments, and hit enter.\n");
     printf("The following are built in:\n");
 
@@ -29,7 +29,6 @@ int ftsh_help(char **args, FILE *pf)
         printf("  %s\n", builtin_str[i]);
     }
 
-    printf("Use the man command for information on other programs.\n");
     return 1;
 }
 
@@ -40,9 +39,37 @@ int ftsh_exit(char **args, FILE *pf)
 }
 
 
-int ftsh_next(char **args, FILE *pf)
+int ftsh_find(char **args, FILE *pf)
 {
-   return 1;
+    int STATUS = 1;
+    char buf[100];
+    char *pinput;
+
+	int save_line_num = 0;
+	int ret = -1;
+
+    char *word = args[1]; // word to search for
+    
+    while (STATUS) {
+        printf("ftsh> ");
+        pinput = fgets(buf, 100, stdin);
+        
+        if (!pinput) {
+            return 1;
+        }
+        
+        // next match
+        if (strncmp(buf, "next", 4) == 0) {
+        	save_line_num++;
+      	    ret = read_until_next_match(pf, word, save_line_num);
+            if (ret == 0) {
+        	    printf("Reach EOF.\n");
+        	    return 1;
+            }
+         }
+     }
+    
+    return 1;
 }
 
 int ftsh_num_builtins() {
