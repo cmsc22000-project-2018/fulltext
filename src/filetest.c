@@ -23,6 +23,7 @@ int read_until_next_match(FILE *fp, char *word, int line_num)
 	char *token, *saveptr, *saveln;
 
     while ((read = getline(&line, &len, fp)) != -1) {
+    	pos = 0;
     	saveln = strdup(line);
     	token = strtok_r(line, " ,.!?\t\n", &saveptr);
 		while (token != NULL) {
@@ -30,6 +31,7 @@ int read_until_next_match(FILE *fp, char *word, int line_num)
 			if (strncmp(word, token, strlen(word)) == 0) {
 				filepos = ftell(fp);
 				print_match(saveln, word, line_num, pos, filepos);
+				return 1;
 			}
 			token = strtok_r(NULL, " ,.!?\t\n", &saveptr);			
 		}
@@ -61,8 +63,10 @@ int main(int argc, char *argv[])
             exit(0);
         }
         if (strncmp(buf, "next", 4) == 0) {
-        	save_line_num++;
-        	ret = read_until_next_match(fp, word, save_line_num);
+        	if (ret != 0) {
+        		save_line_num++;
+        		ret = read_until_next_match(fp, word, save_line_num);
+        	}
         	if (ret == 0) {
         		printf("Reach EOF.\n");
         		exit(0);
