@@ -279,9 +279,13 @@ Test(match, append)
     match* b = new_match("b", 1, 1);
     match* c = new_match("c", 1, 1);
     
-    append_(a, &matches);
-    append_(b, &matches);
-    append_(c, &matches);
+    int ret_a = append_(a, &matches);
+    int ret_b = append_(b, &matches);
+    int ret_c = append_(c, &matches);
+
+    cr_assert_eq(ret_a, 1, "Append a failed");
+    cr_assert_eq(ret_b, 1, "Append b failed");
+    cr_assert_eq(ret_c, 1, "Append c failed");
     
     cr_assert_not_null(&matches, "matches is null");
     

@@ -97,9 +97,9 @@ void insert_at(match* newMatch, int index, list_t* matches)
 }
 
 //changed inputs, return type
-void append_(match* newMatch, list_t* matches)
+int append_(match* newMatch, list_t* matches)
 {
-    list_append(matches, newMatch);
+    return list_append(matches, newMatch);
 }
 
 //changed inputs, return type

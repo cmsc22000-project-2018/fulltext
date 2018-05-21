@@ -84,8 +84,9 @@ void insert_at(match* newMatch, int index, list_t* matches);
   @brief Inserts at end of match struct 
   @param newMatch: pointer to new match struct
   @param matches: dll of matches
+  @ returns 1 on success, -1 on failure
 */
-void append_(match* newMatch, list_t* matches);
+int append_(match* newMatch, list_t* matches);
 
 /** 
   @brief Removes at specific index in match struct 
