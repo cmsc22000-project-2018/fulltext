@@ -2,7 +2,7 @@
 # Makefile based on template at https://gist.github.com/xuhdev/1873316
 
 CC = gcc 
-CFLAGS = -fPIC -Wall -O2 -g -I../include/ 'pkg-config --cflags --libs glib-2.0'
+CFLAGS = -fPIC -Wall -O2 -g -I../include/ #'pkg-config --cflags --libs glib-2.0'#
 LDFLAGS = -L../tests/ -Wl,-rpath=../tests/ 'pkg-config --libs glib-2.0'
 RM = rm -f
 BIN = test-fulltext
@@ -22,8 +22,8 @@ LIB_BIN = libfulltext.so
 all: $(BIN)
 
 # Makes the main binary test-fulltext
-$(BIN): $(OBJS) $(LIB_BIN) 
-	$(CC) $(LDFLAGS) %^ -o $@ $(LDLIBS)
+$(BIN): test_objs $(LIB_BIN) 
+	$(CC) $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS)
 
 # Makes the object files for the libraries for testing purposes
 $(LIB_OBJS): $(LIB_SRCS)
