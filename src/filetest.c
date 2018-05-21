@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include <assert.h>
+#include<stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 // This is a simple mimic of the file flow
 // following ftsh_load(), read_until_next_match(), print_match()
@@ -13,6 +17,18 @@ void print_match(char *line, char *word, int line_num, int pos, long int filepos
 		word, line_num, pos, filepos, line);
 }
 
+// returns number of occurrences in line
+int num_occurrences(char *line, char *word)
+{
+	int count == 0;
+	token = strtok_r(line, " ,.!?\t\n", &saveptr);
+	while (token != NULL) {
+		count++;
+		token = strtok_r(NULL, " ,.!?\t\n", &saveptr);
+	}
+	return count;
+}
+
 // returns 0 when EOF
 int read_until_next_match(FILE *fp, char *word, int line_num)
 {
@@ -21,22 +37,26 @@ int read_until_next_match(FILE *fp, char *word, int line_num)
 	ssize_t read = 0;
 	int pos = 0;
 	long int filepos = 0;
-	char *token, *saveptr, *saveln;
+	char *token, *saveptr, *saveln, *saveln2;
 
     while ((read = getline(&line, &len, fp)) != -1) {
     	pos = 0;
     	saveln = strdup(line);
+    	saveln2 = strdup(line);
+    	// very inefficient way to check for multiple occurrences
+    	int num_occ = num_occurrences(saveln2, word);
     	token = strtok_r(line, " ,.!?\t\n", &saveptr);
 		while (token != NULL) {
 			pos++;
 			if (strncmp(word, token, strlen(word)) == 0) {
 				filepos = ftell(fp);
 				print_match(saveln, word, line_num, pos, filepos);
-				return 1;
+				return num_occ-1;
 			}
 			token = strtok_r(NULL, " ,.!?\t\n", &saveptr);			
 		}
 		free(saveln);
+		free(saveln2);
 	}
 	return 0;
 }
@@ -57,6 +77,7 @@ int main(int argc, char *argv[])
     char *word = argv[1];
 
     FILE *fp = fopen("tests/filetest.txt", "r");
+	FILE *save_fp = fdopen(dup(fileno(fp)), "r");
 
     while (1) {
         printf("fulltext> ");
@@ -67,9 +88,15 @@ int main(int argc, char *argv[])
         }
        
         if (strncmp(buf, "next", 4) == 0) {
-        	save_line_num++;
-      	    ret = read_until_next_match(fp, word, save_line_num);
-            if (ret == 0) {
+        	if (ret != 0) {
+        		save_line_num++;
+      	    	ret = read_until_next_match(fp, word, save_line_num);
+      	    	while (ret > 0) {
+      	    		ret = read_until_next_match(save_fp, word, save_line_num);
+      	    	}
+      	    	save_fp = fp;
+      	    }
+            else {
         	    printf("Reach EOF.\n");
         	    exit(0);
             }
