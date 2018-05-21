@@ -1,0 +1,4 @@
+Hello world!
+Welcome to fulltext. The fulltext program finds everything you need.
+Hope you like it.
+

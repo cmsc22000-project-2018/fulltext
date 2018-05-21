@@ -37,6 +37,12 @@ $(MATCH_LIB): match
 ftsh: $(SRCS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(FTSH_BIN) $(LDLIBS)
 
+# this is a hard-coded rule and should never be made by 'all'
+# this is neither removed by 'clean'
+.PHONY: filetest
+filetest: ./src/filetest.c
+	$(CC) $(CFLAGS) ./src/filetest.c -o filetest
+
 .PHONY: clean 
 clean:
 	$(RM) $(OBJS) $(FTSH_BIN) $(MT_OBJS) $(LIB) $(MATCH_OBJS) $(MATCH_LIB)
@@ -44,3 +50,4 @@ clean:
 
 tests: $(OBJS)
 	make -C ./tests
+
