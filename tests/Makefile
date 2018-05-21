@@ -11,6 +11,18 @@ LDLIBS = -lcriterion -lmtrie -lmatch -lglib-2.0
 SRCS = main.c test_mtrie.c test_match.c
 OBJS = $(SRCS:.c=.o)
 
+LIB_SRCS = ../src/ftsh.c
+LIB_OBJS = ../src/ftsh.o
+
+.PHONY: lib
+
+$(LIB_OBJS): $(LIB_SRCS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+lib: $(LIB_OBJS)
+	$(CC) -shared $< -o libftsh
+	
+
 .PHONY: all
 all: ${BIN}
 

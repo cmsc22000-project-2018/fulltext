@@ -17,3 +17,8 @@
 
 Test(ftsh, input)
 {
+    char *sample = "This is a sample";
+    char *expected[] = {"This", "is", "a", "sample"};
+
+    cr_assert_eq(expected, ftsh_get_input(sample), "input error");
+}
