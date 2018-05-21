@@ -9,8 +9,7 @@
 #include "match.h"
 
 // see search.h
-list_t *minimal_read_until_next_match(list_t *match_list, char *search_word,
-	FILE *fp)
+int minimal_read_until_next_match(FILE *fp, list_t *matches, char *search_word)
 {	
 	char *line = NULL;
 	char *token, *saveptr;
@@ -48,14 +47,3 @@ list_t *minimal_read_until_next_match(list_t *match_list, char *search_word,
 
 }
 
-int main()
-{
-	char buf[6];
-	list_t *match_list = NULL;
-    //list_init(match_list);
-    FILE *fp = fopen("filetest.txt", "r");
-    while ((fgets(buf, 6, stdin) != NULL)
-				&& (strncmp(buf, "next", 4) == 0)) {
-    	minimal_read_until_next_match(match_list, "fulltext", fp);
-    }
-}
