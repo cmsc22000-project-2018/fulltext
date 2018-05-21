@@ -93,14 +93,13 @@ Test(trie, stringarray_to_trie)
     char* s3 = "ants";
     trie_t *t = new_trie('\0');
 
-    stringArray* strarray = malloc(sizeof(stringArray));
-    strarray->array = malloc(3*sizeof(char*));
-    strarray->array[0] = s1;
-    strarray->array[1] = s2;
-    strarray->array[2] = s3;
-    strarray->len = 3;
+    char **strarray = malloc(4*sizeof(char*));
+    strarray[0] = s1;
+    strarray[1] = s2;
+    strarray[2] = s3;
+    strarray[3] = NULL;
 
-    cr_assert_eq(strarray->array[1], "anti", "Failed to build strarray");
+    cr_assert_eq(strarray[1], "anti", "Failed to build strarray");
 
     int r = stringarray_to_trie(strarray, t);
     cr_assert_eq(r,0,"insert_string failed");   
