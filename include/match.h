@@ -2,11 +2,11 @@
 #define _FULLTEXT_MATCH_H_
 
 /* Match struct */
-/*typedef struct {
+typedef struct {
     char* word;
     int line;
     int position;
-} match; */
+} match;
 
 /**
   @brief Creates new match.
