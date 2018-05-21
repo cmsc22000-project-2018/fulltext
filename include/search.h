@@ -21,9 +21,11 @@ int minimal_read_until_next_match(FILE *fp, list_t *matches, char *search_word);
   @param matches_set: an array of existing match_list or NULL of the search term
   @param word_set: an array of the search terms
   @param SET_SIZE: number of search terms in word_set
+  @param line_num: the previous line of occurrence
   @return this particular new match node
 */
-int single_word_read_until_next_match(FILE *fp, list_t **matches_set, char **word_set, int SET_SIZE);
+int single_word_read_until_next_match(FILE *fp, list_t **matches_set, 
+	char **word_set, int SET_SIZE, int line_num);
 
 
 /** 
@@ -34,8 +36,10 @@ int single_word_read_until_next_match(FILE *fp, list_t **matches_set, char **wor
   @param matches_set: an array of existing match_list or NULL of the search term
   @param word_set: an array of the search terms
   @param SET_SIZE: number of search terms in word_set
+  @param line_num: the previous line of occurrence
   @return this particular new match node
 */
-int read_until_next_match(FILE *fp, list_t **matches_set, char **word_set, int SET_SIZE);
+int read_until_next_match(FILE *fp, list_t **matches_set,
+ char **word_set, int SET_SIZE, int line_num);
 
 #endif /* _FULLTEXT_SEARCH_H_ */
