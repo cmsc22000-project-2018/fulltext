@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "match.h"
-#include "simclist.h"
-#include "simclist.c"
 #include "print.h"
 
 /* See print.h */
@@ -69,7 +66,7 @@ void print_match(match_t *m_word, char *line)
             printf("%s ", parsed[i]);
         }
     }
-
+    printf("\n");
 }
 
 /* Testing function */
