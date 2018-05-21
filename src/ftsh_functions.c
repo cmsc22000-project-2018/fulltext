@@ -8,18 +8,18 @@
 char *builtin_str[] = {
     "help",
     "exit",
-    "load"
+    "next"
 };
 
 
-int (*builtin_func[]) (char **) = {
+int (*builtin_func[]) (char **, FILE *pf) = {
     &ftsh_help,
     &ftsh_exit,
-    &ftsh_load
+    &ftsh_next
 };
 
 
-int ftsh_help(char **args)
+int ftsh_help(char **args, FILE *pf)
 {
     printf("Full-Text Shell:\n");
     printf("Type program names and arguments, and hit enter.\n");
@@ -34,36 +34,23 @@ int ftsh_help(char **args)
 }
 
 
-int ftsh_exit(char **args)
+int ftsh_exit(char **args, FILE *pf)
 {
     return 0;
 }
 
 
-int ftsh_load(char **args)
+int ftsh_next(char **args, FILE *pf)
 {
-    char ch;
-    char *path = args[1]; // second argument is filepath
-    
-    FILE *fp = fopen(path, "r");
-
-    if (fp == NULL) {
-        perror("File could not be opened");
-        exit(1);
-    }
- 
-    // fclose(fp);
-
-    return 1;
+   return 1;
 }
-
 
 int ftsh_num_builtins() {
     return sizeof(builtin_str) / sizeof(char *);
 }
 
 
-int ftsh_execute(char **args)
+int ftsh_execute(char **args, FILE *pf)
 {
     int i;
 
@@ -74,9 +61,9 @@ int ftsh_execute(char **args)
 
     for (i = 0; i < ftsh_num_builtins(); i++) {
         if (strcmp(args[0], builtin_str[i]) == 0) {
-            return (*builtin_func[i])(args);
+            return (*builtin_func[i])(args, pf);
         }
     }
-
-    return ftsh_launch(args);
+    
+    return 0;
 }

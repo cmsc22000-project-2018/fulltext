@@ -24,7 +24,7 @@
     @param args List of args.  Not examined.
     @return Always returns 1, to continue executing.
  */
-int ftsh_help(char **args);
+int ftsh_help(char **args, FILE *pf);
 
 
 /**
@@ -32,16 +32,27 @@ int ftsh_help(char **args);
     @param args List of args.  Not examined.
     @return Always returns 0, to terminate execution.
  */
-int ftsh_exit(char **args);
+int ftsh_exit(char **args, FILE *pf);
 
 
 /**
     @brief Builtin command: load [filepath]
     @param args List of args. [filepath]
+    @param pf Pointer to text file.
     @return Always returns 1, to continue execution.
     @credit: https://www.programmingsimplified.com/c-program-read-file
  */
-int ftsh_load(char **args);
+int ftsh_load(char **args, FILE *pf);
+
+
+/**
+    @brief Builtin command: next
+           Finds the next matched word in the loaded file.
+    @param args List of args.
+    @param pf Pointer to text file.
+    @return Always return 1, to continue execution.
+  */
+int ftsh_next(char **args, FILE *pf);
 
 
 /**
@@ -54,8 +65,9 @@ int ftsh_num_builtins();
 /**
      @brief Execute shell built-in or launch program.
      @param args Null terminated list of arguments.
+     @param pf Pointer to text file
      @return 1 if the shell should continue running, 0 if it should terminate
  */
-int ftsh_execute(char **args);
+int ftsh_execute(char **args, FILE *pf);
 
 #endif
