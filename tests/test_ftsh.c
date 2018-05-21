@@ -1,4 +1,4 @@
-i/***************************************************************************//**
+/***************************************************************************//**
 
 	@file         test_ftsh.c
 
@@ -17,11 +17,11 @@ i/***************************************************************************//*
 
 Test(ftsh, input)
 {
-    char *sample = "This is a sample";
+    char sample[] = "This is a sample";
     char *expected[] = {"This", "is", "a", "sample"};
     char **actual = ftsh_get_input(sample);
 
     for (int i=0; actual[i] != NULL; i++) {
-        cr_assert_eq(actual[i], expected[i], "input error");
+        cr_assert_str_eq(actual[0], expected[0], "error input");
     }
 }
