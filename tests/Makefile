@@ -11,10 +11,10 @@ LDLIBS = -lcriterion -lfulltext -lglib-2.0 -lreadline
 SRCS = main.c test_ftsh.c
 OBJS = $(SRCS:.c=.o)
 
-TEST_SRCS = test_ftsh.c
+TEST_SRCS = test_ftsh.c test_match.c
 TEST_OBJS = $(TEST_SRCS:.c=.o)
 
-LIB_SRCS = ../src/ftsh.c ../src/ftsh_functions.c
+LIB_SRCS = ../src/ftsh.c ../src/ftsh_functions.c ../src/match.c
 LIB_OBJS = $(LIB_SRCS:.c=.o)
 LIB_BIN = libfulltext.so
 
@@ -22,7 +22,7 @@ LIB_BIN = libfulltext.so
 all: $(BIN)
 
 # Makes the main binary test-fulltext
-$(BIN): test_objs $(LIB_BIN) 
+$(BIN): $(LIB_BIN) $(OBJS) 
 	$(CC) $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS)
 
 # Makes the object files for the libraries for testing purposes
@@ -33,9 +33,14 @@ $(LIB_OBJS): $(LIB_SRCS)
 $(LIB_BIN): $(LIB_OBJS)
 	$(CC) -shared $^ -o $@
 
+$(SRCS:.c=.d):%.d:%.c
+	$(CC) $(CFLAGS) -MM $< >$@
+
+include $(SRCS:.c=.d)
+
 # Makes the object files for the testing functions
-test_objs: 
-	$(CC) $(CFLAGS) -c -o $(TEST_OBJS) $(TEST_SRCS) $(LDLIBS)
+#test_objs: 
+#	$(CC) $(CFLAGS) -c -o $(TEST_OBJS) $(TEST_SRCS) $(LDLIBS)
 
 .PHONY: clean
 clean:
