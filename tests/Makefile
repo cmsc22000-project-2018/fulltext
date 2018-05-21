@@ -2,42 +2,40 @@
 # Makefile based on template at https://gist.github.com/xuhdev/1873316
 
 CC = gcc 
-CFLAGS = -fPIC -Wall -O2 -g -I../include/
-LDFLAGS = -L../tests/ -Wl,-rpath=../tests/
+CFLAGS = -fPIC -Wall -O2 -g -I../include/ 'pkg-config --cflags --libs glib-2.0'
+LDFLAGS = -L../tests/ -Wl,-rpath=../tests/ 'pkg-config --libs glib-2.0'
 RM = rm -f
 BIN = test-fulltext
-LDLIBS = -lcriterion -lmtrie -lmatch -lglib-2.0
+LDLIBS = -lcriterion -lfulltext -lglib-2.0 -lreadline
 
-SRCS = main.c test_ftsh.c
+SRCS = main.c test_ftsh.c test_mtrie.c test_match.c
 OBJS = $(SRCS:.c=.o)
 
-LIB_SRCS = ../src/ftsh.c ../src/ftsh_functions.c
-LIB_OBJS = ../src/ftsh.o ../src/ftsh_functions.o
-LIB_BIN = test-fulltext-lib
+TEST_SRCS = test_ftsh.c test_mtrie.c test_match.c
+TEST_OBJS = $(TEST_SRCS:.c=.o)
 
-.PHONY: lib
+LIB_SRCS = ../src/ftsh.c ../src/ftsh_functions.c ../src/match.c ../src/mtrie.c
+LIB_OBJS = $(LIB_SRCS:.c=.o)
+LIB_BIN = libfulltext.so
 
+.PHONY: all
+all: $(BIN)
+
+# Makes the main binary test-fulltext
+$(BIN): $(OBJS) $(LIB_BIN) 
+	$(CC) $(LDFLAGS) %^ -o $@ $(LDLIBS)
+
+# Makes the object files for the libraries for testing purposes
 $(LIB_OBJS): $(LIB_SRCS)
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-lib: $(LIB_OBJS)
-	$(CC) -shared $^ -o libftsh.so
+# Makes the libraries for testing purposes
+$(LIB_BIN): $(LIB_OBJS)
+	$(CC) -shared $^ -o $@
 
-lib_test: ftsh lib
-	$(CC) $(LDFLAGS) $(OBJS) -o $(LIB_BIN) -lftsh -lcriterion -lreadline
-
-ftsh:
-	$(CC) -O2 -Wall -Wextra -g -fPIC -I ./include/ -c -o test_ftsh.o test_ftsh.c
-	
-
-.PHONY: all
-all: ${BIN}
-
-$(BIN): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o$(BIN) $(LDLIBS) 
-
-$(SRCS:.c=.d): %.d:%.c
-	$(CC) $(CFLAGS) -MM $< >$@
+# Makes the object files for the testing functions
+test_objs: 
+	$(CC) $(CFLAGS) -c -o $(TEST_OBJS) $(TEST_SRCS)
 
 .PHONY: clean
 clean:
