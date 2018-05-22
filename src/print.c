@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "print.h"
+#include "match.h"
 
 /* See print.h */
 void red() {
@@ -33,7 +34,7 @@ char **parse_line(char *line)
 }
 
 /* See print.h */
-void print_match(match_t *m_word, char *line)
+void print_match(match *m_word, char *line)
 {
 	// Checking right input
     printf("Matched word: %s\n", m_word->word);
@@ -73,7 +74,7 @@ void print_match(match_t *m_word, char *line)
 int main()
 {
     // Defining a match struct for testing 1
-    match_t *sample = malloc(sizeof(match_t));
+    match *sample = malloc(sizeof(match));
     sample->word = "this";
     sample->line = 3;
     sample->position = 3;
@@ -85,7 +86,7 @@ int main()
 
     //Testing 2
     printf("\n \n");
-    match_t *sample2 = malloc(sizeof(match_t));
+    match *sample2 = malloc(sizeof(match));
     sample2->word = "How";
     sample2->line = 6;
     sample2->position = 0;
@@ -96,7 +97,7 @@ int main()
 
     //Testing 3
     printf("\n \n");
-    match_t *sample3 = malloc(sizeof(match_t));
+    match *sample3 = malloc(sizeof(match));
     sample3->word = "world.";
     sample3->line = 2;
     sample3->position = 5;

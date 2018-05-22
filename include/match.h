@@ -1,6 +1,8 @@
 #ifndef _FULLTEXT_MATCH_H_
 #define _FULLTEXT_MATCH_H_
 
+#include "simclist.h"
+
 /* Match struct */
 typedef struct {
     char* word;
