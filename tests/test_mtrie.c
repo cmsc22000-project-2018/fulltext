@@ -1,12 +1,13 @@
 // Unit tests for Mock Trie
-// Updated May 13, return_matches integrated with GList
+// Updated May 16, return_matches integrated with simclist
 
 #include <criterion/criterion.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include <gmodule.h>
+#include "simclist.h"
 #include "mtrie.h"
 #include "match.h"
 
@@ -186,29 +187,26 @@ Test(trie, return_matches_mock)
 
 }
 
-void check_single_match(GList *matches, int index, char *expectedWord, int expectedLine)
+void check_single_match(list_t matches, int index, char *expectedWord, int expectedLine)
 {
-	GList* aRet = g_list_nth(matches, index);
-	match* aFromRet = aRet->data;
-	cr_assert_str_eq(expectedWord, aFromRet->word,
-	 "Expected word %s but got %s", expectedWord, aFromRet->word);
-    cr_assert_eq(expectedLine, aFromRet->line,
-     "Expected line %d but got %d", expectedLine, aFromRet->line);
+    match* aRet = list_get_at(&matches, index);
+    cr_assert_str_eq(expectedWord, aRet->word, "Expected word %s but got %s", expectedWord, aRet->word);
+    cr_assert_eq(expectedLine, aRet->line,"Expected line %d but got %d", expectedLine, aRet->line);
 }
 
-void check_return_matches_GList(trie_t *trie, char *key, GList *expected)
+void check_return_matches_listT(trie_t *trie, char *key, list_t *expected)
 {
-	GList *matches = return_matches(trie, key);
-	if (strcmp(key, "a") == 0) {
-		// a->an->at->and
-		check_single_match(matches, 0, "a", 1);
-		check_single_match(matches, 1, "an", 2);
-		check_single_match(matches, 2, "at", 2);
-		check_single_match(matches, 3, "and", 3);
-	}
-	if (strcmp(key, "an") == 0) {
+    list_t matches = return_matches(trie, key);
+    if (strcmp(key, "a") == 0) {
+	// a->an->at->and
+	check_single_match(matches, 0, "a", 1);
+	check_single_match(matches, 1, "an", 2);
+	check_single_match(matches, 2, "at", 2);
+	check_single_match(matches, 3, "and", 3);
+    }
+    if (strcmp(key, "an") == 0) {
         check_single_match(matches, 0, "an", 2);
-		check_single_match(matches, 1, "and", 3);
+	check_single_match(matches, 1, "and", 3);
     }
     if (strcmp(key, "and") == 0) {
 		check_single_match(matches, 0, "and", 3);
@@ -228,33 +226,45 @@ void check_return_matches_GList(trie_t *trie, char *key, GList *expected)
 
 Test(trie, return_matches_integrated_w_match)
 {
-	trie_t root;
-
-	GList* matches_a_an_at_and = NULL;
-	GList* matches_an_and = NULL;
-	GList* matches_and = NULL;
-	GList* matches_at = NULL;
-	GList* matches_b_be = NULL;
-	GList* matches_be = NULL;
+    trie_t root;
     
-    match *m_a = new_match("a", 1);
-    match *m_an = new_match("an", 2);
-    match *m_at = new_match("at", 2);
-    match *m_and = new_match("and", 3);
-    match *m_b = new_match("b", 1);
-    match *m_be = new_match("be", 2);
-    
-    matches_a_an_at_and = append_(m_and, append_(m_at, append_(m_an, append_(m_a, NULL))));
-    matches_an_and = append_(m_and, append_(m_an, NULL));
-	matches_and = append_(m_and, NULL);
-	matches_at = append_(m_at, NULL);
-	matches_b_be = append_(m_be, append_(m_b, NULL));
-	matches_be = append_(m_be, NULL);
+    list_t matches_a_an_at_and, matches_an_and, matches_and, matches_at, matches_b_be, matches_be;
 
-	check_return_matches_GList(&root, "a", matches_a_an_at_and);
-	check_return_matches_GList(&root, "an", matches_an_and);
-	check_return_matches_GList(&root, "and", matches_and);
-	check_return_matches_GList(&root, "at", matches_at);
-	check_return_matches_GList(&root, "b", matches_b_be);
-	check_return_matches_GList(&root, "be", matches_be);
+    list_init(&matches_a_an_at_and);
+    list_init(&matches_an_and);
+    list_init(&matches_and);
+    list_init(&matches_at);
+    list_init(&matches_b_be);
+    list_init(&matches_be);
+    
+    match *m_a = new_match("a", 1, 1);
+    match *m_an = new_match("an", 2, 1);
+    match *m_at = new_match("at", 2, 1);
+    match *m_and = new_match("and", 3, 1);
+    match *m_b = new_match("b", 1, 1);
+    match *m_be = new_match("be", 2, 1);
+     
+    append_(m_a, &matches_a_an_at_and);
+    append_(m_an, &matches_a_an_at_and);
+    append_(m_at, &matches_a_an_at_and);
+    append_(m_and, &matches_a_an_at_and);
+    
+    append_(m_an, &matches_an_and);
+    append_(m_and, &matches_an_and);
+    
+    append_(m_and, &matches_and);
+    
+    append_(m_at, &matches_at);
+    
+    append_(m_b, &matches_b_be);
+    append_(m_be, &matches_b_be);
+    
+    append_(m_be, &matches_be);
+
+    check_return_matches_listT(&root, "a", &matches_a_an_at_and);
+    check_return_matches_listT(&root, "an", &matches_an_and);
+    check_return_matches_listT(&root, "and", &matches_and);
+    check_return_matches_listT(&root, "at", &matches_at);
+    check_return_matches_listT(&root, "b", &matches_b_be);
+    check_return_matches_listT(&root, "be", &matches_be);
 }

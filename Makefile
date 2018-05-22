@@ -20,4 +20,4 @@ clean:
 	make -C ./tests clean
 
 tests: $(OBJS)
-	make -C ./tests
+		make -C ./tests

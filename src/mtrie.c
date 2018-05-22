@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
-#include <gmodule.h>
+#include "simclist.h"
 #include "mtrie.h"
 #include "match.h"
 
@@ -118,47 +118,56 @@ char *return_matches_m(trie_t *unused_t, char *key)
 // Text: and there was an ant; searches for 'an'
 // GList: and->an->ant
 // rank according to relative position in text or alphabetically?
-GList *return_matches(trie_t *trie, char *key)
+list_t return_matches(trie_t *trie, char *key)
 {
-	// just to silence warning
-	trie_t *temp = trie;
-	trie = temp;
+    // just to silence warning
+    trie_t *temp = trie;
+    trie = temp;
 
-    GList *result = NULL;
+    list_t result;
+    list_init(&result);
     // a->an->at->and
     if (strcmp(key, "a") == 0) {
-        match *m_a = new_match("a", 1);
-        match *m_an = new_match("an", 2);
-        match *m_at = new_match("at", 2);
-        match *m_and = new_match("and", 3);
-        result = append_(m_and, append_(m_at, append_(m_an, append_(m_a, NULL))));
+        match *m_a = new_match("a", 1, 1);
+        match *m_an = new_match("an", 2, 1);
+        match *m_at = new_match("at", 2, 1);
+        match *m_and = new_match("and", 3, 1);
+        
+        append_(m_a, &result);
+        append_(m_an, &result);
+        append_(m_at, &result);
+        append_(m_and, &result);
+        
     }
     // an->and
     if (strcmp(key, "an") == 0) {
-        match *m_an = new_match("an", 2);
-        match *m_and = new_match("and", 3);
-        result = append_(m_and, append_(m_an, NULL));
+        match *m_an = new_match("an", 2, 1);
+        match *m_and = new_match("and", 3, 1);
+        
+        append_(m_an, &result);
+        append_(m_and, &result);
     }
     if (strcmp(key, "and") == 0) {
-        match *m_and = new_match("and", 3);
-        result = append_(m_and, NULL);
+        match *m_and = new_match("and", 3, 1);
+        append_(m_and, &result);
     } 
     if (strcmp(key, "at") == 0) {
-        match *m_at = new_match("at", 2);
-        result = append_(m_at, NULL);
+        match *m_at = new_match("at", 2, 1);
+        append_(m_at, &result);
     }
     if (strcmp(key, "b") == 0) {
-        match *m_b = new_match("b", 1);
-        match *m_be = new_match("be", 2);
-        result = append_(m_be, append_(m_b, NULL));
+        match *m_b = new_match("b", 1, 1);
+        match *m_be = new_match("be", 2, 1);
+        append_(m_b, &result);
+        append_(m_be, &result);
     }
     if (strcmp(key, "be") == 0) {
-        match *m_be = new_match("be", 2);
-        result = append_(m_be, NULL);
+        match *m_be = new_match("be", 2, 1);
+        append_(m_be, &result);
     }
 
     return result;
-}
+} 
 
 // Prints out content of trie
 void trie_show(trie_t *trie)

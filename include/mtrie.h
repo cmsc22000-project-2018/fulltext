@@ -64,11 +64,10 @@ char *return_matches_m(trie_t *trie, char *key);
 
 /**
     @brief Integration with match; 
-    @returns a GList of matches if key in trie; NULL if no matches
+    @returns a list_t of matches if key in trie; NULL if no matches
     @param trie of type trie_t, search key of type string
-    @return <return val(s)>.
  */
-GList *return_matches(trie_t *trie, char *key);
+list_t return_matches(trie_t *trie, char *key);
 
 #endif  /* INCLUDE_FULLTEXT_TRIE_H_  */
  
