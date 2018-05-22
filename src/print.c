@@ -19,12 +19,14 @@ char **parse_line(char *line)
     /* Declaring parsed string array to pass to print_match */
     char **parsed = malloc(sizeof(line));
     const char s[2] = " ";
+    int i;
 
     /* Getting the first token */
     char *token = strtok(line, s);
 
+
     /* Iterating through the rest of the line */
-    for (int i=0; token != NULL; i++) {
+    for (i=0; token != NULL; i++) {
         parsed[i] = token;
         token = strtok(NULL, s);
     }
