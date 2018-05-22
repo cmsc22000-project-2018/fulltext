@@ -47,7 +47,7 @@ src/print.c:
 src/print.o: src/print.c
 
 print: src/print.o
-		$(CC) $(DYN_LDFLAGS) $^ -o $@ $(PRINT_LIBS)
+		$(CC) -std=c99 $(DYN_LDFLAGS) $^ -o $@ $(PRINT_LIBS)
 
 .PHONY: ftsh
 ftsh: $(SRCS)
