@@ -40,4 +40,3 @@ int read_until_next_match(FILE *pf, char *word, int line_num)
 	}
 	return 0;
 }
-
