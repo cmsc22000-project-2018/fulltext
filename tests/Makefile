@@ -2,7 +2,7 @@
 # Makefile partially based on CMSC 220 Lab 3 and Lab 5
 
 CC = gcc 
-CFLAGS = -fPIC -Wall -O2 -g -I../include/ `pkg-config --cflags --libs glib-2.0`
+CFLAGS = -fPIC -Wall -std=c99 -O2 -g -I../include/ `pkg-config --cflags --libs glib-2.0`
 LDFLAGS = -L../tests/ -Wl,-rpath=../tests/ `pkg-config --libs glib-2.0`
 RM = rm -f
 BIN = test-fulltext
