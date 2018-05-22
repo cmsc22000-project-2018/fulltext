@@ -42,7 +42,7 @@ $(MATCH_LIB): match
 print: $(PRINT_BINS)
 
 src/print.c:
-		$(CC) $(CFLAGS) src/print.c -o print
+		$(CC) -std=c99 $(CFLAGS) src/print.c -o print
 
 src/print.o: src/print.c
 
