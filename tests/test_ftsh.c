@@ -22,6 +22,6 @@ Test(ftsh, input)
     char **actual = ftsh_get_input(sample);
 
     for (int i=0; actual[i] != NULL; i++) {
-        cr_assert_str_eq(actual[0], expected[0], "error inputs");
+        cr_assert_str_eq(actual[i], expected[i], "error inputs");
     }
 }
