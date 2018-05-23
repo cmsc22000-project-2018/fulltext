@@ -108,16 +108,17 @@ int main(int argc, char *argv[])
 }*/
 int find_match(char* line, char* word, int pos_start)
 {
-    //if (strlen(word) > strlen(line)) return;
+    //printf("looking at line: %s len %d and word %s len %d\n\n", line, strlen(line), word, strlen(word));
+    if (strlen(word) > strlen(line)) return -1;
+    char line2[strlen(line)+1];
+    strcpy(line2, line);
     int pos = pos_start;
-    char* token = strtok(line, " ");
+    char* token = strtok(line2, " ");
     while (token != NULL) {
-        //printf("token: %s\n", token);
-        char sanitized[strlen(token)+1];
-        strcpy(sanitized, token);
-        sanitized[strcspn(sanitized, "\r\n")] = 0;
-        if (strcmp(sanitized, word) == 0) {
-            printf("match found at pos %d\n", pos);
+        printf("token: %s\n", token);
+
+        if (strcmp(token, word) == 0) {
+            printf("match found: %s at pos %d\n", token, pos);
             return pos;
         }
         pos += strlen(token) + 1;
@@ -158,17 +159,26 @@ int main(int argc, char *argv[])
         int found = -1;
         while ((read = getline(&line, &len, fp)) != -1) {
             //printf("Retrieved line of length %zu :\n", read);
+            printf("---------------------");
             printf("\nline: %s", line);
-            char line2[strlen(line)+1];
-            strcpy(line2, line);
-            found = find_match(line, word, 0);
-            printf("found = %d\n", found);
+
+            char sanitized[strlen(line)+1];
+            strcpy(sanitized, line);
+            sanitized[strcspn(sanitized, "\r\n")] = 0;
+
+            char line2[strlen(sanitized)+1];
+            strcpy(line2, sanitized);
+            found = find_match(sanitized, word, 0);
+            //printf("found = %d\n", found);
             while (found != -1 && found + wordlen < read) {
-                char again[strlen(line)+1-found + wordlen];
+                /*char again[strlen(sanitized)+1-found + wordlen];
                 strncpy(again, line2+found+wordlen, strlen(line2)-found-wordlen);
-                //printf("loopin again: %s\n", again);
-                found = find_match(again, word, found + wordlen+1);
+                printf("loopin again: %s\n", again);*/
+                //printf("sanitized %s\n", sanitized);
+                memset(sanitized, ' ', found + wordlen);
+                found = find_match(sanitized, word, found + wordlen+1);
             }
+            printf("---------------------\n");
         }
 
     //}
