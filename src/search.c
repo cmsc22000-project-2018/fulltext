@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
+#include <stddef.h>
 #include "simclist.c"
 #include "simclist.h"
 #include "match.h"
@@ -99,4 +100,3 @@ int read_until_next_match(FILE *fp, list_t **matches_set,
 		}
 		return 0;
 	}
-}

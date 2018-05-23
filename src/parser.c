@@ -46,25 +46,24 @@ void init_parser(FILE *fp)
     next_token(fp);
 }
 
-stringArray *parse_to_arr(FILE *fp)
+char **parse_to_arr(FILE *fp)
 {
 	init_parser(fp);
-	stringArray *arr;
-	arr = malloc(sizeof(stringArray));
-	arr->array = malloc(sizeof(char*)*MAXWORDNUM);
-    assert(arr != NULL);
+	char **strarr;
+	strarray = malloc(sizeof(char*)*MAXWORDNUM);
+    	assert(strarr != NULL);
 
-    int len = 0;
-    char *s = NULL;
-    for (int i = 0; i < MAXWORDNUM; i++) {
-        if (!read_string(&s)) break;
-        arr->array[i] = malloc(sizeof(char)*MAXWORDLEN);
-    	strcpy(arr->array[i], s);
-    	len++;
-    	next_token(fp);	
+    	char *s = NULL;
+    	for (int i = 0; i < MAXWORDNUM; i++) {
+            strarray[i] = malloc(sizeof(char)*MAXWORDLEN);
+            if (!read_string(&s)) {
+		strarray[i] = NULL;
+		break;	
+            } 
+    	    strcpy(strarray[i], s);
+    	    next_token(fp);	
     }
 
-    arr->len = len;
-    assert(arr != NULL);
-    return arr;
+    assert(strarr != NULL);
+    return strarr;
 }

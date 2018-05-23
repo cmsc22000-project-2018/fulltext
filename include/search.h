@@ -1,6 +1,12 @@
 #ifndef _FULLTEXT_SEARCH_H_
 #define _FULLTEXT_SEARCH_H_
 
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stddef.h>
+
 /** 
   @brief Reads from a text file, append to the previous
   @      match list of the search term but does not return list

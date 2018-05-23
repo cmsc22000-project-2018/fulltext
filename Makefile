@@ -1,14 +1,16 @@
 # .RECIPEPREFIX +=
 CC = gcc
-SRCS = src/ftsh.c src/ftsh_functions.c
+SRCS = src/ftsh.c src/ftsh_functions.c src/search.c
 OBJS = $(SRCS:.c=.o)
 FTSH_BIN = ftsh
 LDLIBS = -lreadline
 RM = rm -rf
-LIB = libmtrie.so
-CFLAGS = -g -O2 -Wall -std=c99 -I ./include/ -I ./src/ -fPIC 
-MT_SRCS = src/mtrie.c
-MT_OBJS = src/mtrie.o
+
+LIB = libtrie.so
+CFLAGS = -g -O2 -Wall -Wextra -I ./include/ -I ./src/ -fPIC `pkg-config --cflags --libs glib-2.0`
+
+MT_SRCS = src/trie.c
+MT_OBJS = src/trie.o
 
 MATCH_SRCS = src/match.c
 MATCH_OBJS = $(MATCH_SRCS:.c=.o)
