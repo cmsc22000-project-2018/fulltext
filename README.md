@@ -1,12 +1,20 @@
-# Program Description
+# Product Documentation 
 
-Goal: Implement a full-text search tool for text files with interactive user navigation of the file.
+FTSH is full-text search tool with Redis support for text files. It supports interactive and batch mode, with syntax highlighting, user navigation, and an efficient search algorithm.
 
-# Operation Modes:
+Operation Modes:
 
-Interactive Mode: User must be able to open a text file, specify word(s) to be searched, and interactively navigate the file by skipping from matched word to next/previous matched word.
+Interactive Mode: 
+- Use -i flag to start interactive mode.
+- Specify the textfile path in command line while starting the program:
+  `./ftsh -i PATH/FILE`
+- Run `find word1 word2 ... wordN` to start looking for words.
+- Iterate through found words in text with `next` and `prev`
 
-Batch Mode: Program must take a text file plus word(s) to be searched via command line arguments and produce the amount of occurences of the provided word(s) to either standard output or to a new file. It must also find all lines containing the specified word(s) and return those lines plus a configurable amount of lines before or after the found lines with the specified word(s).
+Batch Mode:
+- 
+
+Program must take a text file plus word(s) to be searched via command line arguments and produce the amount of occurences of the provided word(s) to either standard output or to a new file. It must also find all lines containing the specified word(s) and return those lines plus a configurable amount of lines before or after the found lines with the specified word(s).
 
 We will be implementing the full-text search feature using a prefix trie by implementing the Aho-Corasick algorithm. The search pattern will be implemented with regular expression (regex).
 
