@@ -7,14 +7,17 @@ FTSH is full-text search tool with Redis support for text files. It supports int
 Interactive Mode: 
 - Use -i flag to start interactive mode.
 - Specify the textfile path in command line while starting the program:
+
   ```
   ./ftsh -i PATH/FILE
   ```
 - Run `find word1 word2 ... wordN` to start looking for words:
+
   ```
   ftsh> find word1
   ```
 - Iterate through found words in text with `next` and `prev`:
+
   ```
   ftsh> next
   ftsh> prev
@@ -22,6 +25,7 @@ Interactive Mode:
 
 Batch Mode:
 - Specify the textfile path using `-p` flag and the words to search with `-w` in command line to run the program:
+
   ```
   ./ftsh -p PATH/FILE -w word1 word2
   ```
