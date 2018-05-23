@@ -1,6 +1,6 @@
 # .RECIPEPREFIX +=
 CC = gcc
-SRCS = src/ftsh.c src/ftsh_functions.c src/search.c
+SRCS = src/ftsh.c src/ftsh_functions.c src/search.c 
 OBJS = $(SRCS:.c=.o)
 FTSH_BIN = ftsh
 LDLIBS = -lreadline
@@ -38,12 +38,6 @@ $(MATCH_LIB): match
 .PHONY: ftsh
 ftsh: $(SRCS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(FTSH_BIN) $(LDLIBS)
-
-# this is a hard-coded rule and should never be made by 'all'
-# this is neither removed by 'clean'
-.PHONY: filetest
-filetest: ./src/filetest.c
-	$(CC) $(CFLAGS) ./src/filetest.c -o filetest
 
 .PHONY: clean 
 clean:

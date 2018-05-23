@@ -1,5 +1,6 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
+#include "search.h"
 
 
 char** ftsh_get_input(char *input) {

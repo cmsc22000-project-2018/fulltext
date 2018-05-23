@@ -1,14 +1,6 @@
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stddef.h>
-#include <assert.h>
-#include<stdio.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include "filetest.h"
 
-/*// This is a simple mimic of the file flow
+// This is a simple mimic of the file flow
 // following ftsh_load(), read_until_next_match(), print_match()
 
 void print_match(char *line, char *word, int line_num, int pos, long int filepos)
@@ -105,27 +97,8 @@ int main(int argc, char *argv[])
      }
 
     return 0;	
-}*/
-int find_match(char* line, char* word, int pos_start)
-{
-    //printf("looking at line: %s len %d and word %s len %d\n\n", line, strlen(line), word, strlen(word));
-    if (strlen(word) > strlen(line)) return -1;
-    char line2[strlen(line)+1];
-    strcpy(line2, line);
-    int pos = pos_start;
-    char* token = strtok(line2, " ");
-    while (token != NULL) {
-        printf("token: %s\n", token);
-
-        if (strcmp(token, word) == 0) {
-            printf("match found: %s at pos %d\n", token, pos);
-            return pos;
-        }
-        pos += strlen(token) + 1;
-        token = strtok(NULL, " ");
-    }
-    return -1;
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -152,7 +125,7 @@ int main(int argc, char *argv[])
     /*while(1) {
         printf("fulltext> ");
         pinput = fgets(buf, 100, stdin);
-        
+    
         if (!pinput) {
             exit(0);
         }*/
@@ -171,10 +144,10 @@ int main(int argc, char *argv[])
             found = find_match(sanitized, word, 0);
             //printf("found = %d\n", found);
             while (found != -1 && found + wordlen < read) {
-                /*char again[strlen(sanitized)+1-found + wordlen];
+                char again[strlen(sanitized)+1-found + wordlen];
                 strncpy(again, line2+found+wordlen, strlen(line2)-found-wordlen);
-                printf("loopin again: %s\n", again);*/
-                //printf("sanitized %s\n", sanitized);
+                printf("loopin again: %s\n", again);
+                printf("sanitized %s\n", sanitized);
                 memset(sanitized, ' ', found + wordlen);
                 found = find_match(sanitized, word, found + wordlen+1);
             }
