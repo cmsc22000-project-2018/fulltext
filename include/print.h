@@ -6,15 +6,6 @@
 
 #include "match.h"
 
-/* This match struct is temporary. I created it for the purposes of 
-   writing the print.c function because I couldn't link match to
-   my c file for some reason. */
-/*typedef struct {
-    char *word;
-    int line;
-    int position;
-} match_t;*/
-
 /**
    @brief: Sets the print color to red (highlight color)
    @param: n/a

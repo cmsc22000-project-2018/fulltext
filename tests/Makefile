@@ -35,4 +35,4 @@ $(LIB_BIN): $(LIB_OBJS)
 # Deletes all .o, .so, and bin files
 .PHONY: clean
 clean:
-	-${RM} $(LIB_BIN) ${OBJS} $(BIN)
+	-${RM} $(LIB_BIN) $(LIB_OBJS) ${OBJS} $(BIN)

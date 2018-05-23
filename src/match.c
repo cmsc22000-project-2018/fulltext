@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "simclist.c"
 #include "simclist.h"
 #include "match.h"
 
