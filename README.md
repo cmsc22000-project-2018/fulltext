@@ -2,17 +2,32 @@
 
 FTSH is full-text search tool with Redis support for text files. It supports interactive and batch mode, with syntax highlighting, user navigation, and an efficient search algorithm.
 
-Operation Modes:
+### Usage:
 
 Interactive Mode: 
 - Use -i flag to start interactive mode.
 - Specify the textfile path in command line while starting the program:
-  `./ftsh -i PATH/FILE`
-- Run `find word1 word2 ... wordN` to start looking for words.
-- Iterate through found words in text with `next` and `prev`
+  ```
+  ./ftsh -i PATH/FILE
+  ```
+- Run `find word1 word2 ... wordN` to start looking for words:
+  ```
+  ftsh> find word1
+  ```
+- Iterate through found words in text with `next` and `prev`:
+  ```
+  ftsh> next
+  ftsh> prev
+  ```
 
 Batch Mode:
-- 
+- Specify the textfile path using `-p` flag and the words to search with `-w` in command line to run the program:
+  ```
+  ./ftsh -p PATH/FILE -w word1 word2
+  ```
+ 
+ 
+# System Documentation
 
 Program must take a text file plus word(s) to be searched via command line arguments and produce the amount of occurences of the provided word(s) to either standard output or to a new file. It must also find all lines containing the specified word(s) and return those lines plus a configurable amount of lines before or after the found lines with the specified word(s).
 
@@ -79,39 +94,4 @@ commands fulltext // starts the program n // jumps to next matched word in inter
 
 Purpose: The core class for full-text program.
 
-
-Below is documentation for a mock trie implementation,
-used to develop the fulltext program (will be deleted once 
-fulltext is fully implemented.) 
------------------------------------------------------
-Sprint 2 Mock Trie
-
-File Usage
-run 'make' in fulltext/
-run 'make' in fulltext/tests
-run './test-mtrie' in fulltext/tests
-
----
-Mock Trie with trie_show()
-
-		""
-	a	b
-  an  at      be
-and        
-
----
-Inserts include:
-bee
-o
-of; this also triggers insertion of o 
-off; this also triggers insertion of o, of
-
----
-Mock File for Parsing
-
-a
-an at
-and
-b
-be
 
