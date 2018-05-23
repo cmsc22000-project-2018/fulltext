@@ -115,7 +115,7 @@ int find_match(char* line, char* word, int pos_start)
 // 					append_(match_node, matches);
 // 					return 1;
 // 				}
-// 				token = strtok_r(NULL, " ,.!?\t\n", &saveptr);
+// 				token = strtok_r(NULL, " ,.!?\t\n", &saveptr);token = strtok_r(NULL, " ,.!?\t\n", &saveptr);
 // 			}
 // 			free(saveln);
 // 		}
