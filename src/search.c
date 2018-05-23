@@ -9,25 +9,51 @@
 #include "simclist.h"
 #include "match.h"
 
-int find_match(char* line, char* word, int pos_start)
+int find_match(char* line, char* word, int pos_start, int lineNum)
 {
-    printf("looking at line: %s len %d and word %s len %d\n\n", line, strlen(line), word, strlen(word));
     if (strlen(word) > strlen(line)) return -1;
-    char line2[strlen(line)+1];
-    strcpy(line2, line);
+    char* line2 = line;
     int pos = pos_start;
-    char* token = strtok(line2, " ");
+    char* token = strtok_r(line2, " ,.!?\r\t\n", &line2);
     while (token != NULL) {
-
         if (strcmp(token, word) == 0) {
-	        printf("\nline: %s\n", line);
-            printf("match found: %s at pos %d\n", token, pos);
+            printf("match found: %s at pos %d line %d\n", token, pos, lineNum);
             return pos;
         }
         pos += strlen(token) + 1;
-        token = strtok(NULL, " ");
+        token = strtok_r(NULL, " ,.!?\r\t\n", &line2);
     }
     return -1;
+}
+
+void parse_file_buffered(FILE* fp, int start_line, int end_line, char* word)
+{
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    int wordlen = strlen(word);
+
+    int found = -1;
+    int lineNum = start_line;
+    while (lineNum <= end_line && (read = getline(&line, &len, fp)) != -1) {
+        printf("---------------------");
+        printf("\nline %d: %s", lineNum, line);
+
+        char sanitized[strlen(line)+1];
+        strcpy(sanitized, line);
+        sanitized[strcspn(sanitized, "\r\n")] = 0;
+
+        char line2[strlen(sanitized)+1];
+        strcpy(line2, sanitized);
+        found = find_match(sanitized, word, 1, lineNum);
+        while (found != -1 && found + wordlen < read) {
+            memset(sanitized, ' ', found + wordlen);
+            found = find_match(sanitized, word, found + wordlen + 1, lineNum);
+        }
+        lineNum++;
+        printf("---------------------\n");
+    }
 }
 
 // // see search.h
