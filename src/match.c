@@ -6,9 +6,9 @@
 
 /* See match.h for descriptions of functions */
 
-match* new_match(char* word, int line, int position)
+match* new_match(char* word, int lineNum, int position, char* line)
 {
-    match* m = malloc(sizeof(match *));
+    match* m = malloc(sizeof(match));
     int rc;
     if (m == NULL)
     {
@@ -16,44 +16,56 @@ match* new_match(char* word, int line, int position)
         return NULL;
     }
 
-    rc = init_match(m, word, line, position);
+    rc = init_match(m, word, lineNum, position, line);
     if (rc != 0)
     {
-        printf("Could not init match word %s on line %d position %d\n", word, line, position);
+        printf("Could not init match word %s on line [%d] position %d\n", word, lineNum, position);
         return NULL;
     }
 
     return m;
 }
 
-int init_match(match* match, char* word, int line, int position)
+int init_match(match* match, char* word, int lineNum, int position, char* line)
 {
     if (match == NULL) return -1;
 
     match->word = strdup(word);
-    match->line = line;
+    match->lineNum = lineNum;
     match->position = position;
-
+    match->line = strdup(line);
+    
     return 0;
 }
 
 int free_match(match* match)
 {
     if (match == NULL) return -1;
+    
+    if (match->word != NULL) free(match->word);
+    if (match->line != NULL) free(match->line);
+    
     free(match);
+    
     return 0;
 }
-
 char* get_word(match* match)
 {
     if (match == NULL) return NULL;
     return match->word;
 }
 
-int get_line(match* match)
+char* get_line(match* match)
+{
+    if (match == NULL) return NULL;
+    return match->line;
+}
+
+
+int get_line_num(match* match)
 {
     if (match == NULL) return -1;
-    return match->line;
+    return match->lineNum;
 }
 
 int get_position(match* match)
@@ -141,9 +153,11 @@ void info_list(list_t* l)
     printf("... finished ...\n");
 }
 
-void display_match(match* match)
+int display_match(match* match)
 {
     printf("> word: %s\n", get_word(match));
-    printf("  line [%d]\n", get_line(match));
+    printf("  line [%d]: %s\n", get_line_num(match), get_line(match));
     printf("   pos: %d\n", get_position(match));
+
+    return 1;
 }

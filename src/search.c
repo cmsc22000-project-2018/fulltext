@@ -11,7 +11,9 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 {
     if (strlen(word) > strlen(line)) return -1;
 
-    char* line2 = line;
+    char* dup = strdup(line);
+
+    char* line2 = strdup(line);
     int pos = pos_start;
     char* token = strtok_r(line2, " ,.!?\r\t\n", &line2);
     match* foundMatch = NULL;
@@ -20,12 +22,14 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
         if (strcmp(token, word) == 0) {
 
-            foundMatch = new_match(word, lineNum, pos);
+            /* Config match */
+            foundMatch = new_match(token, lineNum, pos, dup);
             append_(foundMatch, matches);
 
-            // logging
-            printf("match found: %s at pos %d line %d\n", token, pos, lineNum);
-
+            /* Clean-up */
+            free(dup);
+            
+            /* Return */
             return pos;
         }
 
@@ -77,7 +81,7 @@ void display_prev_match(list_t* matches, match* curMatch)
     2. get prev match (if curr match index = 0, go to last match)
     3. print out match details
     */
-    
+
     match* prevMatch = prev_match(curMatch, matches);
 
     if (get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");

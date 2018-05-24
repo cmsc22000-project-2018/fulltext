@@ -12,28 +12,29 @@
 /* Match struct */
 typedef struct {
     char* word;
-    int line;
+    int lineNum;
     int position;
+    char* line;
 } match;
 
 /**
   @brief Creates new match.
   @param word: the match string. 
-  @param line: the line the match is on
+  @param lineNum: the lineNum the match is on
   @param position: the position of the match
   @return a pointer to the match.
 */
-match* new_match(char* word, int line, int position);
+match* new_match(char* word, int lineNum, int position, char* line);
 
 /** 
   @brief Initializes the match.
   @param match: pointer to match. 
   @param word: the match string. 
-  @param line: the line the match is on
+  @param lineNum: the lineNum the match is on
   @param position: the position of the match
   @return 0 for success
 */
-int init_match(match* match, char* word, int line, int position);
+int init_match(match* match, char* word, int lineNum, int position, char* line);
 
 /** 
   @brief Frees match 
@@ -51,11 +52,11 @@ int free_match(match* match);
 char* get_word(match* match);
 
 /** 
-  @brief Returns the line number of match struct 
+  @brief Returns the lineNum number of match struct 
   @param match: pointer to match
-  @return int representing line number
+  @return int representing lineNum number
 */
-int get_line(match* match);
+int get_line_num(match* match);
 
 /** 
   @brief Returns the position number of match struct 
@@ -63,6 +64,13 @@ int get_line(match* match);
   @return int representing position
 */
 int get_position(match* match);
+
+/** 
+  @brief Returns the string in which match was found
+  @param match: pointer to match
+  @return line string in match struct
+*/
+char* get_line(match* match);
 
 /** 
   @brief Goes to next item in linked list 
@@ -128,8 +136,9 @@ void info_list(list_t* matches);
 /** 
   @brief Displays the info of a match
   @param match: a match to print
-  @return void
+  @return 1 success
+  @return -1 failure
 */
-void display_match(match* match);
+int display_match(match* match);
 
 #endif /* _FULLTEXT_MATCH_H_ */

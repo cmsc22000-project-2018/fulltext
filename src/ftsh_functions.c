@@ -44,13 +44,9 @@ int ftsh_exit(char **args, FILE *pf)
 
 int ftsh_find(char **args, FILE *pf)
 {
-    /*int STATUS = 1;
+    int STATUS = 1;
     char buf[100];
     char *input;
-
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;*/
 
     int const BUFFER_LENGTH = 100;
     char *word = args[1]; 
@@ -60,6 +56,8 @@ int ftsh_find(char **args, FILE *pf)
     matches = *parse_file_buffered(pf, 1, BUFFER_LENGTH, word, &matches);
 
     info_list(&matches);
+
+
     // print 1st match from linked list using display_match()
 
     // while (STATUS) {
