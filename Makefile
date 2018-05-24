@@ -1,6 +1,6 @@
 # .RECIPEPREFIX +=
 CC = gcc
-SRCS = src/ftsh.c src/ftsh_functions.c src/search.c 
+SRCS = src/ftsh.c src/ftsh_functions.c src/search.c src/match.c
 OBJS = $(SRCS:.c=.o)
 FTSH_BIN = ftsh
 LDLIBS = -lreadline
@@ -36,8 +36,8 @@ $(MATCH_LIB): match
 	$(CC) -shared -o $(MATCH_LIB) $(MATCH_OBJS)
 
 .PHONY: ftsh
-ftsh: $(SRCS)
-	$(CC) $(CFLAGS) $(SRCS) -o $(FTSH_BIN) $(LDLIBS)
+ftsh: $(SRCS) $(LIB) $(MATCH_LIB)
+	$(CC) $(CFLAGS) $(SRCS) -o $(FTSH_BIN) $(LDLIBS) 
 
 .PHONY: clean 
 clean:

@@ -9,49 +9,45 @@
 #include <fcntl.h>
 #include <assert.h>
 #include <unistd.h>
+#include "match.h"
+#include "simclist.h"
 
-
+/**
+  @brief ...
+  @param line Line to search
+  @param word Word to search for
+  @param pos_start Character number in sentence to start search at
+  @param line_num Line number to keep track of match's line number
+  @return position number of match if match found
+  @return -1 if no match found
+ */
 int find_match(char* line, char* word, int pos_start, int line_num);
 
-void parse_file_buffered(FILE* fp, int start_line, int end_line, char* word);
-
-/** 
-  @brief Reads from a text file, append to the previous
-  @      match list of the search term but does not return list
-  @      MINIMAL IMPLEMENTATION : SINGLE SEARCH TERM
-  @param fp: pointer to the file to perform search on
-  @param match: the existing match_list or NULL of the search term
-  @param search_word: the search term of type string
-  @return 0 upon reaching EOF, 1 if match is found
+/**
+  @brief Searches a file from line x to line y looking for given word
+  @param pf Pointer to file
+  @param start_line Start text line to search through
+  @param end_line Last text line to search through (inclusive)
+  @param word Word to search for
+  @return void
  */
-// int minimal_read_until_next_match(FILE *fp, list_t *matches, char *search_word);
+void parse_file_buffered(FILE* pf, int start_line, int end_line, char* word);
 
-/** 
-  @brief Reads from a text file, append to the previous
-  @      particulat match list of the search term from the matches_set
-  @      but does not return the updated set
-  @      MINIMAL IMPLEMENTATION : SET_SIZE == 1
-  @param fp: pointer to the file to perform search on
-  @param matches_set: an array of existing match_list or NULL of the search term
-  @param word_set: an array of the search terms
-  @param SET_SIZE: number of search terms in word_set
-  @param line_num: the previous line of occurrence
-  @return this particular new match node
+
+/**
+  @brief Prints out the prev match from list to std out
+  @param matches List of matches
+  @param curMatch Current match
+  @return void
  */
-// int single_word_read_until_next_match(FILE *fp, list_t **matches_set, char **word_set, int SET_SIZE, int line_num);
+void display_prev_match(list_t* matches, match* curMatch);
 
-
-/** 
-  @brief Reads from a text file, append to the previous
-  @      particulat match list of the search term from the matches_set
-  @      but does not return the updated set
-  @param fp: pointer to the file to perform search on
-  @param matches_set: an array of existing match_list or NULL of the search term
-  @param word_set: an array of the search terms
-  @param SET_SIZE: number of search terms in word_set
-  @param line_num: the previous line of occurrence
-  @return this particular new match node
+/**
+  @brief Prints out the next match from list to std out
+  @param matches List of matches
+  @param curMatch Current match
+  @return void
  */
-//int read_until_next_match(FILE *fp, list_t **matches_set, char **word_set, int SET_SIZE, int line_num);
+void display_next_match(list_t* matches, match* curMatch);
 
 #endif /* _FULLTEXT_SEARCH_H_ */

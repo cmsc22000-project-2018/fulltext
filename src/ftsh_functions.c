@@ -1,6 +1,8 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
+#include "match.h"
+#include "simclist.h"
 
 /*
     List of builtin commands, followed by their corresponding functions.
@@ -49,11 +51,10 @@ int ftsh_find(char **args, FILE *pf)
     char * line = NULL;
     size_t len = 0;
     ssize_t read;*/
+    int const BUFFER_LENGTH = 100;
+    char *word = args[1]; 
     
-    char *word = args[1]; // word to search for
-    //int wordlen = strlen(word);
-
-    parse_file_buffered(pf, 1, 5, word);
+    parse_file_buffered(pf, 1, BUFFER_LENGTH, word);
 
     // search like 100 lines ?
 
@@ -62,13 +63,13 @@ int ftsh_find(char **args, FILE *pf)
     // while (STATUS) {
     //     printf("ftsh> ");
     //     input = fgets(buf, 100, stdin);
-        
+
     //     // exit find()
     //     if (!input) return 1;
-        
+
     //     // next match
     //     if (strncmp(buf, "next", 4) == 0) {
-            
+
     //         // if there is next match in linked list, print
 
     //         // if not, parse for 100 lines more, print out first match
@@ -83,27 +84,6 @@ int ftsh_find(char **args, FILE *pf)
 
 
     //  }
-
-    /* FIRST TRY TO GET ALL RESULTS */
-    // Christina's function/code
-    /*int found = -1;
-    while ((read = getline(&line, &len, pf)) != -1) {
-        char sanitized[strlen(line) + 1];
-        strcpy(sanitized, line);
-        
-        sanitized[strcspn(sanitized, "\r\n")] = 0;
-
-        char line2[strlen(sanitized)+1];
-        strcpy(line2, sanitized);
-        found = find_match(sanitized, word, 1, 1);
-            
-        while (found != -1 && found + wordlen < read) {
-            char again[strlen(sanitized)+1-found + wordlen];
-            strncpy(again, line2+found+wordlen, strlen(line2)-found-wordlen);
-            memset(sanitized, ' ', found + wordlen);
-            found = find_match(sanitized, word, found + wordlen+1, 1);
-        }
-    }*/
 
     return 1;
 
@@ -128,6 +108,6 @@ int ftsh_execute(char **args, FILE *pf)
             return (*builtin_func[i])(args, pf);
         }
     }
-  
+
     return 0;
 }

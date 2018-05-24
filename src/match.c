@@ -82,6 +82,7 @@ match* prev_match(match* match, list_t* matches)
     int size = list_size(matches);
     return list_get_at(matches, ((rc - 1) + size) % size);
 }
+
 //changed inputs, return type
 void insert_at(match* newMatch, int index, list_t* matches)
 {
