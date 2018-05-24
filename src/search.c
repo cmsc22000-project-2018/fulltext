@@ -40,8 +40,6 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
 list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, list_t* matches)
 {
-    // logging
-    // printf("printing from lines %d to %d\n", start_line, end_line);
 
     char* line = NULL;
     int wordlen = strlen(word);
@@ -79,11 +77,12 @@ void display_prev_match(list_t* matches, match* curMatch)
     2. get prev match (if curr match index = 0, go to last match)
     3. print out match details
     */
+    
     match* prevMatch = prev_match(curMatch, matches);
 
     if (get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");
 
-    printf("match: %s position %d line %d\n", prevMatch->word, prevMatch->position, prevMatch->line);
+    display_match(prevMatch);
 
 }
 
@@ -94,11 +93,12 @@ void display_next_match(list_t* matches, match* curMatch)
     2. if pointer is NULL or (if wrap-around happened & EOF has not been reached yet), parse more
     3. else, print out match details
     */
+
     match* nextMatch = next_match(curMatch, matches);
     if (list_empty(matches) == 0 || get_index(nextMatch, matches) == 0) {
-        printf("gotta read more in\n");
+
     } else {
-        printf("match: %s position %d line %d\n", nextMatch->word, nextMatch->position, nextMatch->line);
+        display_match(nextMatch);
     }
 
 }
