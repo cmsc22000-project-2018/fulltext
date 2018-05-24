@@ -125,4 +125,11 @@ int get_index(match* match, list_t* matches);
 */
 void info_list(list_t* matches);
 
+/** 
+  @brief Displays the info of a match
+  @param match: a match to print
+  @return void
+*/
+void display_match(match* match);
+
 #endif /* _FULLTEXT_MATCH_H_ */

@@ -10,14 +10,14 @@ match* new_match(char* word, int line, int position)
 {
     match* m = malloc(sizeof(match *));
     int rc;
-    if (m == NULL) 
+    if (m == NULL)
     {
         printf("could not allocate memory for match\n");
         return NULL;
     }
-    
+
     rc = init_match(m, word, line, position);
-    if (rc != 0) 
+    if (rc != 0)
     {
         printf("Could not init match word %s on line %d position %d\n", word, line, position);
         return NULL;
@@ -28,37 +28,37 @@ match* new_match(char* word, int line, int position)
 
 int init_match(match* match, char* word, int line, int position)
 {
-    if(match == NULL) return -1;
+    if (match == NULL) return -1;
 
-    match->word = word;
+    match->word = strdup(word);
     match->line = line;
     match->position = position;
-    
+
     return 0;
 }
 
 int free_match(match* match)
 {
-    if(match == NULL) return -1;
+    if (match == NULL) return -1;
     free(match);
     return 0;
 }
 
 char* get_word(match* match)
 {
-    if(match == NULL) return NULL;
+    if (match == NULL) return NULL;
     return match->word;
 }
 
 int get_line(match* match)
 {
-    if(match == NULL) return -1;
+    if (match == NULL) return -1;
     return match->line;
 }
 
 int get_position(match* match)
 {
-    if(match == NULL) return -1;
+    if (match == NULL) return -1;
     return match->position;
 }
 
@@ -85,7 +85,7 @@ match* prev_match(match* match, list_t* matches)
 //changed inputs, return type
 void insert_at(match* newMatch, int index, list_t* matches)
 {
-    if (index > (int) (list_size(matches) - 1)) 
+    if (index > (int) (list_size(matches) - 1))
     {
         list_append(matches, newMatch);
     }
@@ -105,7 +105,7 @@ void append_(match* newMatch, list_t* matches)
 //changed inputs, return type
 void remove_at(int index, list_t* matches)
 {
-    list_delete_at(matches, index);  
+    list_delete_at(matches, index);
 }
 
 //changed inputs
@@ -125,26 +125,25 @@ int get_index(match* match, list_t* matches)
 
 void info_list(list_t* l)
 {
-    printf("... displaying info about list ...\n");
-    printf("The  list now holds %u elements.\n", \
-            list_size(l));
     printf("\n");
+    printf("... displaying info about list ...\n");
+    printf("The  list now holds %u elements:\n", list_size(l));
+    
     list_iterator_start(l);               /* starting an iteration "session" */
-    while (list_iterator_hasnext(l)) {   // tell whether more values available 
-        printf("%d\n", *(int *)list_iterator_next(l)); /* get the next value */
+    
+    while (list_iterator_hasnext(l)) {   // tell whether more values available
+        match cur = *(match *)list_iterator_next(l); /* get the next value */
+        display_match(&cur);
     }
+
     list_iterator_stop(l);                 /* ending the iteration "session" */
+    
     printf("... finished ...\n");
 }
 
-//just for testing
-void pretty_print(list_t* l)
+void display_match(match* match)
 {
-    printf("\n");
-    list_iterator_start(l);               /* starting an iteration "session" */
-    while (list_iterator_hasnext(l)) { /* tell whether more values available */
-        printf("%d\n", *(int *)list_iterator_next(l)); /* get the next value */
-    }
-    list_iterator_stop(l);                 /* ending the iteration "session" */
-    printf("\n");
+    printf("> word: %s\n", get_word(match));
+    printf("  line [%d]\n", get_line(match));
+    printf("   pos: %d\n", get_position(match));
 }

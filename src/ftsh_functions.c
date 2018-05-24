@@ -54,13 +54,12 @@ int ftsh_find(char **args, FILE *pf)
 
     int const BUFFER_LENGTH = 100;
     char *word = args[1]; 
-    list_t* matches = NULL;
-    list_init(matches);
+    list_t matches;
+    list_init(&matches);
 
-    matches = parse_file_buffered(pf, 1, BUFFER_LENGTH, word, matches);
+    matches = *parse_file_buffered(pf, 1, BUFFER_LENGTH, word, &matches);
 
-    info_list(matches);
-
+    info_list(&matches);
     // print 1st match from linked list using display_match()
 
     // while (STATUS) {

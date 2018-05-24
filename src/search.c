@@ -7,26 +7,26 @@
 #include <stddef.h>
 #include "search.h"
 
-match* find_match(char* line, char* word, int pos_start, int lineNum)
+int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches)
 {
-    if (strlen(word) > strlen(line)) return NULL;
+    if (strlen(word) > strlen(line)) return -1;
 
     char* line2 = line;
     int pos = pos_start;
     char* token = strtok_r(line2, " ,.!?\r\t\n", &line2);
     match* foundMatch = NULL;
-    
+
     while (token != NULL) {
 
         if (strcmp(token, word) == 0) {
-            
-            // create match
-            foundMatch = new_match(token, lineNum, pos); // token or word variable?
+
+            foundMatch = new_match(word, lineNum, pos);
+            append_(foundMatch, matches);
 
             // logging
-            // printf("match found: %s at pos %d line %d\n", token, pos, lineNum);
+            printf("match found: %s at pos %d line %d\n", token, pos, lineNum);
 
-            return foundMatch;
+            return pos;
         }
 
         pos += strlen(token) + 1;
@@ -34,26 +34,24 @@ match* find_match(char* line, char* word, int pos_start, int lineNum)
 
     }
 
-    return foundMatch;
+    return -1;
 
 }
 
 list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, list_t* matches)
 {
     // logging
-    printf("printing from lines %d to %d\n", start_line, end_line);
+    // printf("printing from lines %d to %d\n", start_line, end_line);
 
     char* line = NULL;
     int wordlen = strlen(word);
     size_t len = 0;
     ssize_t read;
 
-    match* found = NULL;
+    int found = -1;
     int lineNum = start_line;
 
     while (lineNum <= end_line && (read = getline(&line, &len, pf)) != -1) {
-        // logging
-        // printf("\nline %d: %s", lineNum, line);
 
         char sanitized[strlen(line) + 1];
         strcpy(sanitized, line);
@@ -61,26 +59,20 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
 
         char line2[strlen(sanitized) + 1];
         strcpy(line2, sanitized);
-        found = find_match(sanitized, word, 1, lineNum);
+        found = find_match(sanitized, word, 1, lineNum, matches);
 
-        while (found != NULL && get_position(found) + wordlen < read) {
-            // memset(sanitized, ' ', found + wordlen);
-            found = find_match(sanitized, word, get_position(found) + wordlen + 2, lineNum);
+        while (found != -1 && found + wordlen < read) {
+            memset(sanitized, ' ', found + wordlen);
+            found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
         }
 
-        /* Match found */
-        if (found != NULL) {
-            printf("%s\n", get_word(found));
-            append_(found, matches);
-        }
-        
         lineNum++;
     }
 
     return matches;
 }
 
-void display_prev_match(list_t* matches, match* curMatch) 
+void display_prev_match(list_t* matches, match* curMatch)
 {
     /*
     1. get list and pointer to curr match
@@ -88,7 +80,7 @@ void display_prev_match(list_t* matches, match* curMatch)
     3. print out match details
     */
     match* prevMatch = prev_match(curMatch, matches);
-    
+
     if (get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");
 
     printf("match: %s position %d line %d\n", prevMatch->word, prevMatch->position, prevMatch->line);
