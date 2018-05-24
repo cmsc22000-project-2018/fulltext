@@ -5,7 +5,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stddef.h>
-#include "simclist.c"
+//#include "simclist.c"
 #include "simclist.h"
 #include "match.h"
 
@@ -28,6 +28,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum)
 
 void parse_file_buffered(FILE* fp, int start_line, int end_line, char* word)
 {
+    printf("printing from lines %d to %d\n", start_line, end_line);
     char * line = NULL;
     size_t len = 0;
     ssize_t read;
@@ -49,11 +50,29 @@ void parse_file_buffered(FILE* fp, int start_line, int end_line, char* word)
         found = find_match(sanitized, word, 1, lineNum);
         while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
-            found = find_match(sanitized, word, found + wordlen + 1, lineNum);
+            found = find_match(sanitized, word, found + wordlen + 2, lineNum);
         }
         lineNum++;
         printf("---------------------\n");
     }
+}
+
+void display_next_match(list_t* matches, match* curMatch)
+{
+/*
+1. get list and pointer to current match
+2. if pointer is NULL, parse more
+3. else, print out match details
+*/
+    /*match* newMatch = next_match(curMatch, matches);
+    if (list_empty(matches) == 0) || get_index(newMatch, matches) == 0)
+    {
+        printf("gotta read more in\n");
+    }
+    else
+    {
+        printf("match: %s position %d line %d\n", newMatch->word, newMatch->position, newMatch->line);
+    }*/
 }
 
 // // see search.h

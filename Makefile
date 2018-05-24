@@ -7,7 +7,7 @@ LDLIBS = -lreadline
 RM = rm -rf
 
 LIB = libtrie.so
-CFLAGS = -g -O2 -Wall -Wextra -I ./include/ -I ./src/ -fPIC `pkg-config --cflags --libs glib-2.0`
+CFLAGS = -g -O2 -Wall -Wextra -I ./include/ -I ./src/ -fPIC
 
 MT_SRCS = src/trie.c
 MT_OBJS = src/trie.o

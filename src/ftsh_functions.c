@@ -42,16 +42,18 @@ int ftsh_exit(char **args, FILE *pf)
 
 int ftsh_find(char **args, FILE *pf)
 {
-    int STATUS = 1;
+    /*int STATUS = 1;
     char buf[100];
     char *input;
 
     char * line = NULL;
     size_t len = 0;
-    ssize_t read;
+    ssize_t read;*/
     
     char *word = args[1]; // word to search for
-    int wordlen = strlen(word);
+    //int wordlen = strlen(word);
+
+    parse_file_buffered(pf, 1, 5, word);
 
     // search like 100 lines ?
 
@@ -84,7 +86,7 @@ int ftsh_find(char **args, FILE *pf)
 
     /* FIRST TRY TO GET ALL RESULTS */
     // Christina's function/code
-    int found = -1;
+    /*int found = -1;
     while ((read = getline(&line, &len, pf)) != -1) {
         char sanitized[strlen(line) + 1];
         strcpy(sanitized, line);
@@ -93,15 +95,15 @@ int ftsh_find(char **args, FILE *pf)
 
         char line2[strlen(sanitized)+1];
         strcpy(line2, sanitized);
-        found = find_match(sanitized, word, 0);
+        found = find_match(sanitized, word, 1, 1);
             
         while (found != -1 && found + wordlen < read) {
             char again[strlen(sanitized)+1-found + wordlen];
             strncpy(again, line2+found+wordlen, strlen(line2)-found-wordlen);
             memset(sanitized, ' ', found + wordlen);
-            found = find_match(sanitized, word, found + wordlen+1);
+            found = find_match(sanitized, word, found + wordlen+1, 1);
         }
-    }
+    }*/
 
     return 1;
 

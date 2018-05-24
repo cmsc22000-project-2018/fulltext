@@ -11,7 +11,9 @@
 #include <unistd.h>
 
 
-int find_match(char* line, char* word, int pos_start);
+int find_match(char* line, char* word, int pos_start, int line_num);
+
+void parse_file_buffered(FILE* fp, int start_line, int end_line, char* word);
 
 /** 
   @brief Reads from a text file, append to the previous
