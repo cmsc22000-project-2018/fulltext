@@ -118,4 +118,11 @@ match* get_at_index(int index, list_t* matches);
 */
 int get_index(match* match, list_t* matches);
 
+/** 
+  @brief Displays information about list used for testing
+  @param matches: dll of matches
+  @return void
+*/
+void info_list(list_t* matches);
+
 #endif /* _FULLTEXT_MATCH_H_ */

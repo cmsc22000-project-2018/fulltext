@@ -8,9 +8,8 @@
 
 match* new_match(char* word, int line, int position)
 {
-    match* m = malloc(sizeof(match));
+    match* m = malloc(sizeof(match *));
     int rc;
-    
     if (m == NULL) 
     {
         printf("could not allocate memory for match\n");
@@ -122,6 +121,20 @@ int get_index(match* match, list_t* matches)
 {
     int position = list_locate(matches, match);
     return position;
+}
+
+void info_list(list_t* l)
+{
+    printf("... displaying info about list ...\n");
+    printf("The  list now holds %u elements.\n", \
+            list_size(l));
+    printf("\n");
+    list_iterator_start(l);               /* starting an iteration "session" */
+    while (list_iterator_hasnext(l)) {   // tell whether more values available 
+        printf("%d\n", *(int *)list_iterator_next(l)); /* get the next value */
+    }
+    list_iterator_stop(l);                 /* ending the iteration "session" */
+    printf("... finished ...\n");
 }
 
 //just for testing
