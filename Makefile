@@ -25,7 +25,7 @@ $(LIB): $(MT_OBJS)
 	$(CC) -shared $(MT_OBJS) -o $(LIB)
 
 $(MT_OBJS): $(MT_SRCS)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $< -c -o $@
  
 .PHONY: match
 match:
