@@ -90,14 +90,15 @@ void display_prev_match(list_t* matches, match* curMatch)
     3. print out match details
     */
 
-    match* prevMatch = prev_match(curMatch, matches);
-
     if (get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");
 
-    display_match(prevMatch);
+    curMatch = prev_match(curMatch, matches);
+    
+    display_match(curMatch);
 
 }
 
+/* NEEDS FIX */
 void display_next_match(list_t* matches, match* curMatch)
 {
     /*
@@ -106,11 +107,17 @@ void display_next_match(list_t* matches, match* curMatch)
     3. else, print out match details
     */
 
-    match* nextMatch = next_match(curMatch, matches);
-    if (list_empty(matches) == 0 || get_index(nextMatch, matches) == 0) {
+    curMatch = next_match(curMatch, matches);
+    if (get_index(curMatch, matches) == 0) {
+        printf("...wrap-around to first match found...\n");
+        // parse more
+        // if EOF has been reached (how do we know that?),
+        //  we say ...wrap-around to first match found...
+        // else
+        //  display next match
 
     } else {
-        display_match(nextMatch);
+        display_match(curMatch);
     }
 
 }

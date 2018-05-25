@@ -146,7 +146,7 @@ void info_list(list_t* l)
 {
     printf("\n");
     printf("... displaying info about list ...\n");
-    printf("The  list now holds %u elements:\n", list_size(l));
+    printf("The list now holds %u elements:\n", list_size(l));
 
     list_iterator_start(l);               /* starting an iteration "session" */
 
@@ -162,9 +162,13 @@ void info_list(list_t* l)
 
 int display_match(match* match)
 {
-    printf("> word: %s\n", get_word(match));
-    printf("  [%d]: %s\n", get_line_num(match), get_line(match));
-    printf("   pos: %d\n", get_position(match));
+    if (match != NULL) {
+        printf("> word: %s\n", get_word(match));
+        printf("  [%d]: %s\n", get_line_num(match), get_line(match));
+        printf("   pos: %d\n", get_position(match));
+        return 1;
+    }
 
-    return 1;
+    printf("Match is empty\n");
+    return -1;
 }

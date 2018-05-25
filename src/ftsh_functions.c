@@ -48,42 +48,53 @@ int ftsh_find(char **args, FILE *pf)
     char buf[100];
     char *input;
 
-    int const BUFFER_LENGTH = 100;
+    int start_line = 1;
+    int BUFFER_LENGTH = 100;
     char *word = args[1]; 
+    
+    match curMatch;
     list_t matches;
     list_init(&matches);
 
-    matches = *parse_file_buffered(pf, 1, BUFFER_LENGTH, word, &matches);
+    
+    /* Finding first match at minimum */
+    while (list_size(&matches) == 0 && fgetc(pf) != EOF) {
+        matches = *parse_file_buffered(pf, start_line, \
+            (start_line + BUFFER_LENGTH), word, &matches);
 
+        start_line += BUFFER_LENGTH;
+
+        if (fgetc(pf) == EOF && list_size(&matches) == 0) {
+            printf("No matches for %s have been found.\n", word);
+            return 1;
+        }   
+    }
+    
+    curMatch = *get_at_index(0, &matches);
+    
+    display_match(&curMatch);
     info_list(&matches);
+    
+    /* NEEDS FIX */
+    while (STATUS) {
+        printf("ftsh> ");
+        input = fgets(buf, 5, stdin);
+           
+        // exit find()
+        if (!input || strncmp(input, "exit", 5) == 0) exit(1);
 
+        // next match
+        if (strncmp(input, "next", 5) == 0) {
+            display_match(&curMatch);
+            display_next_match(&matches, &curMatch);
 
-    // print 1st match from linked list using display_match()
+        } else if (strncmp(input, "prev", 5) == 0) {
 
-    // while (STATUS) {
-    //     printf("ftsh> ");
-    //     input = fgets(buf, 100, stdin);
+            display_prev_match(&matches, &curMatch);
 
-    //     // exit find()
-    //     if (!input) return 1;
+        }
 
-    //     // next match
-    //     if (strncmp(buf, "next", 4) == 0) {
-
-    //         // if there is next match in linked list, print
-
-    //         // if not, parse for 100 lines more, print out first match
-
-    //         // if end of file is reached, print file searched. and print first match
-
-    //     } else if (strncmp(buf, "prev", 4) == 0) {
-
-    //         // print previous match in ll
-
-    //     }
-
-
-    //  }
+     }
 
     return 1;
 

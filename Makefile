@@ -1,6 +1,6 @@
 # .RECIPEPREFIX +=
 CC = gcc
-SRCS = src/ftsh.c src/ftsh_functions.c src/search.c src/match.c
+SRCS = src/ftsh.c src/ftsh_functions.c src/search.c src/match.c 
 OBJS = $(SRCS:.c=.o)
 FTSH_BIN = ftsh
 LDLIBS = -lreadline
