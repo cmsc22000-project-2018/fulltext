@@ -1,15 +1,15 @@
-#ifndef _FULLTEXT_FTSH_FUNCTIONS_H
-#define _FULLTEXT_FTSH_FUNCTIONS_H
+#ifndef _FULLTEXT_FTSH_FUNCTIONS_H_
+#define _FULLTEXT_FTSH_FUNCTIONS_H_
 
 /***************************************************************************//**
 
-	@file         ftsh_functions.h
+    @file         ftsh_functions.h
 
-	@author       Max Bronckers
+    @author       Max Bronckers
 
-	@date         15 May 2018
+    @date         15 May 2018
 
-	@brief        FTSH supported commandss
+    @brief        FTSH supported commandss
 
 *******************************************************************************/
 
@@ -37,7 +37,7 @@ int ftsh_exit(char **args, FILE *pf);
 
 
 /**
-    @brief Builtin command: find 
+    @brief Builtin command: find
            Finds the matched words in the loaded file.
     @param args List of args.
     @param pf Pointer to text file.

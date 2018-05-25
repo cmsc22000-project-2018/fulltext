@@ -1,7 +1,7 @@
 CC = gcc
 
 # Add any files that need to be compiled into the executable below in SRCS
-SRCS = src/ftsh.c src/ftsh_functions.c src/search.c
+SRCS = src/ftsh.c src/ftsh_functions.c src/search.c src/match.c
 OBJS = $(SRCS:.c=.o)
 BIN = ftsh
 CFLAGS = -g -O2 -Wall -std=c99 -I ./include/ -I ./src/ -fPIC `pkg-config --cflags --libs glib-2.0`

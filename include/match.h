@@ -1,34 +1,49 @@
 #ifndef _FULLTEXT_MATCH_H_
 #define _FULLTEXT_MATCH_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <assert.h>
+#include <stddef.h>
 #include "simclist.h"
 
 /* Match struct */
 typedef struct {
     char* word;
-    int line;
+    int lineNum;
     int position;
-} match; 
+    char* line;
+} match;
 
 /**
   @brief Creates new match.
   @param word: the match string. 
-  @param line: the line the match is on
+  @param lineNum: the lineNum the match is on
   @param position: the position of the match
   @return a pointer to the match.
 */
-match* new_match(char* word, int line, int position);
+match* new_match(char* word, int lineNum, int position, char* line);
 
 /** 
   @brief Initializes the match.
   @param match: pointer to match. 
   @param word: the match string. 
-  @param line: the line the match is on
+  @param lineNum: the lineNum the match is on
   @param position: the position of the match
   @return 0 for success
 */
-int init_match(match* match, char* word, int line, int position);
+int init_match(match* match, char* word, int lineNum, int position, char* line);
 
+/**
+ @brief Sets line for match
+ @param match: pointer to match
+ @param line: pointer to line
+ @return 0 for success
+ @return -1 for failure
+ */
+int set_line(match* match, char* line);
 /** 
   @brief Frees match 
   @param match: pointer to match
@@ -45,11 +60,11 @@ int free_match(match* match);
 char* get_word(match* match);
 
 /** 
-  @brief Returns the line number of match struct 
+  @brief Returns the lineNum number of match struct 
   @param match: pointer to match
-  @return int representing line number
+  @return int representing lineNum number
 */
-int get_line(match* match);
+int get_line_num(match* match);
 
 /** 
   @brief Returns the position number of match struct 
@@ -57,6 +72,13 @@ int get_line(match* match);
   @return int representing position
 */
 int get_position(match* match);
+
+/** 
+  @brief Returns the string in which match was found
+  @param match: pointer to match
+  @return line string in match struct
+*/
+char* get_line(match* match);
 
 /** 
   @brief Goes to next item in linked list 
@@ -111,5 +133,40 @@ match* get_at_index(int index, list_t* matches);
   @return int index of match, or negative if not found
 */
 int get_index(match* match, list_t* matches);
+
+/** 
+  @brief Displays information about list used for testing
+  @param matches: dll of matches
+  @return void
+*/
+void info_list(list_t* matches);
+
+/**
+  @brief Prints color red in terminal
+  @return void
+ */
+void red();
+
+/**
+  @brief Prints default color in terminal
+  @return void
+ */
+void def();
+
+/**
+  @brief Prints line in which match is found with color support
+  @param match Match that is printed
+  @return void
+ */
+void print_line(match* match);
+
+
+/** 
+  @brief Displays the info of a match
+  @param match: a match to print
+  @return 1 success
+  @return -1 failure
+*/
+int display_match(match* match);
 
 #endif /* _FULLTEXT_MATCH_H_ */
