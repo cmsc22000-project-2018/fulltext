@@ -17,6 +17,7 @@ typedef struct {
     char* line;
 } match;
 
+
 /**
   @brief Creates new match.
   @param word: the match string. 
