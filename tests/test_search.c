@@ -9,11 +9,31 @@
 #include "simclist.h"
 
 /* Testing find_match() function */
-Test(search, find_existent_match)
+// Checks if the pos returned from find_match() is correct
+void check_find_match_pos()
 {
 
 }
 
+// Checks if the append to list is correctedly performed
+void check_find_match_matches()
+{
+
+}
+
+// Cases where there is a single match in line
+Test(search, find_one_existent_match)
+{
+
+}
+
+// Cases where there are multiple matches in line
+Test(search, find_one_existent_match)
+{
+
+}
+
+// Cases where there is no match in line
 Test(search, find_nonexistent_match)
 {
 
