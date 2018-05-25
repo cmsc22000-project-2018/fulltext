@@ -1,5 +1,6 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
+#include "search.h"
 
 
 char** ftsh_get_input(char *input) {
@@ -15,7 +16,7 @@ char** ftsh_get_input(char *input) {
     }
 
     /* Exit on Ctrl-D */
-    if (input == NULL) {  
+    if (input == NULL) {
         printf("\n");
         exit(0);
     }
@@ -24,7 +25,7 @@ char** ftsh_get_input(char *input) {
 
     while (parsed != NULL) {
         args[index++] = parsed;
-        parsed = strtok(NULL, separator); 
+        parsed = strtok(NULL, separator);
     }
 
     args[index] = NULL;
@@ -59,23 +60,28 @@ char* get_path(int argc, char **argv) {
 
 int main(int argc, char **argv)
 {
+
     // Config
     char* path = get_path(argc, argv);
+    if (argc == 1 || path == NULL) {
+    	printf("Usage: ./ftsh <text_search_file>\n");
+    	exit(0);
+    }
     FILE *pf = fopen(path, "r");
     int mode = 1;
 
     if (pf == NULL) {
         perror("File could not be opened");
         exit(1);
-    }    
-    
+    }
+
     // Interactive mode
     if (mode == 1) {
         printf("...starting interactive mode...\n");
         sleep(1);
         ftsh_loop(pf);
     }
-    
+
     // Batch mode
     if (!mode) {
         printf("To be implemented.\n");
