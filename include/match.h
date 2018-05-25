@@ -36,6 +36,14 @@ match* new_match(char* word, int lineNum, int position, char* line);
 */
 int init_match(match* match, char* word, int lineNum, int position, char* line);
 
+/**
+ @brief Sets line for match
+ @param match: pointer to match
+ @param line: pointer to line
+ @return 0 for success
+ @return -1 for failure
+ */
+int set_line(match* match, char* line);
 /** 
   @brief Frees match 
   @param match: pointer to match

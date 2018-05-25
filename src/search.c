@@ -28,7 +28,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
             /* Clean-up */
             free(dup);
-            
+
             /* Return */
             return pos;
         }
@@ -58,6 +58,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
         char sanitized[strlen(line) + 1];
         strcpy(sanitized, line);
         sanitized[strcspn(sanitized, "\r\n")] = 0;
+        char* dupLine = strdup(sanitized);
 
         char line2[strlen(sanitized) + 1];
         strcpy(line2, sanitized);
@@ -66,9 +67,16 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
         while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
             found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
+            
+            if (strcmp(sanitized, dupLine) != 0) {
+                match* foundMatch = get_at_index(list_size(matches) - 1, matches);
+                set_line(foundMatch, dupLine);
+            }
+    
         }
 
         lineNum++;
+        free(dupLine);
     }
 
     return matches;

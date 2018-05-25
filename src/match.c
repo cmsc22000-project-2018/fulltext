@@ -34,19 +34,27 @@ int init_match(match* match, char* word, int lineNum, int position, char* line)
     match->lineNum = lineNum;
     match->position = position;
     match->line = strdup(line);
-    
+
+    return 0;
+}
+
+int set_line(match* match, char* line)
+{
+    if (match == NULL) return -1;
+
+    match->line = strdup(line);
     return 0;
 }
 
 int free_match(match* match)
 {
     if (match == NULL) return -1;
-    
+
     if (match->word != NULL) free(match->word);
     if (match->line != NULL) free(match->line);
-    
+
     free(match);
-    
+
     return 0;
 }
 char* get_word(match* match)
@@ -60,7 +68,6 @@ char* get_line(match* match)
     if (match == NULL) return NULL;
     return match->line;
 }
-
 
 int get_line_num(match* match)
 {
@@ -140,23 +147,23 @@ void info_list(list_t* l)
     printf("\n");
     printf("... displaying info about list ...\n");
     printf("The  list now holds %u elements:\n", list_size(l));
-    
+
     list_iterator_start(l);               /* starting an iteration "session" */
-    
+
     while (list_iterator_hasnext(l)) {   // tell whether more values available
         match cur = *(match *)list_iterator_next(l); /* get the next value */
         display_match(&cur);
     }
 
     list_iterator_stop(l);                 /* ending the iteration "session" */
-    
+
     printf("... finished ...\n");
 }
 
 int display_match(match* match)
 {
     printf("> word: %s\n", get_word(match));
-    printf("  line [%d]: %s\n", get_line_num(match), get_line(match));
+    printf("  [%d]: %s\n", get_line_num(match), get_line(match));
     printf("   pos: %d\n", get_position(match));
 
     return 1;
