@@ -141,6 +141,26 @@ int get_index(match* match, list_t* matches);
 */
 void info_list(list_t* matches);
 
+/**
+  @brief Prints color red in terminal
+  @return void
+ */
+void red();
+
+/**
+  @brief Prints default color in terminal
+  @return void
+ */
+void def();
+
+/**
+  @brief Prints line in which match is found with color support
+  @param match Match that is printed
+  @return void
+ */
+void print_line(match* match);
+
+
 /** 
   @brief Displays the info of a match
   @param match: a match to print
