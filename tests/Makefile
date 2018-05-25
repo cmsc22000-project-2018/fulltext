@@ -9,7 +9,7 @@ BIN = test-fulltext
 LDLIBS = -lcriterion -lfulltext -lglib-2.0 -lreadline
 
 # Add your test file below in SRCS
-SRCS = main.c test_ftsh.c test_match.c test_search.c test_trie.c
+SRCS = main.c test_ftsh.c test_match.c test_search.c 
 OBJS = $(SRCS:.c=.o)
 
 # Add the src/c files that your test files depend on below in LIB_SRCS
@@ -35,5 +35,5 @@ $(LIB_BIN): $(LIB_OBJS)
 
 # Deletes all .o, .so, and bin files
 .PHONY: clean
-	clean:
-		-${RM} $(LIB_BIN) $(LIB_OBJS) ${OBJS} $(BIN)
+clean:
+	-${RM} $(LIB_BIN) $(LIB_OBJS) ${OBJS} $(BIN)
