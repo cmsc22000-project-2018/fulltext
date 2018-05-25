@@ -160,11 +160,44 @@ void info_list(list_t* l)
     printf("... finished ...\n");
 }
 
+
+/* See print.h */
+void red() {
+    printf("\033[1;31m");
+}
+
+/* See print.h */
+void def() {
+    printf("\033[0m");
+}
+
+void print_line(match* match)
+{
+	int i = 0;
+	int wl = 0;
+	
+	char* w = get_word(match);
+	char* s = get_line(match);
+
+	while (w[wl] != '\0') wl++;
+
+	while (s[i] != '\0') {
+      if (i == get_position(match)) red();
+      else if (i == get_position(match) + wl) def();
+
+      printf("%c", s[i]);
+      i++;
+   }
+
+   printf("\n");
+}
+
 int display_match(match* match)
 {
     if (match != NULL) {
         printf("> word: %s\n", get_word(match));
-        printf("  [%d]: %s\n", get_line_num(match), get_line(match));
+        printf("  [%d]: ", get_line_num(match));
+        print_line(match);
         printf("   pos: %d\n", get_position(match));
         return 1;
     }
@@ -172,3 +205,4 @@ int display_match(match* match)
     printf("Match is empty\n");
     return -1;
 }
+

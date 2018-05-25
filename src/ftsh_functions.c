@@ -23,7 +23,7 @@ int (*builtin_func[]) (char **, FILE *pf) = {
 
 int ftsh_help(char **args, FILE *pf)
 {
-    printf("...full-text search...\n");
+    printf("[FULL-TEXT SEARCH]\n");
     printf("Type program names and arguments, and hit enter.\n");
     printf("The following are built in:\n");
 
