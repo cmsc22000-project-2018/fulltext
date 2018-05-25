@@ -60,8 +60,13 @@ char* get_path(int argc, char **argv) {
 
 int main(int argc, char **argv)
 {
+
     // Config
     char* path = get_path(argc, argv);
+    if (argc == 1 || path == NULL) {
+    	printf("Usage: ./ftsh <text_search_file>\n");
+    	exit(0);
+    }
     FILE *pf = fopen(path, "r");
     int mode = 1;
 
