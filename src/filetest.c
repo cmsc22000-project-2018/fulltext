@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
       	    	save_fp = fp;
       	    }
             else {
-        	    printf("Reach EOF.\n");
+        	    printf("Reached.\n");
         	    exit(0);
             }
          }
