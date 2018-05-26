@@ -2,7 +2,7 @@
 #include "ftsh_functions.h"
 #include "search.h"
 #include "match.h"
-#include "simclist.h"
+#include "../src/simclist.h"
 
 /*
     List of builtin commands, followed by their corresponding functions.
