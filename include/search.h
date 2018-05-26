@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <unistd.h>
 #include "match.h"
-#include "simclist.h"
+#include "../src/simclist.h"
 
 /**
   @brief ...

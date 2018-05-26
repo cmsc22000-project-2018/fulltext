@@ -7,7 +7,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stddef.h>
-#include "simclist.h"
+#include "../src/simclist.h"
 
 /* Match struct */
 typedef struct {
