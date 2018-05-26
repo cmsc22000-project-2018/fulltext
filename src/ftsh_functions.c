@@ -70,10 +70,10 @@ int ftsh_find(char **args, FILE *pf)
         }   
     }
     
-    curMatch = *get_at_index(0, &matches);
+    curMatch = *match_get_at_index(0, &matches);
     
-    display_match(&curMatch);
-    info_list(&matches);
+    match_display(&curMatch);
+    list_info(&matches);
     
     /* NEEDS FIX */
     while (STATUS) {
