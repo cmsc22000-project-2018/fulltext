@@ -6,7 +6,7 @@
 
 /* See match.h for descriptions of functions */
 
-match* new_match(char* word, int lineNum, int position, char* line)
+match* match_new(char* word, int lineNum, int position, char* line)
 {
 	match* m = malloc(sizeof(match));
 	int rc;
@@ -16,7 +16,7 @@ match* new_match(char* word, int lineNum, int position, char* line)
 		return NULL;
 	}
 
-	rc = init_match(m, word, lineNum, position, line);
+	rc = match_init(m, word, lineNum, position, line);
 	if (rc != 0)
 	{
 		printf("Could not init match word %s on line [%d] position %d\n", word, lineNum, position);
@@ -26,7 +26,7 @@ match* new_match(char* word, int lineNum, int position, char* line)
 	return m;
 }
 
-int init_match(match* match, char* word, int lineNum, int position, char* line)
+int match_init(match* match, char* word, int lineNum, int position, char* line)
 {
 	if (match == NULL) return -1;
 
@@ -38,7 +38,7 @@ int init_match(match* match, char* word, int lineNum, int position, char* line)
 	return 0;
 }
 
-int set_line(match* match, char* line)
+int match_set_line(match* match, char* line)
 {
 	if (match == NULL) return -1;
 
@@ -46,7 +46,7 @@ int set_line(match* match, char* line)
 	return 0;
 }
 
-int free_match(match* match)
+int match_free(match* match)
 {
 	if (match == NULL) return -1;
 
@@ -57,32 +57,32 @@ int free_match(match* match)
 
 	return 0;
 }
-char* get_word(match* match)
+char* match_get_word(match* match)
 {
 	if (match == NULL) return NULL;
 	return match->word;
 }
 
-char* get_line(match* match)
+char* match_get_line(match* match)
 {
 	if (match == NULL) return NULL;
 	return match->line;
 }
 
-int get_line_num(match* match)
+int match_get_line_num(match* match)
 {
 	if (match == NULL) return -1;
 	return match->lineNum;
 }
 
-int get_position(match* match)
+int match_get_position(match* match)
 {
 	if (match == NULL) return -1;
 	return match->position;
 }
 
 
-match* next_match(match* match, list_t* matches)
+match* match_next_match(match* match, list_t* matches)
 {
 	if (match == NULL) return NULL;
 	int rc = list_locate(matches, match);
@@ -92,7 +92,7 @@ match* next_match(match* match, list_t* matches)
 }
 
 
-match* prev_match(match* match, list_t* matches)
+match* match_prev_match(match* match, list_t* matches)
 {
 	if (match == NULL) return NULL;
 	int rc = list_locate(matches, match);
@@ -102,7 +102,7 @@ match* prev_match(match* match, list_t* matches)
 }
 
 
-void insert_at(match* newMatch, int index, list_t* matches)
+void match_insert_at(match* newMatch, int index, list_t* matches)
 {
 	if (index > (int) (list_size(matches) - 1))
 	{
@@ -116,19 +116,19 @@ void insert_at(match* newMatch, int index, list_t* matches)
 }
 
 
-void append_(match* newMatch, list_t* matches)
+void match_append_(match* newMatch, list_t* matches)
 {
 	list_append(matches, newMatch);
 }
 
 
-void remove_at(int index, list_t* matches)
+void match_remove_at(int index, list_t* matches)
 {
 	list_delete_at(matches, index);
 }
 
 
-match* get_at_index(int index, list_t* matches)
+match* match_get_at_index(int index, list_t* matches)
 {
 	if (list_size(matches) == 0) return NULL;
 	match* cur = list_get_at(matches, index);
@@ -136,13 +136,13 @@ match* get_at_index(int index, list_t* matches)
 }
 
 
-int get_index(match* match, list_t* matches)
+int match_get_index(match* match, list_t* matches)
 {
 	int position = list_locate(matches, match);
 	return position;
 }
 
-void info_list(list_t* l)
+void list_info(list_t* l)
 {
 	printf("\n");
 	printf("... displaying info about list ...\n");
@@ -161,17 +161,17 @@ void info_list(list_t* l)
 }
 
 
-void red() {
+void ftsh_set_color_red() {
 	printf("\033[1;31m");
 }
 
 
-void def() {
+void ftsh_reset_color() {
 	printf("\033[0m");
 }
 
 
-void print_line(match* match)
+void match_print_line(match* match)
 {
 	int i = 0;
 	int wl = 0;
@@ -193,7 +193,7 @@ void print_line(match* match)
 }
 
 
-int display_match(match* match)
+int match_display(match* match)
 {
 	if (match != NULL) {
 		printf("> word: %s\n", get_word(match));

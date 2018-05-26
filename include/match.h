@@ -24,7 +24,7 @@ typedef struct {
   @param position: the position of the match
   @return a pointer to the match.
 */
-match* new_match(char* word, int lineNum, int position, char* line);
+match* match_new(char* word, int lineNum, int position, char* line);
 
 /** 
   @brief Initializes the match.
@@ -34,7 +34,7 @@ match* new_match(char* word, int lineNum, int position, char* line);
   @param position: the position of the match
   @return 0 for success
 */
-int init_match(match* match, char* word, int lineNum, int position, char* line);
+int match_init(match* match, char* word, int lineNum, int position, char* line);
 
 /**
  @brief Sets line for match
@@ -43,42 +43,42 @@ int init_match(match* match, char* word, int lineNum, int position, char* line);
  @return 0 for success
  @return -1 for failure
  */
-int set_line(match* match, char* line);
+int match_set_line(match* match, char* line);
 /** 
   @brief Frees match 
   @param match: pointer to match
   @return -1 for failure
   @return 0 for success
 */
-int free_match(match* match);
+int match_free(match* match);
 
 /** 
   @brief Finds word in match struct 
   @param match: pointer to match
   @return string in match struct
 */
-char* get_word(match* match);
+char* match_get_word(match* match);
 
 /** 
   @brief Returns the lineNum number of match struct 
   @param match: pointer to match
   @return int representing lineNum number
 */
-int get_line_num(match* match);
+int match_get_line_num(match* match);
 
 /** 
   @brief Returns the position number of match struct 
   @param match: pointer to match
   @return int representing position
 */
-int get_position(match* match);
+int match_get_position(match* match);
 
 /** 
   @brief Returns the string in which match was found
   @param match: pointer to match
   @return line string in match struct
 */
-char* get_line(match* match);
+char* match_get_line(match* match);
 
 /** 
   @brief Goes to next item in linked list 
@@ -86,7 +86,7 @@ char* get_line(match* match);
   @param matches: doubly linked list (dll) of matches
   @return pointer to next match, or NULL if not found
 */
-match* next_match(match* match, list_t* matches);
+match* match_next_match(match* match, list_t* matches);
 
 /** 
  @brief Goes to previous item in linked list 
@@ -94,7 +94,7 @@ match* next_match(match* match, list_t* matches);
  @param matches: dll of matches
  @return pointer to previous match, or NULL if not found
 */
-match* prev_match(match* match, list_t* matches);
+match* match_prev_match(match* match, list_t* matches);
 
 /** 
   @brief Inserts at specific index in match struct 
@@ -102,21 +102,21 @@ match* prev_match(match* match, list_t* matches);
   @param index: index to insert the match into dll
   @param matches: dll of matches
  */
-void insert_at(match* newMatch, int index, list_t* matches);
+void match_insert_at(match* newMatch, int index, list_t* matches);
 
 /** 
   @brief Inserts at end of match struct 
   @param newMatch: pointer to new match struct
   @param matches: dll of matches
 */
-void append_(match* newMatch, list_t* matches);
+void match_append_(match* newMatch, list_t* matches);
 
 /** 
   @brief Removes at specific index in match struct 
   @param index: index of match to remove
   @param matches: dll of matches
 */
-void remove_at(int index, list_t* matches);
+void match_remove_at(int index, list_t* matches);
 
 /** 
   @brief Returns the match at the given index 
@@ -124,7 +124,7 @@ void remove_at(int index, list_t* matches);
   @param matches: dll of matches
   @return pointer of match at the index, or NULL if not found
 */
-match* get_at_index(int index, list_t* matches);
+match* match_get_at_index(int index, list_t* matches);
 
 /** 
   @brief Gets the index of current match 
@@ -132,33 +132,33 @@ match* get_at_index(int index, list_t* matches);
   @param matches: dll of matches
   @return int index of match, or negative if not found
 */
-int get_index(match* match, list_t* matches);
+int match_get_index(match* match, list_t* matches);
 
 /** 
   @brief Displays information about list used for testing
   @param matches: dll of matches
   @return void
 */
-void info_list(list_t* matches);
+void list_info(list_t* matches);
 
 /**
   @brief Prints color red in terminal
   @return void
  */
-void red();
+void ftsh_set_color_red();
 
 /**
   @brief Prints default color in terminal
   @return void
  */
-void def();
+void ftsh_reset_color();
 
 /**
   @brief Prints line in which match is found with color support
   @param match Match that is printed
   @return void
  */
-void print_line(match* match);
+void match_print_line(match* match);
 
 
 /** 
@@ -167,6 +167,6 @@ void print_line(match* match);
   @return 1 success
   @return -1 failure
 */
-int display_match(match* match);
+int match_display(match* match);
 
 #endif /* _FULLTEXT_MATCH_H_ */
