@@ -17,7 +17,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
     char* line2 = strdup(line);
     int pos = pos_start;
-    char* token = strtok_r(line2, " ,.!?\r\t\n", &line2);
+    char* token = strtok(line2, " ,.!?\r\t\n");
     match* foundMatch = NULL;
 
     while (token != NULL) {
@@ -36,7 +36,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
         }
 
         pos += strlen(token) + 1;
-        token = strtok_r(NULL, " ,.!?\r\t\n", &line2);
+        token = strtok(NULL, " ,.!?\r\t\n");
 
     }
 
