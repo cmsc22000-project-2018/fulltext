@@ -5,7 +5,9 @@
 #include <string.h>
 #include <assert.h>
 #include <stddef.h>
+#include <simclist.h>
 #include "search.h"
+#include "match.h"
 
 int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches)
 {
@@ -23,8 +25,8 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
         if (strcmp(token, word) == 0) {
 
             /* Config match */
-            foundMatch = new_match(token, lineNum, pos, dup);
-            append_(foundMatch, matches);
+            foundMatch = match_new(token, lineNum, pos, dup);
+            match_append_(foundMatch, matches);
 
             /* Clean-up */
             free(dup);
@@ -69,8 +71,8 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
             found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
             
             if (strcmp(sanitized, dupLine) != 0) {
-                match* foundMatch = get_at_index(list_size(matches) - 1, matches);
-                set_line(foundMatch, dupLine);
+                match* foundMatch = match_get_at_index(list_size(matches) - 1, matches);
+                match_set_line(foundMatch, dupLine);
             }
     
         }
@@ -90,11 +92,11 @@ void display_prev_match(list_t* matches, match* curMatch)
     3. print out match details
     */
 
-    if (get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");
+    if (match_get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");
 
-    curMatch = prev_match(curMatch, matches);
+    curMatch = match_prev(curMatch, matches);
     
-    display_match(curMatch);
+    match_display(curMatch);
 
 }
 
@@ -107,8 +109,8 @@ void display_next_match(list_t* matches, match* curMatch)
     3. else, print out match details
     */
 
-    curMatch = next_match(curMatch, matches);
-    if (get_index(curMatch, matches) == 0) {
+    curMatch = match_next(curMatch, matches);
+    if (match_get_index(curMatch, matches) == 0) {
         printf("...wrap-around to first match found...\n");
         // parse more
         // if EOF has been reached (how do we know that?),
@@ -117,7 +119,7 @@ void display_next_match(list_t* matches, match* curMatch)
         //  display next match
 
     } else {
-        display_match(curMatch);
+        match_display(curMatch);
     }
 
 }

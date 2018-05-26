@@ -85,7 +85,7 @@ int ftsh_find(char **args, FILE *pf)
 
         // next match
         if (strncmp(input, "next", 5) == 0) {
-            display_match(&curMatch);
+            match_display(&curMatch);
             display_next_match(&matches, &curMatch);
 
         } else if (strncmp(input, "prev", 5) == 0) {

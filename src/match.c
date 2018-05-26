@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "simclist.c"
 #include "simclist.h"
 #include "match.h"
@@ -82,7 +83,7 @@ int match_get_position(match* match)
 }
 
 
-match* match_next_match(match* match, list_t* matches)
+match* match_next(match* match, list_t* matches)
 {
 	if (match == NULL) return NULL;
 	int rc = list_locate(matches, match);
@@ -92,7 +93,7 @@ match* match_next_match(match* match, list_t* matches)
 }
 
 
-match* match_prev_match(match* match, list_t* matches)
+match* match_prev(match* match, list_t* matches)
 {
 	if (match == NULL) return NULL;
 	int rc = list_locate(matches, match);
@@ -152,7 +153,7 @@ void list_info(list_t* l)
 
 	while (list_iterator_hasnext(l)) {   // tell whether more values available
 		match cur = *(match *)list_iterator_next(l); /* get the next value */
-		display_match(&cur);
+		match_display(&cur);
 	}
 
 	list_iterator_stop(l);                 /* ending the iteration "session" */
@@ -176,14 +177,14 @@ void match_print_line(match* match)
 	int i = 0;
 	int wl = 0;
 
-	char* w = get_word(match);
-	char* s = get_line(match);
+	char* w = match_get_word(match);
+	char* s = match_get_line(match);
 
 	while (w[wl] != '\0') wl++;
 
 	while (s[i] != '\0') {
-		if (i == get_position(match) - 1) red();
-		else if (i == get_position(match) + wl) def();
+		if (i == match_get_position(match) - 1) ftsh_set_color_red();
+		else if (i == match_get_position(match) + wl) ftsh_reset_color();
 
 		printf("%c", s[i]);
 		i++;
@@ -196,10 +197,10 @@ void match_print_line(match* match)
 int match_display(match* match)
 {
 	if (match != NULL) {
-		printf("> word: %s\n", get_word(match));
-		printf("  [%d]: ", get_line_num(match));
-		print_line(match);
-		printf("   pos: %d\n", get_position(match));
+		printf("> word: %s\n", match_get_word(match));
+		printf("  [%d]: ", match_get_line_num(match));
+		match_print_line(match);
+		printf("   pos: %d\n", match_get_position(match));
 		return 1;
 	}
 

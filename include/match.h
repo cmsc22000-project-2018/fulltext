@@ -86,7 +86,7 @@ char* match_get_line(match* match);
   @param matches: doubly linked list (dll) of matches
   @return pointer to next match, or NULL if not found
 */
-match* match_next_match(match* match, list_t* matches);
+match* match_next(match* match, list_t* matches);
 
 /** 
  @brief Goes to previous item in linked list 
@@ -94,7 +94,7 @@ match* match_next_match(match* match, list_t* matches);
  @param matches: dll of matches
  @return pointer to previous match, or NULL if not found
 */
-match* match_prev_match(match* match, list_t* matches);
+match* match_prev(match* match, list_t* matches);
 
 /** 
   @brief Inserts at specific index in match struct 
