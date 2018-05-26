@@ -77,8 +77,10 @@ int main(int argc, char **argv)
 
     // Interactive mode
     if (mode == 1) {
+        /*
         printf("...starting interactive mode...\n");
         sleep(1);
+        */
         ftsh_loop(pf);
     }
 
