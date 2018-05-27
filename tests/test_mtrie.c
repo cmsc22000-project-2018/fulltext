@@ -13,7 +13,7 @@
 
 void check_is_key_in_trie(trie_t *unused, char *key, bool expected)
 {
-	bool result = is_key_in_trie(unused, key);
+        bool result = is_key_in_trie(unused, key);
 	cr_assert_eq(result, expected, 
 		"%s is %s trie but got %s",
                 key,
@@ -45,6 +45,7 @@ Test(trie, not_key_in_trie)
 
 char *get_inserted_key(trie_t *trie, char *key)
 {
+  
 	if (!trie || !trie->children) return NULL;
 	if (strcmp(key, "bee") == 0) {
 		if (trie->children[1]->children[0]->
@@ -59,8 +60,9 @@ char *get_inserted_key(trie_t *trie, char *key)
         		children[0]->value;
 	}
 	if (strcmp(key, "of") == 0) {
-		if (trie->children[2]->children[0])
-			return trie->children[2]->children[0]->value;
+		 if (trie->children[2]->children[0]){
+			 return trie->children[2]->children[0]->value;
+     }
 	}
 	if (strcmp(key, "o") == 0) {
 		if (trie->children[2])
@@ -73,12 +75,8 @@ void check_trie_insert(trie_t *trie, char *key, char *expected)
 {
 	trie = trie_insert(trie, key);
 	char *result = get_inserted_key(trie, key);
-	cr_assert_not_null(result, 
-		"inserted %s, expected %s, but got NULL",
-		key, expected);
-	cr_assert_str_eq(result, expected,
-		"inserted %s, expected %s, but got %s",
-		key, expected, result);
+	cr_assert_not_null(result, "inserted %s, expected %s, but got NULL", key, expected);
+	cr_assert_str_eq(result, expected,"inserted %s, expected %s, but got %s", key, expected, result);
 }
 
 Test(trie, insert_success)
@@ -191,7 +189,7 @@ void check_single_match(list_t matches, int index, char *expectedWord, int expec
 {
     match* aRet = list_get_at(&matches, index);
     cr_assert_str_eq(expectedWord, aRet->word, "Expected word %s but got %s", expectedWord, aRet->word);
-    cr_assert_eq(expectedLine, aRet->line,"Expected line %d but got %d", expectedLine, aRet->line);
+    cr_assert_eq(expectedLine, aRet->lineNum,"Expected line %d but got %d", expectedLine, aRet->lineNum);
 }
 
 void check_return_matches_listT(trie_t *trie, char *key, list_t *expected)
@@ -237,29 +235,29 @@ Test(trie, return_matches_integrated_w_match)
     list_init(&matches_b_be);
     list_init(&matches_be);
     
-    match *m_a = new_match("a", 1, 1);
-    match *m_an = new_match("an", 2, 1);
-    match *m_at = new_match("at", 2, 1);
-    match *m_and = new_match("and", 3, 1);
-    match *m_b = new_match("b", 1, 1);
-    match *m_be = new_match("be", 2, 1);
+    match *m_a = match_new("a", 1, 1, "a line");
+    match *m_an = match_new("an", 2, 1, "an line");
+    match *m_at = match_new("at", 2, 1, "at line");
+    match *m_and = match_new("and", 3, 1, "and line");
+    match *m_b = match_new("b", 1, 1, "b line");
+    match *m_be = match_new("be", 2, 1, "be line");
      
-    append_(m_a, &matches_a_an_at_and);
-    append_(m_an, &matches_a_an_at_and);
-    append_(m_at, &matches_a_an_at_and);
-    append_(m_and, &matches_a_an_at_and);
+    match_append_(m_a, &matches_a_an_at_and);
+    match_append_(m_an, &matches_a_an_at_and);
+    match_append_(m_at, &matches_a_an_at_and);
+    match_append_(m_and, &matches_a_an_at_and);
     
-    append_(m_an, &matches_an_and);
-    append_(m_and, &matches_an_and);
+    match_append_(m_an, &matches_an_and);
+    match_append_(m_and, &matches_an_and);
     
-    append_(m_and, &matches_and);
+    match_append_(m_and, &matches_and);
     
-    append_(m_at, &matches_at);
+    match_append_(m_at, &matches_at);
     
-    append_(m_b, &matches_b_be);
-    append_(m_be, &matches_b_be);
+    match_append_(m_b, &matches_b_be);
+    match_append_(m_be, &matches_b_be);
     
-    append_(m_be, &matches_be);
+    match_append_(m_be, &matches_be);
 
     check_return_matches_listT(&root, "a", &matches_a_an_at_and);
     check_return_matches_listT(&root, "an", &matches_an_and);

@@ -1,5 +1,5 @@
 /*
-  A trie data structure
+   A trie data structure
 */
 
 #include <stdlib.h>
@@ -9,10 +9,10 @@
 #include "utils.h"
 
 /* See trie.h */
-trie_t *new_trie(char current)
+trie_t *trie_new(char current)
 {
     trie_t *t = calloc(1,sizeof(trie_t));
-    
+
     if (t == NULL){
         error("Could not allocate memory for trie_t");
         return NULL;
@@ -49,21 +49,21 @@ int trie_free(trie_t *t)
 
 
 /* See trie.h */
-int add_node(char current, trie_t *t)
+int trie_add_node(trie_t *t, char current)
 {
     assert( t != NULL);
 
     unsigned c = (unsigned) current;
 
     if (t->children[c] == NULL)
-        t->children[c] = new_trie(current);
+        t->children[c] = trie_new(current);
 
     return 0;  
 
 }
 
 /* See trie.h */
-int insert_string(char *word, trie_t *t)
+int trie_insert_string(trie_t *t, char *word)
 {
     assert(t!=NULL);
 
@@ -75,23 +75,23 @@ int insert_string(char *word, trie_t *t)
 
         char curr = *word;
 
-        int rc = add_node(curr, t);
+        int rc = trie_add_node(t, curr);
         if (rc != 0){
             error("Fail to add_node");
             return 1;
         }
-        
+
         word++;
-        return insert_string(word, t->children[(unsigned)curr]);
+        return trie_insert_string(t->children[(unsigned)curr], word);
     }
 }
 
-int stringarray_to_trie(char **strarr, trie_t* t)
+int trie_from_stringarray(trie_t* t, char **strarr)
 {
     int ret = 0;
-    int i = 0;
+    int i;
     for (i = 0; strarr[i] != NULL; i++) {
-	ret = insert_string(strarr[i], t);
+        ret = trie_insert_string(t, strarr[i]);
         if (ret == 1) return 1;
     }
     return 0;
