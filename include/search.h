@@ -31,7 +31,7 @@ int find_match(char* line, char* word, int pos_start, int line_num, list_t* matc
   @brief Searches a file from line x to line y looking for given word
   @param pf Pointer to file
   @param start_line Start text line to search through
-  @param end_line Last text line to search through (inclusive)
+  @param end_line Last text line to search through (inclusive)w
   @param word Word to search for
   @param matches List of matches
   @return list of matches
