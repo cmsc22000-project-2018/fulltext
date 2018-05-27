@@ -8,65 +8,65 @@ Test(trie, new)
 {
     trie_t *t;
 
-    t = new_trie('c');
+    t = trie_new('c');
 
-    cr_assert_not_null(t, "new_trie() failed to allocate memory");
-    cr_assert_eq(t->current, 'c', "new_trie() failed to set current");
-    cr_assert_eq(t->is_word, 0, "new_trie() failed to set is_word");
+    cr_assert_not_null(t, "trie_new() failed to allocate memory");
+    cr_assert_eq(t->current, 'c', "trie_new() failed to set current");
+    cr_assert_eq(t->is_word, 0, "trie_new() failed to set is_word");
 }
 
 
-Test(trie, add_node_exists)
+Test(trie, trie_add_node_exists)
 {
     char n = 'n';
-    trie_t *t = new_trie('\0');
-    int rc = add_node(n,t);
+    trie_t *t = trie_new('\0');
+    int rc = trie_add_node(t,n);
 
-    cr_assert_eq(rc,0,"add_node failed");
-    cr_assert_not_null(t->children[(unsigned)n], "add_node failed to allocate new entry");
-    cr_assert_eq(t->children[(unsigned)n]->current,n, "add_node failed to set is_word for new trie");
-    cr_assert_eq(t->children[(unsigned)n]->is_word,0, "add_node failed to set is_word for new trie");
+    cr_assert_eq(rc,0,"trie_add_node failed");
+    cr_assert_not_null(t->children[(unsigned)n], "trie_add_node failed to allocate new entry");
+    cr_assert_eq(t->children[(unsigned)n]->current,n, "trie_add_node failed to set is_word for new trie");
+    cr_assert_eq(t->children[(unsigned)n]->is_word,0, "trie_add_node failed to set is_word for new trie");
 }
 
-Test(trie, add_node_new)
+Test(trie, trie_add_node_new)
 {
     char n = 'n';
-    trie_t *t = new_trie('\0');
+    trie_t *t = trie_new('\0');
 
-    int fc = add_node(n,t);
-    cr_assert_eq(fc,0,"add_node failed");
+    int fc = trie_add_node(t,n);
+    cr_assert_eq(fc,0,"trie_add_node failed");
 
-    int rc = add_node(n,t);
+    int rc = trie_add_node(t,n);
 
-    cr_assert_eq(rc,0,"add_node failed");
-    cr_assert_not_null(t->children[(unsigned)n], "add_node failed to allocate new entry");
-    cr_assert_eq(t->children[(unsigned)n]->current,n, "add_node failed to set is_word for new trie");
-    cr_assert_eq(t->children[(unsigned)n]->is_word,0, "add_node failed to set is_word for new trie");
+    cr_assert_eq(rc,0,"trie_add_node failed");
+    cr_assert_not_null(t->children[(unsigned)n], "trie_add_node failed to allocate new entry");
+    cr_assert_eq(t->children[(unsigned)n]->current,n, "trie_add_node failed to set is_word for new trie");
+    cr_assert_eq(t->children[(unsigned)n]->is_word,0, "trie_add_node failed to set is_word for new trie");
 }
 
-Test(trie, insert_string)
+Test(trie, trie_insert_string)
 {
-    char* s1 = strdup("an");
-    char* s2 = strdup("anti");
-    char* s3 = strdup("ants");
-    trie_t *t = new_trie('\0');
+    char* s1 = "an";
+    char* s2 = "anti";
+    char* s3 = "ants";
+    trie_t *t = trie_new('\0');
 
-    int r1 = insert_string(s1,t);
-    cr_assert_eq(r1,0,"insert_string failed");   
-    cr_assert_not_null(t->children['a'], "add_node failed to allocate new entry");
-    cr_assert_eq(t->children['a']->is_word,0, "add_node failed to set is_word for new trie");
-    cr_assert_not_null(t->children['a']->children['n'] , "add_node failed to allocate new entry");
-    cr_assert_eq(t->children['a']->children['n']->is_word,1, "insert_string failed to set is_word for end character");
+    int r1 = trie_insert_string(t,s1);
+    cr_assert_eq(r1,0,"trie_insert_string failed");   
+    cr_assert_not_null(t->children['a'], "trie_add_node failed to allocate new entry");
+    cr_assert_eq(t->children['a']->is_word,0, "trie_add_node failed to set is_word for new trie");
+    cr_assert_not_null(t->children['a']->children['n'] , "trie_add_node failed to allocate new entry");
+    cr_assert_eq(t->children['a']->children['n']->is_word,1, "trie_insert_string failed to set is_word for end character");
 
-    int r2 = insert_string(s2,t);
-    cr_assert_eq(r2,0,"insert_string failed");
-    cr_assert_eq(t->children['a']->children['n']->is_word,1, "insert_string failed to set is_word for end character");
-    cr_assert_eq(t->children['a']->children['n']->children['t']->children['i']->is_word,1, "insert_string failed to set is_word for end character");
+    int r2 = trie_insert_string(t,s2);
+    cr_assert_eq(r2,0,"trie_insert_string failed");
+    cr_assert_eq(t->children['a']->children['n']->is_word,1, "trie_insert_string failed to set is_word for end character");
+    cr_assert_eq(t->children['a']->children['n']->children['t']->children['i']->is_word,1, "trie_insert_string failed to set is_word for end character");
 
-    int r3 = insert_string(s3,t);
-    cr_assert_eq(r3,0,"insert_string failed");
-    cr_assert_eq(t->children['a']->children['n']->children['t']->is_word,0, "insert_string failed to set is_word for middle character");
-    cr_assert_eq(t->children['a']->children['n']->children['t']->children['s']->is_word,1, "insert_string failed to set is_word for end character");
+    int r3 = trie_insert_string(t,s3);
+    cr_assert_eq(r3,0,"trie_insert_string failed");
+    cr_assert_eq(t->children['a']->children['n']->children['t']->is_word,0, "trie_insert_string failed to set is_word for middle character");
+    cr_assert_eq(t->children['a']->children['n']->children['t']->children['s']->is_word,1, "trie_insert_string failed to set is_word for end character");
 
 
 }
@@ -76,9 +76,9 @@ Test(trie, free)
     trie_t *t;
     int rc;
 
-    t = new_trie('\0');
+    t = trie_new('\0');
 
-    cr_assert_not_null(t, "new_trie() failed to allocate memory");
+    cr_assert_not_null(t, "trie_new() failed to allocate memory");
 
     rc = trie_free(t);
 
@@ -86,12 +86,12 @@ Test(trie, free)
 
 }
 
-Test(trie, stringarray_to_trie)
+Test(trie, trie_from_stringarray)
 {
     char* s1 = "an";
     char* s2 = "anti";
     char* s3 = "ants";
-    trie_t *t = new_trie('\0');
+    trie_t *t = trie_new('\0');
 
     char **strarray = malloc(4*sizeof(char*));
     strarray[0] = s1;
@@ -101,16 +101,16 @@ Test(trie, stringarray_to_trie)
 
     cr_assert_eq(strarray[1], "anti", "Failed to build strarray");
 
-    int r = stringarray_to_trie(strarray, t);
-    cr_assert_eq(r,0,"insert_string failed");   
-    cr_assert_not_null(t->children['a'], "add_node failed to allocate new entry");
-    cr_assert_eq(t->children['a']->is_word,0, "add_node failed to set is_word for new trie");
-    cr_assert_not_null(t->children['a']->children['n'] , "add_node failed to allocate new entry");
-    cr_assert_eq(t->children['a']->children['n']->is_word,1, "insert_string failed to set is_word for end character");
+    int r = trie_from_stringarray(t, strarray);
+    cr_assert_eq(r,0,"trie_insert_string failed");   
+    cr_assert_not_null(t->children['a'], "trie_add_node failed to allocate new entry");
+    cr_assert_eq(t->children['a']->is_word,0, "trie_add_node failed to set is_word for new trie");
+    cr_assert_not_null(t->children['a']->children['n'] , "trie_add_node failed to allocate new entry");
+    cr_assert_eq(t->children['a']->children['n']->is_word,1, "trie_insert_string failed to set is_word for end character");
 
-    cr_assert_eq(t->children['a']->children['n']->is_word,1, "insert_string failed to set is_word for end character");
-    cr_assert_eq(t->children['a']->children['n']->children['t']->children['i']->is_word,1, "insert_string failed to set is_word for end character");
+    cr_assert_eq(t->children['a']->children['n']->is_word,1, "trie_insert_string failed to set is_word for end character");
+    cr_assert_eq(t->children['a']->children['n']->children['t']->children['i']->is_word,1, "trie_insert_string failed to set is_word for end character");
 
-    cr_assert_eq(t->children['a']->children['n']->children['t']->is_word,0, "insert_string failed to set is_word for middle character");
-    cr_assert_eq(t->children['a']->children['n']->children['t']->children['s']->is_word,1, "insert_string failed to set is_word for end character");
+    cr_assert_eq(t->children['a']->children['n']->children['t']->is_word,0, "trie_insert_string failed to set is_word for middle character");
+    cr_assert_eq(t->children['a']->children['n']->children['t']->children['s']->is_word,1, "trie_insert_string failed to set is_word for end character");
 }
