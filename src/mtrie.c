@@ -42,8 +42,9 @@ trie_t *trie_insert_len_one(trie_t *trie, char *key)
 // Specific insert for second layer; two-char string
 trie_t *trie_insert_len_two(trie_t *trie, char *key)
 {
-    if (strncmp(key, "of", 2) == 0)
+    if (strncmp(key, "of", 2) == 0) {
         trie->children[2]->children[0]->value = key;
+    }
     return trie;
 }
 
@@ -65,12 +66,10 @@ trie_t *trie_insert_len_three(trie_t *trie, char *key)
 // for minimal implementation, return NULL if key present
 trie_t *trie_insert(trie_t *trie, char *key)
 {
-    printf("entering trie_insert. inserting %s\n", key);
     if (strncmp(key, "o", 1) == 0) {
         return trie_insert_len_one(trie, key);
     }
     if (strncmp(key, "of", 2) == 0) {
-        printf("it equals 0\n");
         trie_t *result = trie_insert_len_one(trie, "o");
         return trie_insert_len_two(result, key);
     }
@@ -82,7 +81,6 @@ trie_t *trie_insert(trie_t *trie, char *key)
     if (strncmp(key, "bee", 3) == 0) {
         return trie_insert_len_three(trie, key);
     }
-    printf("I didn't insert shit\n");
     return NULL;
 }
 
