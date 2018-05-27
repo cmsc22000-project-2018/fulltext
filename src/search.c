@@ -9,6 +9,7 @@
 
 int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches)
 {
+    //printf("looking in \"%s\" for \"%s\", starting at %d\n", line, word, pos_start); 
     if (strlen(word) > strlen(line)) return -1;
 
     char* dup = strdup(line);
@@ -30,6 +31,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
             free(dup);
 
             /* Return */
+            //printf("found at position %d\n", pos);
             return pos;
         }
 
