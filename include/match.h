@@ -11,10 +11,10 @@
 
 /* Match struct */
 typedef struct {
-    char* word;
-    int lineNum;
-    int position;
-    char* line;
+  char* word;
+  int lineNum;
+  int position;
+  char* line;
 } match;
 
 /**
@@ -159,7 +159,6 @@ void ftsh_reset_color();
   @return void
  */
 void match_print_line(match* match);
-
 
 /** 
   @brief Displays the info of a match
