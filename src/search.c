@@ -56,19 +56,19 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
     while (lineNum <= end_line && (read = getline(&line, &len, pf)) != -1) {
 
         char sanitized[strlen(line) + 1];
-        strcpy(sanitized, line);
+        strncpy(sanitized, line, strlen(line));
         sanitized[strcspn(sanitized, "\r\n")] = 0;
         char* dupLine = strdup(sanitized);
 
         char line2[strlen(sanitized) + 1];
-        strncpy(line2, sanitized, sizeof(sanitized));
+        strncpy(line2, sanitized, strlen(sanitized));
         found = find_match(sanitized, word, 1, lineNum, matches);
 
         while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
             found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
 
-            if (strcmp(sanitized, dupLine) != 0) {
+            if (strncmp(sanitized, dupLine, strlen(sanitized)) != 0) {
                 match* foundMatch = match_get_at_index(list_size(matches) - 1, matches);
                 match_set_line(foundMatch, dupLine);
             }
@@ -89,7 +89,9 @@ void display_prev_match(list_t* matches, match* curMatch) {
     3. print out match details
     */
 
-    if (match_get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");
+    if (match_get_index(curMatch, matches) == 0) {
+        printf("...wrap-around to last match found...\n");
+    }
 
     curMatch = match_prev(curMatch, matches);
 

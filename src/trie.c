@@ -35,8 +35,7 @@ trie_t *trie_new(char current) {
 int trie_free(trie_t *t) {
     assert( t != NULL);
 
-    int i = 0;
-    for (i=0; i<256; i++ ) {
+    for (int i=0; i<256; i++ ) {
         if (t->children[i] !=NULL)
             trie_free(t->children[i]);
     }
@@ -84,8 +83,8 @@ int trie_insert_string(trie_t *t, char *word) {
 
 int trie_from_stringarray(trie_t* t, char **strarr) {
     int ret = 0;
-    int i;
-    for (i = 0; strarr[i] != NULL; i++) {
+
+    for (int i = 0; strarr[i] != NULL; i++) {
         ret = trie_insert_string(t, strarr[i]);
         if (ret == 1) return 1;
     }
