@@ -60,7 +60,7 @@ char **parse_to_arr(FILE *fp)
 		strarray[i] = NULL;
 		break;	
             } 
-    	    strcpy(strarray[i], s);
+    	    strncpy(strarray[i], s, sizeof(strarray[i]));
     	    next_token(fp);	
     }
 

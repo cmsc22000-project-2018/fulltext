@@ -22,7 +22,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
     while (token != NULL) {
 
-        if (strcmp(token, word) == 0) {
+        if (strncmp(token, word, sizeof(token)) == 0) {
 
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);

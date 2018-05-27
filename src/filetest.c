@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
     parse_file_buffered(fp, 4, 7, word);
 
     fclose(fp);
-    //if (line)
-    //    free(line);
+    if (line)
+        free(line);
     exit(EXIT_SUCCESS);
 }
 
