@@ -14,11 +14,11 @@
 typedef struct trie_t trie_t;
 struct trie_t {
     // The first trie_t will be '/0/' for any Trie.
-    char current; 
+    char current;
     // ALPHABET_SIZE is 256 for all possible characters.
     trie_t **children;
     // if is_word is 1, indicates that this is the end of a word. Otherwise
-    int is_word; 
+    int is_word;
     // parent trie_t for traversing backwards
     trie_t *parent;
 };
@@ -30,7 +30,7 @@ Parameters:
 - current: A char for the current character
 
 Returns:
-- A pointer to the trie, or NULL if a pointer 
+- A pointer to the trie, or NULL if a pointer
 cannot be allocated
 */
 trie_t *trie_new(char current);
@@ -54,7 +54,7 @@ Parameters:
 
 Returns:
 - 0 on success, 1 if an error occurs.
-Details: 
+Details:
 - Set t->children[current] to be current
 - is_word for new node set to 0.
 */
@@ -85,14 +85,14 @@ Parameters:
 - t: A pointer to the given trie
 Returns:
 - 1 if deleted
-Details: 
+Details:
 - If word is not in trie
-trie is not modified.            
-- If word is completely unique (no other part of the word is part of another word) 
+trie is not modified.
+- If word is completely unique (no other part of the word is part of another word)
 delete the entire word.
 - If word is the prefix of another word in the trie
 unmark the leaf node.
-- If word is present in the trie, having at least one other word as a prefix, 
+- If word is present in the trie, having at least one other word as a prefix,
 delete all the nodes up to the prefix.
 */
 int trie_delete_string(trie_t *t, char *word);

@@ -4,19 +4,18 @@
 
 // minimal C implementation of a mock trie
 // Comment:
-// Some functions, ex. num_of_matches was written 
+// Some functions, ex. num_of_matches was written
 // under the assumption that we need to support
 // partial searches
 
 #ifndef _FULLTEXT_TRIE_H_
 #define _FULLTEXT_TRIE_H_
- 
+
 // Alphabet size (# of symbols)
 #define ALPHABET_SIZE (26)
- 
-typedef struct trie_t
-{
-	char *value;
+
+typedef struct trie_t {
+    char *value;
     struct trie_t *children[ALPHABET_SIZE];
 } trie_t;
 
@@ -56,18 +55,18 @@ void trie_show(trie_t *trie);
 /**
     @brief Mock integration with match class;
     @returns string of matches.
-    @param trie 
+    @param trie
     @param of type trie_t, searchkey of type string.
     @return matches in the form of a string
  */
 char *return_matches_m(trie_t *trie, char *key);
 
 /**
-    @brief Integration with match; 
+    @brief Integration with match;
     @returns a list_t of matches if key in trie; NULL if no matches
     @param trie of type trie_t, search key of type string
  */
 list_t return_matches(trie_t *trie, char *key);
 
 #endif  /* INCLUDE_FULLTEXT_TRIE_H_  */
- 
+

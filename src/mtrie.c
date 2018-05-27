@@ -16,11 +16,10 @@
 #include "match.h"
 
 // Returns 1 if key presents in trie, else 0
-bool is_key_in_trie(trie_t *unused_t, char *key)
-{
-	// just to silence warning
-	trie_t *temp = unused_t;
-	unused_t = temp;
+bool is_key_in_trie(trie_t *unused_t, char *key) {
+    // just to silence warning
+    trie_t *temp = unused_t;
+    unused_t = temp;
     if (strncmp(key, "a", 1) == 0) return 1;
     if (strncmp(key, "an", 2) == 0) return 1;
     if (strncmp(key, "and", 3) == 0) return 1;
@@ -32,16 +31,14 @@ bool is_key_in_trie(trie_t *unused_t, char *key)
 
 // Three helpers for trie_insert
 // Specific insert for second layer; two-char string
-trie_t *trie_insert_len_one(trie_t *trie, char *key)
-{
+trie_t *trie_insert_len_one(trie_t *trie, char *key) {
     if (strncmp(key, "o", 1) == 0)
         trie->children[2]->value = key;
     return trie;
 }
 
 // Specific insert for second layer; two-char string
-trie_t *trie_insert_len_two(trie_t *trie, char *key)
-{
+trie_t *trie_insert_len_two(trie_t *trie, char *key) {
     if (strncmp(key, "of", 2) == 0) {
         trie->children[2]->children[0]->value = key;
     }
@@ -49,8 +46,7 @@ trie_t *trie_insert_len_two(trie_t *trie, char *key)
 }
 
 // Specific insert for second layer; two-char string
-trie_t *trie_insert_len_three(trie_t *trie, char *key)
-{
+trie_t *trie_insert_len_three(trie_t *trie, char *key) {
     if (strncmp(key, "off", 3) == 0) {
         trie->children[2]->children[0]->
         children[0]->value = key;
@@ -64,8 +60,7 @@ trie_t *trie_insert_len_three(trie_t *trie, char *key)
 
 // If not present, inserts key into trie
 // for minimal implementation, return NULL if key present
-trie_t *trie_insert(trie_t *trie, char *key)
-{
+trie_t *trie_insert(trie_t *trie, char *key) {
     if (strncmp(key, "o", 1) == 0) {
         return trie_insert_len_one(trie, key);
     }
@@ -85,10 +80,9 @@ trie_t *trie_insert(trie_t *trie, char *key)
 }
 
 // Returns number of prefix matches
-int num_matches(trie_t *unused_t, char *key)
-{
-	trie_t *temp = unused_t;
-	unused_t = temp;
+int num_matches(trie_t *unused_t, char *key) {
+    trie_t *temp = unused_t;
+    unused_t = temp;
     if (strncmp(key, "a", 1) == 0) return 4;
     if (strncmp(key, "an", 2) == 0) return 2;
     if (strncmp(key, "and", 3) == 0) return 1;
@@ -99,10 +93,9 @@ int num_matches(trie_t *unused_t, char *key)
 }
 
 // Mock integration with match_t, returns string of matches
-char *return_matches_m(trie_t *unused_t, char *key)
-{
-	trie_t *temp = unused_t;
-	unused_t = temp;
+char *return_matches_m(trie_t *unused_t, char *key) {
+    trie_t *temp = unused_t;
+    unused_t = temp;
 
     char *list = NULL;
     if (strncmp(key, "a", 1) == 0) list = "a, an, and, at";
@@ -116,13 +109,12 @@ char *return_matches_m(trie_t *unused_t, char *key)
 
 // Integration with match
 // Returns: pointer of GList representing list of all matches
-// 
+//
 // Ordering Issue:
 // Text: and there was an ant; searches for 'an'
 // GList: and->an->ant
 // rank according to relative position in text or alphabetically?
-list_t return_matches(trie_t *trie, char *key)
-{
+list_t return_matches(trie_t *trie, char *key) {
     // just to silence warning
     trie_t *temp = trie;
     trie = temp;
@@ -135,25 +127,25 @@ list_t return_matches(trie_t *trie, char *key)
         match *m_an = match_new("an", 2, 1, "an line");
         match *m_at = match_new("at", 2, 1, "at line");
         match *m_and = match_new("and", 3, 1, "and line");
-        
+
         match_append_(m_a, &result);
         match_append_(m_an, &result);
         match_append_(m_at, &result);
         match_append_(m_and, &result);
-        
+
     }
     // an->and
     if (strncmp(key, "an", 2) == 0) {
         match *m_an = match_new("an", 2, 1, "an line");
         match *m_and = match_new("and", 3, 1, "and line");
-        
+
         match_append_(m_an, &result);
         match_append_(m_and, &result);
     }
     if (strncmp(key, "and", 3) == 0) {
         match *m_and = match_new("and", 3, 1, "and line");
         match_append_(m_and, &result);
-    } 
+    }
     if (strncmp(key, "at", 2) == 0) {
         match *m_at = match_new("at", 2, 1, "at line");
         match_append_(m_at, &result);
@@ -170,11 +162,10 @@ list_t return_matches(trie_t *trie, char *key)
     }
 
     return result;
-} 
+}
 
 // Prints out content of trie
-void trie_show(trie_t *trie)
-{
+void trie_show(trie_t *trie) {
     if (!trie) return;
     if (!trie->children[0]) return;
     printf("%s\n", trie->children[0]->value);

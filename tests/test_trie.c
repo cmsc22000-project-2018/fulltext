@@ -4,8 +4,7 @@
 #include <string.h>
 #include "trie.h"
 
-Test(trie, new)
-{
+Test(trie, new) {
     trie_t *t;
 
     t = trie_new('c');
@@ -16,8 +15,7 @@ Test(trie, new)
 }
 
 
-Test(trie, trie_add_node_exists)
-{
+Test(trie, trie_add_node_exists) {
     char n = 'n';
     trie_t *t = trie_new('\0');
     int rc = trie_add_node(t,n);
@@ -28,8 +26,7 @@ Test(trie, trie_add_node_exists)
     cr_assert_eq(t->children[(unsigned)n]->is_word,0, "trie_add_node failed to set is_word for new trie");
 }
 
-Test(trie, trie_add_node_new)
-{
+Test(trie, trie_add_node_new) {
     char n = 'n';
     trie_t *t = trie_new('\0');
 
@@ -44,15 +41,14 @@ Test(trie, trie_add_node_new)
     cr_assert_eq(t->children[(unsigned)n]->is_word,0, "trie_add_node failed to set is_word for new trie");
 }
 
-Test(trie, trie_insert_string)
-{
+Test(trie, trie_insert_string) {
     char* s1 = "an";
     char* s2 = "anti";
     char* s3 = "ants";
     trie_t *t = trie_new('\0');
 
     int r1 = trie_insert_string(t,s1);
-    cr_assert_eq(r1,0,"trie_insert_string failed");   
+    cr_assert_eq(r1,0,"trie_insert_string failed");
     cr_assert_not_null(t->children['a'], "trie_add_node failed to allocate new entry");
     cr_assert_eq(t->children['a']->is_word,0, "trie_add_node failed to set is_word for new trie");
     cr_assert_not_null(t->children['a']->children['n'] , "trie_add_node failed to allocate new entry");
@@ -71,8 +67,7 @@ Test(trie, trie_insert_string)
 
 }
 
-Test(trie, free)
-{
+Test(trie, free) {
     trie_t *t;
     int rc;
 
@@ -86,8 +81,7 @@ Test(trie, free)
 
 }
 
-Test(trie, trie_from_stringarray)
-{
+Test(trie, trie_from_stringarray) {
     char* s1 = "an";
     char* s2 = "anti";
     char* s3 = "ants";
@@ -102,7 +96,7 @@ Test(trie, trie_from_stringarray)
     cr_assert_eq(strarray[1], "anti", "Failed to build strarray");
 
     int r = trie_from_stringarray(t, strarray);
-    cr_assert_eq(r,0,"trie_insert_string failed");   
+    cr_assert_eq(r,0,"trie_insert_string failed");
     cr_assert_not_null(t->children['a'], "trie_add_node failed to allocate new entry");
     cr_assert_eq(t->children['a']->is_word,0, "trie_add_node failed to set is_word for new trie");
     cr_assert_not_null(t->children['a']->children['n'] , "trie_add_node failed to allocate new entry");

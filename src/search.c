@@ -9,8 +9,7 @@
 #include "search.h"
 #include "match.h"
 
-int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches)
-{
+int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches) {
     if (strlen(word) > strlen(line)) return -1;
 
     char* dup = strdup(line);
@@ -44,8 +43,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
 }
 
-list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, list_t* matches)
-{
+list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, list_t* matches) {
 
     char* line = NULL;
     int wordlen = strlen(word);
@@ -84,8 +82,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
     return matches;
 }
 
-void display_prev_match(list_t* matches, match* curMatch)
-{
+void display_prev_match(list_t* matches, match* curMatch) {
     /*
     1. get list and pointer to curr match
     2. get prev match (if curr match index = 0, go to last match)
@@ -100,8 +97,7 @@ void display_prev_match(list_t* matches, match* curMatch)
 }
 
 /* NEEDS FIX */
-void display_next_match(list_t* matches, match* curMatch)
-{
+void display_next_match(list_t* matches, match* curMatch) {
     /*
     1. get list and pointer to next match
     2. if pointer is NULL or (if wrap-around happened & EOF has not been reached yet), parse more

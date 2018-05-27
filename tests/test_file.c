@@ -4,13 +4,11 @@
 #include "file.h"
 
 /* Checks that open_file works */
-Test(file, open)
-{
+Test(file, open) {
 
 }
 
 /* Checks that parse_file works */
-Test(file, parse)
-{
+Test(file, parse) {
 
 }

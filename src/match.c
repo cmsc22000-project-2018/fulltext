@@ -7,19 +7,16 @@
 
 /* See match.h for descriptions of functions */
 
-match* match_new(char* word, int lineNum, int position, char* line)
-{
+match* match_new(char* word, int lineNum, int position, char* line) {
     match* m = malloc(sizeof(match));
     int rc;
-    if (m == NULL)
-    {
+    if (m == NULL) {
         printf("could not allocate memory for match\n");
         return NULL;
     }
 
     rc = match_init(m, word, lineNum, position, line);
-    if (rc != 0)
-    {
+    if (rc != 0) {
         printf("Could not init match word %s on line [%d] position %d\n", word, lineNum, position);
         return NULL;
     }
@@ -27,232 +24,196 @@ match* match_new(char* word, int lineNum, int position, char* line)
     return m;
 }
 
-int match_init(match* match, char* word, int lineNum, int position, char* line)
-{
-	if (match == NULL) 
-    {
+int match_init(match* match, char* word, int lineNum, int position, char* line) {
+    if (match == NULL) {
         return -1;
     }
 
-	match->word = strdup(word);
-	match->lineNum = lineNum;
-	match->position = position;
-	match->line = strdup(line);
+    match->word = strdup(word);
+    match->lineNum = lineNum;
+    match->position = position;
+    match->line = strdup(line);
 
-	return 0;
+    return 0;
 }
 
-int match_set_line(match* match, char* line)
-{
-	if (match == NULL) 
-    {
+int match_set_line(match* match, char* line) {
+    if (match == NULL) {
         return -1;
     }
 
-	match->line = strdup(line);
-	return 0;
+    match->line = strdup(line);
+    return 0;
 }
 
-int match_free(match* match)
-{
-	if (match == NULL) 
-    {
+int match_free(match* match) {
+    if (match == NULL) {
         return -1;
     }
 
-	if (match->word != NULL)
-    {
+    if (match->word != NULL) {
         free(match->word);
     }
 
-	if (match->line != NULL)
-    { 
+    if (match->line != NULL) {
         free(match->line);
     }
 
-	free(match);
+    free(match);
 
-	return 0;
+    return 0;
 }
-char* match_get_word(match* match)
-{
-	if (match == NULL) 
-    {
+char* match_get_word(match* match) {
+    if (match == NULL) {
         return NULL;
     }
-	return match->word;
+    return match->word;
 }
 
-char* match_get_line(match* match)
-{
-	if (match == NULL) 
-    {
+char* match_get_line(match* match) {
+    if (match == NULL) {
         return NULL;
     }
-	return match->line;
+    return match->line;
 }
 
-int match_get_line_num(match* match)
-{
-	if (match == NULL) 
-    {
+int match_get_line_num(match* match) {
+    if (match == NULL) {
         return -1;
     }
-	return match->lineNum;
+    return match->lineNum;
 }
 
-int match_get_position(match* match)
-{
-	if (match == NULL) 
-    {
+int match_get_position(match* match) {
+    if (match == NULL) {
         return -1;
     }
-	return match->position;
+    return match->position;
 }
 
 
-match* match_next(match* match, list_t* matches)
-{
-	if (match == NULL) 
-    {
+match* match_next(match* match, list_t* matches) {
+    if (match == NULL) {
         return NULL;
     }
-	int rc = list_locate(matches, match);
-	if (rc < 0)
-    {
+    int rc = list_locate(matches, match);
+    if (rc < 0) {
         return NULL;
     }
-	int size = list_size(matches);
-	return list_get_at(matches, (rc + 1) % size);
+    int size = list_size(matches);
+    return list_get_at(matches, (rc + 1) % size);
 }
 
 
-match* match_prev(match* match, list_t* matches)
-{
-	if (match == NULL) 
-    {
+match* match_prev(match* match, list_t* matches) {
+    if (match == NULL) {
         return NULL;
     }
-	int rc = list_locate(matches, match);
-	if (rc < 0) 
-    {
+    int rc = list_locate(matches, match);
+    if (rc < 0) {
         return NULL;
     }
-	int size = list_size(matches);
-	return list_get_at(matches, ((rc - 1) + size) % size);
+    int size = list_size(matches);
+    return list_get_at(matches, ((rc - 1) + size) % size);
 }
 
 
-void match_insert_at(match* newMatch, int index, list_t* matches)
-{
-	if (index > (int) (list_size(matches) - 1))
-	{
-		list_append(matches, newMatch);
-	}
-	if (index < 0)
-	{
-		list_prepend(matches, newMatch);
-	}
-	list_insert_at(matches, newMatch, index);
+void match_insert_at(match* newMatch, int index, list_t* matches) {
+    if (index > (int) (list_size(matches) - 1)) {
+        list_append(matches, newMatch);
+    }
+    if (index < 0) {
+        list_prepend(matches, newMatch);
+    }
+    list_insert_at(matches, newMatch, index);
 }
 
 
-void match_append_(match* newMatch, list_t* matches)
-{
-	list_append(matches, newMatch);
+void match_append_(match* newMatch, list_t* matches) {
+    list_append(matches, newMatch);
 }
 
 
-void match_remove_at(int index, list_t* matches)
-{
-	list_delete_at(matches, index);
+void match_remove_at(int index, list_t* matches) {
+    list_delete_at(matches, index);
 }
 
 
-match* match_get_at_index(int index, list_t* matches)
-{
-	if (list_size(matches) == 0) 
-    {
+match* match_get_at_index(int index, list_t* matches) {
+    if (list_size(matches) == 0) {
         return NULL;
     }
-	match* cur = list_get_at(matches, index);
-	return cur;
+    match* cur = list_get_at(matches, index);
+    return cur;
 }
 
 
-int match_get_index(match* match, list_t* matches)
-{
-	int position = list_locate(matches, match);
-	return position;
+int match_get_index(match* match, list_t* matches) {
+    int position = list_locate(matches, match);
+    return position;
 }
 
-void list_info(list_t* l)
-{
-	printf("\n");
-	printf("... displaying info about list ...\n");
-	printf("The list now holds %u elements:\n", list_size(l));
+void list_info(list_t* l) {
+    printf("\n");
+    printf("... displaying info about list ...\n");
+    printf("The list now holds %u elements:\n", list_size(l));
 
-	list_iterator_start(l);               /* starting an iteration "session" */
+    list_iterator_start(l);               /* starting an iteration "session" */
 
-	while (list_iterator_hasnext(l)) {   // tell whether more values available
-		match cur = *(match *)list_iterator_next(l); /* get the next value */
-		match_display(&cur);
-	}
+    while (list_iterator_hasnext(l)) {   // tell whether more values available
+        match cur = *(match *)list_iterator_next(l); /* get the next value */
+        match_display(&cur);
+    }
 
-	list_iterator_stop(l);                 /* ending the iteration "session" */
+    list_iterator_stop(l);                 /* ending the iteration "session" */
 
-	printf("... finished ...\n");
+    printf("... finished ...\n");
 }
 
 
 void ftsh_set_color_red() {
-	printf("\033[1;31m");
+    printf("\033[1;31m");
 }
 
 
 void ftsh_reset_color() {
-	printf("\033[0m");
+    printf("\033[0m");
 }
 
 
-void match_print_line(match* match)
-{
-	int i = 0;
-	int wl = 0;
+void match_print_line(match* match) {
+    int i = 0;
+    int wl = 0;
 
-	char* w = match_get_word(match);
-	char* s = match_get_line(match);
+    char* w = match_get_word(match);
+    char* s = match_get_line(match);
 
-	while (w[wl] != '\0') wl++;
+    while (w[wl] != '\0') wl++;
 
-	while (s[i] != '\0') {
-		if (i == match_get_position(match) - 1) 
-        {
+    while (s[i] != '\0') {
+        if (i == match_get_position(match) - 1) {
             ftsh_set_color_red();
-        }
-		else if (i == match_get_position(match) + wl) 
-        {
+        } else if (i == match_get_position(match) + wl) {
             ftsh_reset_color();
         }
-		printf("%c", s[i]);
-		i++;
-	}
+        printf("%c", s[i]);
+        i++;
+    }
 
-	printf("\n");
+    printf("\n");
 }
 
 
-int match_display(match* match)
-{
-	if (match != NULL) {
-		printf("> word: %s\n", match_get_word(match));
-		printf("  [%d]: ", match_get_line_num(match));
-		match_print_line(match);
-		printf("   pos: %d\n", match_get_position(match));
-		return 1;
-	}
+int match_display(match* match) {
+    if (match != NULL) {
+        printf("> word: %s\n", match_get_word(match));
+        printf("  [%d]: ", match_get_line_num(match));
+        match_print_line(match);
+        printf("   pos: %d\n", match_get_position(match));
+        return 1;
+    }
 
-	printf("Match is empty\n");
-	return -1;
+    printf("Match is empty\n");
+    return -1;
 }
 

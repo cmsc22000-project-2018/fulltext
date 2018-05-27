@@ -1,8 +1,7 @@
 #include "filetest.h"
 #include "match.h"
 
-int find_match(char* line, char* word, int pos_start, int lineNum)
-{
+int find_match(char* line, char* word, int pos_start, int lineNum) {
     if (strlen(word) > strlen(line)) return -1;
     char* line2 = line;
     int pos = pos_start;
@@ -18,8 +17,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum)
     return -1;
 }
 
-void parse_file_buffered(FILE* fp, int start_line, int end_line, char* word)
-{
+void parse_file_buffered(FILE* fp, int start_line, int end_line, char* word) {
     char * line = NULL;
     size_t len = 0;
     ssize_t read;
@@ -48,8 +46,7 @@ void parse_file_buffered(FILE* fp, int start_line, int end_line, char* word)
     }
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     if (argc != 2) {
         printf("usage: ./filetest <search_term>\n");
         exit(0);
@@ -77,7 +74,7 @@ int main(int argc, char *argv[])
 
 void print_match(char *line, char *word, int line_num, int pos, long int filepos)
 {
-	printf("word: %s\nline %d pos %d fp %lu:\n%s\n", 
+	printf("word: %s\nline %d pos %d fp %lu:\n%s\n",
 		word, line_num, pos, filepos, line);
 }
 
@@ -118,7 +115,7 @@ int read_until_next_match(FILE *fp, char *word, int line_num)
 				print_match(saveln, word, line_num, pos, filepos);
 				return num_occ-1;
 			}
-			token = strtok_r(NULL, " ,.!?\t\n", &saveptr);			
+			token = strtok_r(NULL, " ,.!?\t\n", &saveptr);
 		}
 		free(saveln);
 		free(saveln2);
@@ -126,7 +123,7 @@ int read_until_next_match(FILE *fp, char *word, int line_num)
 	return 0;
 }
 
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
     char buf[100];
     char *pinput;
@@ -138,7 +135,7 @@ int main(int argc, char *argv[])
         printf("usage: ./filetest <search_term>\n");
         exit(0);
     }
-	
+
     char *word = argv[1];
 
     FILE *fp = fopen("tests/filetest.txt", "r");
@@ -147,11 +144,11 @@ int main(int argc, char *argv[])
     while (1) {
         printf("fulltext> ");
         pinput = fgets(buf, 100, stdin);
-        
+
         if (!pinput) {
             exit(0);
         }
-       
+
         if (strncmp(buf, "next", 4) == 0) {
         	if (ret != 0) {
         		save_line_num++;
@@ -168,7 +165,7 @@ int main(int argc, char *argv[])
          }
      }
 
-    return 0;	
+    return 0;
 }*/
 
 

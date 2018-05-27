@@ -9,8 +9,7 @@
 #include "utils.h"
 
 /* See trie.h */
-trie_t *trie_new(char current)
-{
+trie_t *trie_new(char current) {
     trie_t *t = calloc(1,sizeof(trie_t));
 
     if (t == NULL) {
@@ -33,8 +32,7 @@ trie_t *trie_new(char current)
 }
 
 /* See trie.h */
-int trie_free(trie_t *t)
-{
+int trie_free(trie_t *t) {
     assert( t != NULL);
 
     int i = 0;
@@ -49,8 +47,7 @@ int trie_free(trie_t *t)
 
 
 /* See trie.h */
-int trie_add_node(trie_t *t, char current)
-{
+int trie_add_node(trie_t *t, char current) {
     assert( t != NULL);
 
     unsigned c = (unsigned) current;
@@ -63,8 +60,7 @@ int trie_add_node(trie_t *t, char current)
 }
 
 /* See trie.h */
-int trie_insert_string(trie_t *t, char *word)
-{
+int trie_insert_string(trie_t *t, char *word) {
     assert(t!=NULL);
 
     if (*word == '\0') {
@@ -86,8 +82,7 @@ int trie_insert_string(trie_t *t, char *word)
     }
 }
 
-int trie_from_stringarray(trie_t* t, char **strarr)
-{
+int trie_from_stringarray(trie_t* t, char **strarr) {
     int ret = 0;
     int i;
     for (i = 0; strarr[i] != NULL; i++) {
