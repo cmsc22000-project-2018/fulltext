@@ -7,7 +7,7 @@
 #include <stddef.h>
 #include "search.h"
 
-int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches)
+int find_match(char* line, char* word, int pos_start, int lineNum, list_t matches)
 {
     //printf("looking in \"%s\" for \"%s\", starting at %d\n", line, word, pos_start); 
     if (strlen(word) > strlen(line)) return -1;
@@ -25,13 +25,14 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
             /* Config match */
             foundMatch = new_match(token, lineNum, pos, dup);
-            append_(foundMatch, matches);
+            append_(foundMatch, &matches);
+            printf("appending\n");
 
             /* Clean-up */
             free(dup);
 
             /* Return */
-            //printf("found at position %d\n", pos);
+            printf("found at position %d\n", pos);
             return pos;
         }
 
@@ -64,11 +65,11 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
 
         char line2[strlen(sanitized) + 1];
         strcpy(line2, sanitized);
-        found = find_match(sanitized, word, 1, lineNum, matches);
+        found = find_match(sanitized, word, 1, lineNum, *matches);
 
         while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
-            found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
+            found = find_match(sanitized, word, found + wordlen + 2, lineNum, *matches);
             
             if (strcmp(sanitized, dupLine) != 0) {
                 match* foundMatch = get_at_index(list_size(matches) - 1, matches);
