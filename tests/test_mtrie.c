@@ -13,7 +13,7 @@
 
 void check_is_key_in_trie(trie_t *unused, char *key, bool expected)
 {
-	bool result = is_key_in_trie(unused, key);
+        bool result = is_key_in_trie(unused, key);
 	cr_assert_eq(result, expected, 
 		"%s is %s trie but got %s",
                 key,
@@ -45,7 +45,7 @@ Test(trie, not_key_in_trie)
 
 char *get_inserted_key(trie_t *trie, char *key)
 {
-  printf("key in get_inserted_key: %s\n", key);
+  
 	if (!trie || !trie->children) return NULL;
 	if (strcmp(key, "bee") == 0) {
 		if (trie->children[1]->children[0]->
@@ -60,9 +60,7 @@ char *get_inserted_key(trie_t *trie, char *key)
         		children[0]->value;
 	}
 	if (strcmp(key, "of") == 0) {
-     printf("found of\n");
 		 if (trie->children[2]->children[0]){
-       printf("returning %s\n", trie->children[2]->children[0]->value);
 			 return trie->children[2]->children[0]->value;
      }
 	}
@@ -191,7 +189,7 @@ void check_single_match(list_t matches, int index, char *expectedWord, int expec
 {
     match* aRet = list_get_at(&matches, index);
     cr_assert_str_eq(expectedWord, aRet->word, "Expected word %s but got %s", expectedWord, aRet->word);
-    cr_assert_eq(expectedLine, aRet->line,"Expected line %d but got %d", expectedLine, aRet->line);
+    cr_assert_eq(expectedLine, aRet->lineNum,"Expected line %d but got %d", expectedLine, aRet->lineNum);
 }
 
 void check_return_matches_listT(trie_t *trie, char *key, list_t *expected)
