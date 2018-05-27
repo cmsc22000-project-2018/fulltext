@@ -50,17 +50,17 @@ char **parse_to_arr(FILE *fp)
 {
 	init_parser(fp);
 	char **strarr;
-	strarray = malloc(sizeof(char*)*MAXWORDNUM);
+	strarr = malloc(sizeof(char*)*MAXWORDNUM);
     	assert(strarr != NULL);
 
     	char *s = NULL;
     	for (int i = 0; i < MAXWORDNUM; i++) {
-            strarray[i] = malloc(sizeof(char)*MAXWORDLEN);
+            strarr[i] = malloc(sizeof(char)*MAXWORDLEN);
             if (!read_string(&s)) {
-		strarray[i] = NULL;
+		strarr[i] = NULL;
 		break;	
             } 
-    	    strncpy(strarray[i], s, sizeof(strarray[i]));
+    	    strncpy(strarr[i], s, sizeof(strarr[i]));
     	    next_token(fp);	
     }
 

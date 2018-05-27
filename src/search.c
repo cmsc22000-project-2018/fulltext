@@ -22,7 +22,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
     while (token != NULL) {
 
-        if (strncmp(token, word, sizeof(token)) == 0) {
+        if (strncmp(token, word, strlen(word)) == 0) {
 
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
@@ -63,18 +63,18 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
         char* dupLine = strdup(sanitized);
 
         char line2[strlen(sanitized) + 1];
-        strcpy(line2, sanitized);
+        strncpy(line2, sanitized, sizeof(sanitized));
         found = find_match(sanitized, word, 1, lineNum, matches);
 
         while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
             found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
-            
+
             if (strcmp(sanitized, dupLine) != 0) {
                 match* foundMatch = match_get_at_index(list_size(matches) - 1, matches);
                 match_set_line(foundMatch, dupLine);
             }
-    
+
         }
 
         lineNum++;
@@ -95,9 +95,8 @@ void display_prev_match(list_t* matches, match* curMatch)
     if (match_get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");
 
     curMatch = match_prev(curMatch, matches);
-    
-    match_display(curMatch);
 
+    match_display(curMatch);
 }
 
 /* NEEDS FIX */
