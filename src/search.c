@@ -23,8 +23,8 @@ int find_match(char* line, char* word,
 
     while (token != NULL) {
 
-        if (strncasecmp(token, word, sizeof(token)) == 0) {
-
+      if (strncasecmp(token, word, sizeof(token)) == 0) {
+        
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
             match_append_(foundMatch, matches);
@@ -60,25 +60,27 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
     while (lineNum <= end_line &&
      (read = getline(&line, &len, pf)) != -1) {
         char sanitized[strlen(line) + 1];
-        strcpy(sanitized, line);
+        strncpy(sanitized, line, strlen(line));
         sanitized[strcspn(sanitized, "\r\n")] = 0;
         char* dupLine = strdup(sanitized);
 
         char line2[strlen(sanitized) + 1];
-        strcpy(line2, sanitized);
+        strncpy(line2, sanitized, strlen(sanitized));
         found = find_match(sanitized, word, 1, lineNum, matches);
 
         while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
+          
             found = find_match(sanitized, word, found + wordlen + 2,
              lineNum, matches);
             
             if (strcmp(sanitized, dupLine) != 0) {
                 match* foundMatch = match_get_at_index(list_size(matches) - 1,
                  matches);
+
                 match_set_line(foundMatch, dupLine);
             }
-    
+
         }
 
         lineNum++;
@@ -88,8 +90,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
     return matches;
 }
 
-void display_prev_match(list_t* matches, match* curMatch)
-{
+void display_prev_match(list_t* matches, match* curMatch) {
     /*
     1. get list and pointer to curr match
     2. get prev match (if curr match index = 0, go to last match)
@@ -97,18 +98,16 @@ void display_prev_match(list_t* matches, match* curMatch)
     */
 
     if (match_get_index(curMatch, matches) == 0) {
-    	printf("...wrap-around to last match found...\n");
+      printf("...wrap-around to last match found...\n");
     }
 
     curMatch = match_prev(curMatch, matches);
-    
-    match_display(curMatch);
 
+    match_display(curMatch);
 }
 
 /* NEEDS FIX */
-void display_next_match(list_t* matches, match* curMatch)
-{
+void display_next_match(list_t* matches, match* curMatch) {
     /*
     1. get list and pointer to next match
     2. if pointer is NULL or (if wrap-around happened 

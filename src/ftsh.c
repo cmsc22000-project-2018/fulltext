@@ -33,8 +33,7 @@ char** ftsh_get_input(char *input) {
 }
 
 
-void ftsh_loop(FILE *pf)
-{
+void ftsh_loop(FILE *pf) {
     char *input;
     char **args;
     int status;
@@ -58,14 +57,13 @@ char* get_path(int argc, char **argv) {
     return (argv[1] != NULL) ? argv[1] : NULL;
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
 
     // Config
     char* path = get_path(argc, argv);
     if (argc == 1 || path == NULL) {
-    	printf("Usage: ./ftsh <text_search_file>\n");
-    	exit(0);
+        printf("Usage: ./ftsh <text_search_file>\n");
+        exit(0);
     }
     FILE *pf = fopen(path, "r");
     int mode = 1;
@@ -77,10 +75,6 @@ int main(int argc, char **argv)
 
     // Interactive mode
     if (mode == 1) {
-        /*
-        printf("...starting interactive mode...\n");
-        sleep(1);
-        */
         ftsh_loop(pf);
     }
 

@@ -21,8 +21,7 @@ int (*builtin_func[]) (char **, FILE *pf) = {
 };
 
 
-int ftsh_help(char **args, FILE *pf)
-{
+int ftsh_help(char **args, FILE *pf) {
     printf("[FULL-TEXT SEARCH]\n");
     printf("Type program names and arguments, and hit enter.\n");
     printf("The following are built in:\n");
@@ -36,50 +35,48 @@ int ftsh_help(char **args, FILE *pf)
 }
 
 
-int ftsh_exit(char **args, FILE *pf)
-{
+int ftsh_exit(char **args, FILE *pf) {
     return 0;
 }
 
 
-int ftsh_find(char **args, FILE *pf)
-{
+int ftsh_find(char **args, FILE *pf) {
     int STATUS = 1;
     char buf[100];
     char *input;
 
     int start_line = 1;
     int BUFFER_LENGTH = 100;
-    char *word = args[1]; 
-    
+    char *word = args[1];
+
     match curMatch;
     list_t matches;
     list_init(&matches);
 
-    
+
     /* Finding first match at minimum */
     while (list_size(&matches) == 0 /*&& fgetc(pf) != EOF*/) {
         matches = *parse_file_buffered(pf, start_line, \
-            (start_line + BUFFER_LENGTH), word, &matches);
+                                       (start_line + BUFFER_LENGTH), word, &matches);
 
         start_line += BUFFER_LENGTH;
 
         if (fgetc(pf) == EOF && list_size(&matches) == 0) {
             printf("No matches for %s have been found.\n", word);
             return 1;
-        }   
+        }
     }
-    
+
     curMatch = *match_get_at_index(0, &matches);
-    
+
     match_display(&curMatch);
     list_info(&matches);
-    
+
     /* NEEDS FIX */
     while (STATUS) {
         printf("ftsh> ");
         input = fgets(buf, 5, stdin);
-           
+
         // exit find()
         if (!input || strncmp(input, "exit", 5) == 0) exit(1);
 
@@ -94,7 +91,7 @@ int ftsh_find(char **args, FILE *pf)
 
         }
 
-     }
+    }
 
     return 1;
 
@@ -105,8 +102,7 @@ int ftsh_num_builtins() {
 }
 
 
-int ftsh_execute(char **args, FILE *pf)
-{
+int ftsh_execute(char **args, FILE *pf) {
     int i;
 
     if (args[0] == NULL) {

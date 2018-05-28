@@ -18,13 +18,12 @@
 #include <criterion/criterion.h>
 #include "ftsh_functions.h"
 
-Test(ftsh_functions, load)
-{
-	char *path = "tests/test-file.txt";
-	FILE *file = fopen(path, "r");
+Test(ftsh_functions, load) {
+    char *path = "tests/test-file.txt";
+    FILE *file = fopen(path, "r");
 
-	char *args[2] = {"load", path};
-	int rv = ftsh_load(args);
+    char *args[2] = {"load", path};
+    int rv = ftsh_load(args);
 
-	cr_assert_eq(file, fp, "ftsh_load() did not load the file correctly");
+    cr_assert_eq(file, fp, "ftsh_load() did not load the file correctly");
 }

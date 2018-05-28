@@ -22,7 +22,7 @@
   @param matches List of matches
   #updated return
   @return list of matches
-  --- 
+  ---
   @return position number of match if match found
   @return -1 if no match found
  */
