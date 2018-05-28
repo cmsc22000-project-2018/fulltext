@@ -20,7 +20,8 @@ match* match_new(char* word, int lineNum, int position, char* line)
     rc = match_init(m, word, lineNum, position, line);
     if (rc != 0)
     {
-        printf("Could not init match word %s on line [%d] position %d\n", word, lineNum, position);
+        printf("Could not init match word %s on line [%d] position %d\n",
+         word, lineNum, position);
         return NULL;
     }
 
@@ -218,20 +219,18 @@ void ftsh_reset_color() {
 void match_print_line(match* match)
 {
 	int i = 0;
-	int wl = 0;
+	int wl = strlen(match_get_word(match));
 
-	char* w = match_get_word(match);
+	// char* w = match_get_word(match);
 	char* s = match_get_line(match);
 
-	while (w[wl] != '\0') wl++;
+	// while (w[wl] != '\0') wl++;
 
 	while (s[i] != '\0') {
-		if (i == match_get_position(match) - 1) 
-        {
+		if (i == match_get_position(match) - 1) {
             ftsh_set_color_red();
         }
-		else if (i == match_get_position(match) + wl) 
-        {
+		else if (i == match_get_position(match) + wl) {
             ftsh_reset_color();
         }
 		printf("%c", s[i]);

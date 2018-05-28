@@ -9,7 +9,8 @@
 #include "search.h"
 #include "match.h"
 
-int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches)
+int find_match(char* line, char* word, 
+	int pos_start, int lineNum, list_t* matches)
 {
     if (strlen(word) > strlen(line)) return -1;
 
@@ -22,7 +23,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
     while (token != NULL) {
 
-        if (strncmp(token, word, sizeof(token)) == 0) {
+        if (strncasecmp(token, word, sizeof(token)) == 0) {
 
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
@@ -44,7 +45,8 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
 }
 
-list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, list_t* matches)
+list_t* parse_file_buffered(FILE* pf, int start_line, 
+	int end_line, char* word, list_t* matches)
 {
 
     char* line = NULL;
@@ -55,8 +57,8 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
     int found = -1;
     int lineNum = start_line;
 
-    while (lineNum <= end_line && (read = getline(&line, &len, pf)) != -1) {
-
+    while (lineNum <= end_line &&
+     (read = getline(&line, &len, pf)) != -1) {
         char sanitized[strlen(line) + 1];
         strcpy(sanitized, line);
         sanitized[strcspn(sanitized, "\r\n")] = 0;
@@ -68,10 +70,12 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
 
         while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
-            found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
+            found = find_match(sanitized, word, found + wordlen + 2,
+             lineNum, matches);
             
             if (strcmp(sanitized, dupLine) != 0) {
-                match* foundMatch = match_get_at_index(list_size(matches) - 1, matches);
+                match* foundMatch = match_get_at_index(list_size(matches) - 1,
+                 matches);
                 match_set_line(foundMatch, dupLine);
             }
     
@@ -92,7 +96,9 @@ void display_prev_match(list_t* matches, match* curMatch)
     3. print out match details
     */
 
-    if (match_get_index(curMatch, matches) == 0) printf("...wrap-around to last match found...\n");
+    if (match_get_index(curMatch, matches) == 0) {
+    	printf("...wrap-around to last match found...\n");
+    }
 
     curMatch = match_prev(curMatch, matches);
     
@@ -105,7 +111,8 @@ void display_next_match(list_t* matches, match* curMatch)
 {
     /*
     1. get list and pointer to next match
-    2. if pointer is NULL or (if wrap-around happened & EOF has not been reached yet), parse more
+    2. if pointer is NULL or (if wrap-around happened 
+       & EOF has not been reached yet), parse more
     3. else, print out match details
     */
 

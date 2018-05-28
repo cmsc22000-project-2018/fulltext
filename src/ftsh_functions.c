@@ -58,7 +58,7 @@ int ftsh_find(char **args, FILE *pf)
 
     
     /* Finding first match at minimum */
-    while (list_size(&matches) == 0 && fgetc(pf) != EOF) {
+    while (list_size(&matches) == 0 /*&& fgetc(pf) != EOF*/) {
         matches = *parse_file_buffered(pf, start_line, \
             (start_line + BUFFER_LENGTH), word, &matches);
 
