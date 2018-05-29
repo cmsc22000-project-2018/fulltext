@@ -332,6 +332,8 @@ Test(match, append)
     
     match* cRet = list_get_at(&matches, 2);
     cr_assert_eq(cRet, c, "Expected %s but got %s", c->word, cRet->word);
+
+    //printf("testing match append. list size: %d\n", list_size(&matches));
 }
 
 /* Testing remove_at for valid input */

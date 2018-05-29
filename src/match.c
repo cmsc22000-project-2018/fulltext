@@ -120,6 +120,7 @@ void insert_at(match* newMatch, int index, list_t* matches)
 void append_(match* newMatch, list_t* matches)
 {
     list_append(matches, newMatch);
+    //printf("head of elem: %p\n", list_get_at(matches, 0));
 }
 
 
