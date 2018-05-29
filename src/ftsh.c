@@ -50,37 +50,56 @@ void ftsh_loop(FILE *pf) {
 
 
 char* get_path(int argc, char **argv) {
-    if (argc <= 1) {
-        return NULL;
+    if (argv[2] != NULL && argc >= 3) {
+        return argv[2];
     }
+    printf("Usage: ./ftsh [-ib] <text_search_file> <word1> <word2> ...\n");
+    exit(0);
 
-    return (argv[1] != NULL) ? argv[1] : NULL;
 }
 
 int main(int argc, char **argv) {
 
     // Config
-    char* path = get_path(argc, argv);
-    if (argc == 1 || path == NULL) {
-        printf("Usage: ./ftsh <text_search_file>\n");
-        exit(0);
-    }
-    FILE *pf = fopen(path, "r");
-    int mode = 1;
+    char* path;
+    char* flags = "ib";
+    int opt;
+    int mode = -1;
 
+    path = get_path(argc, argv);
+    FILE *pf = fopen(path, "r");
+
+    while ((opt = getopt(argc, argv, flags)) != -1) {
+        switch (opt) {
+        case 'i':
+            mode = 1;
+            break;
+        case 'b':
+            mode = 0;
+            break;
+        default:
+            perror("Usage: ./ftsh [-ib] <text_search_file> [<word1> <word2>] ...\n");
+            exit(1);
+        }
+    }
+
+    // Error handling
     if (pf == NULL) {
         perror("File could not be opened");
         exit(1);
+    } else if (mode == -1) {
+        perror("Mode was not selected");
+        exit(1);
     }
-
+    
     // Interactive mode
     if (mode == 1) {
         ftsh_loop(pf);
     }
 
     // Batch mode
-    if (!mode) {
-        printf("To be implemented.\n");
+    if (mode == 0) {
+        printf("To be implemented...\n");
     }
 
     // Clean up
