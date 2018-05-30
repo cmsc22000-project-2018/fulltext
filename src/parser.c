@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "parser.h"
+#include "trie.h"
 
 #define MAXWORDNUM 10000
 #define MAXWORDLEN 100
@@ -62,4 +63,15 @@ char **parse_to_arr(FILE *fp) {
 
     assert(strarr != NULL);
     return strarr;
+}
+
+int trie_from_stringarray(char **strarr) {
+    int ret = 0;
+    trie_t* t = trie_new('\0');
+
+    for (int i = 0; strarr[i] != NULL; i++) {
+        ret = trie_insert(t, strarr[i]);
+        if (ret == -1) return -1;
+    }
+    return 0;
 }

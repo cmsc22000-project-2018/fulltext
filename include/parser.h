@@ -33,4 +33,11 @@ void init_parser(FILE *fp);
  */
 char **parse_to_arr(FILE *fp);
 
+/**
+    @brief Load array of strings into trie
+    @param strarray: array of strings
+    @return 0 if success, otherwise -1
+*/
+int trie_from_stringarray(char **strarray);
+
 #endif /* INCLUDE_FULLTEXT_PARSER_H_ */
