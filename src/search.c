@@ -9,6 +9,7 @@
 
 int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches)
 {
+    //printf("looking in \"%s\" for \"%s\", starting at %d\n", line, word, pos_start); 
     if (strlen(word) > strlen(line)) return -1;
 
     char* dup = strdup(line);
@@ -25,6 +26,11 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
             /* Config match */
             foundMatch = new_match(token, lineNum, pos, dup);
             append_(foundMatch, matches);
+            /* used for testing output - remove after debugging.
+            printf("appending %s\n", token);
+            printf("list size: %d\n", list_size(matches));
+            printf("head of elem: %p\n", list_get_at(matches, 0));
+            printf("this node is at pos %d\n", list_locate(matches, foundMatch));*/ 
 
             /* Clean-up */
             free(dup);
