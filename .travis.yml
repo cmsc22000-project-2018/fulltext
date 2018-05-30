@@ -6,10 +6,14 @@ before_install:
     - sudo apt-get update -q
     - sudo apt-get install criterion-dev -y
 
-script:
-    # pwd: fulltext
-    - make all && make -C tests clean all
-    - cd tests && ./test-fulltext
+jobs:
+  include:
+    - stage: build
+      script:
+        - make all && make -C tests clean all
+    - stage: test
+      script: 
+        - cd tests && ./test-fulltext
 
 after_script:
     - echo "Finished Travis CI tests on /dev branch build"
