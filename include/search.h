@@ -48,7 +48,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
   @param curMatch Current match
   @return void
  */
-void display_prev_match(list_t* matches, match* curMatch);
+void display_prev_match(list_t* matches, int index);
 
 /**
   @brief Prints out the next match from list to std out
@@ -56,6 +56,6 @@ void display_prev_match(list_t* matches, match* curMatch);
   @param curMatch Current match
   @return void
  */
-void display_next_match(list_t* matches, match* curMatch);
+void display_next_match(list_t* matches, int index);
 
 #endif /* _FULLTEXT_SEARCH_H_ */

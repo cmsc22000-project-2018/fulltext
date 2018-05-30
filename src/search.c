@@ -91,34 +91,21 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
     return matches;
 }
 
-void display_prev_match(list_t* matches, match* curMatch) {
-    /*
-    1. get list and pointer to curr match
-    2. get prev match (if curr match index = 0, go to last match)
-    3. print out match details
-    */
+void display_prev_match(list_t* matches, int index) {
 
-    if (match_get_index(curMatch, matches) == 0) {
-      printf("...wrap-around to last match found...\n");
+    if (index == 0) {
+      printf("\n...wrap-around to last match found...\n\n");
     }
+    
+    match_display(match_prev(index, matches));
 
-    curMatch = match_prev(curMatch, matches);
-
-    match_display(curMatch);
 }
 
-/* NEEDS FIX */
-void display_next_match(list_t* matches, match* curMatch) {
-    /*
-    1. get list and pointer to next match
-    2. if pointer is NULL or (if wrap-around happened 
-       & EOF has not been reached yet), parse more
-    3. else, print out match details
-    */
+void display_next_match(list_t* matches, int index) {
 
-    curMatch = match_next(curMatch, matches);
-    if (match_get_index(curMatch, matches) == 0) {
-        printf("...wrap-around to first match found...\n");
+    if (index == list_size(matches)) {
+        printf("\n...wrap-around to first match found...\n\n");
+        
         // parse more
         // if EOF has been reached (how do we know that?),
         //  we say ...wrap-around to first match found...
@@ -126,7 +113,7 @@ void display_next_match(list_t* matches, match* curMatch) {
         //  display next match
 
     } else {
-        match_display(curMatch);
+        match_display(match_next(index, matches));
     }
 
 }

@@ -67,11 +67,12 @@ int ftsh_find(char **args, FILE *pf) {
         }
     }
 
-    curMatch = *match_get_at_index(0, &matches);
+    int index = 0;
+    curMatch = *match_get_at_index(index, &matches);
 
  	list_info(&matches);
- 	
-    match_display(&curMatch);
+
+ 	match_display(&curMatch);
 
 
     /* NEEDS FIX */
@@ -79,20 +80,22 @@ int ftsh_find(char **args, FILE *pf) {
         printf("ftsh> ");
         input = fgets(buf, 5, stdin);
 
-        // exit find()
+        // exit ./ftsh
         if (!input || strncmp(input, "exit", 5) == 0) exit(1);
 
-        // next match
+        // exit find()
+        if (strncmp(input, "quit", 5) == 0) STATUS = 0;
+
+    	// next/prev match
         if (strncmp(input, "next", 5) == 0) {
-            match_display(&curMatch);
-            display_next_match(&matches, &curMatch);
+
+            display_next_match(&matches, index++);
 
         } else if (strncmp(input, "prev", 5) == 0) {
 
-            display_prev_match(&matches, &curMatch);
+            display_prev_match(&matches, index--);
 
         }
-
     }
 
     return 1;
