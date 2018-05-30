@@ -69,8 +69,10 @@ int ftsh_find(char **args, FILE *pf) {
 
     curMatch = *match_get_at_index(0, &matches);
 
+ 	list_info(&matches);
+ 	
     match_display(&curMatch);
-    list_info(&matches);
+
 
     /* NEEDS FIX */
     while (STATUS) {

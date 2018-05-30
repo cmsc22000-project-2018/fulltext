@@ -156,8 +156,7 @@ int match_get_index(match* match, list_t* matches) {
 }
 
 void list_info(list_t* l) {
-	printf("\n");
-	printf("... displaying info about list ...\n");
+	printf("\n... displaying info about list ...\n\n");
 	printf("The list now holds %u elements:\n", list_size(l));
 
 	list_iterator_start(l);               /* starting an iteration "session" */
@@ -169,7 +168,7 @@ void list_info(list_t* l) {
 
 	list_iterator_stop(l);                 /* ending the iteration "session" */
 
-	printf("... finished ...\n");
+	printf("... finished ...\n\n");
 }
 
 
@@ -185,17 +184,20 @@ void ftsh_reset_color() {
 
 void match_print_line(match* match) {
 	int i = 0;
-	int wl = strlen(match_get_word(match));
+	int wordlen = strlen(match_get_word(match));
+	int position = match_get_position(match);
 	char* s = match_get_line(match);
-
 	while (s[i] != '\0') {
-		if (i == match_get_position(match) - 1) {
+		if (i == position - 1) {
 			ftsh_set_color_red();
 		}
-		else if (i == match_get_position(match) + wl - 1) {
+		
+		printf("%c", s[i]);
+
+		if (i == position + wordlen - 1) {
 			ftsh_reset_color();
 		}
-		printf("%c", s[i]);
+		
 		i++;
 	}
 

@@ -12,10 +12,11 @@
 int find_match(char* line, char* word, 
 	int pos_start, int lineNum, list_t* matches)
 {
-    if (strlen(word) > strlen(line)) return -1;
+	int wordlen = strlen(word);
+    
+    if (wordlen > strlen(line)) return -1;
 
     char* dup = strdup(line);
-
     char* line2 = strdup(line);
     int pos = pos_start;
     char* token = strtok(line2, " ,.!?\r\t\n");
@@ -23,7 +24,7 @@ int find_match(char* line, char* word,
 
     while (token != NULL) {
 
-      if (strncasecmp(token, word, sizeof(token)) == 0) {
+      if (strncasecmp(token, word, wordlen) == 0) {
         
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
