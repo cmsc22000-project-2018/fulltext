@@ -103,7 +103,7 @@ void display_prev_match(list_t* matches, int index) {
 
 void display_next_match(list_t* matches, int index) {
 
-    if (index == list_size(matches)) {
+    if (index == list_size(matches) - 1) {
         printf("\n...wrap-around to first match found...\n\n");
         
         // parse more
@@ -112,8 +112,8 @@ void display_next_match(list_t* matches, int index) {
         // else
         //  display next match
 
-    } else {
-        match_display(match_next(index, matches));
     }
+
+    match_display(match_next(index, matches));
 
 }

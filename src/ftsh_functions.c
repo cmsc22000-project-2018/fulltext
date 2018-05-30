@@ -2,6 +2,7 @@
 #include "ftsh_functions.h"
 #include "search.h"
 #include "match.h"
+#include "trie.h"
 #include "../src/simclist.h"
 
 /*
@@ -47,6 +48,8 @@ int ftsh_find(char **args, FILE *pf) {
 
     int start_line = 1;
     int BUFFER_LENGTH = 100;
+    
+    /* Implement words into trie */
     char *word = args[1];
 
     match curMatch;
@@ -87,11 +90,13 @@ int ftsh_find(char **args, FILE *pf) {
     	// next/prev match
         if (strncmp(input, "next", 5) == 0) {
 
-            display_next_match(&matches, index++);
+            display_next_match(&matches, index);
+            index = (index+1)%list_size(&matches);
 
         } else if (strncmp(input, "prev", 5) == 0) {
 
             display_prev_match(&matches, index--);
+            index = (index-1+list_size(&matches))/list_size(&matches);
 
         }
     }

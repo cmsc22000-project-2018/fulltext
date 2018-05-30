@@ -4,6 +4,7 @@
 #include "simclist.c"
 #include "simclist.h"
 #include "match.h"
+#include "trie.h"
 
 /* See match.h for descriptions of functions */
 
@@ -200,7 +201,6 @@ int match_display(match* match) {
 		printf("> word: %s\n", match_get_word(match));
 		printf("  [%d]: ", match_get_line_num(match));
 		match_print_line(match);
-		// printf("   pos: %d\n", match_get_position(match));
 		return 1;
 	}
 
