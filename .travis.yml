@@ -13,6 +13,7 @@ jobs:
         - make all && make -C tests clean all
     - stage: test
       script: 
+        - make -C tests clean all
         - cd tests && ./test-fulltext
 
 after_script:
