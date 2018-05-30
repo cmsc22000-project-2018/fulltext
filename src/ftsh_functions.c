@@ -55,13 +55,13 @@ int ftsh_find(char **args, FILE *pf) {
 
 
     /* Finding first match at minimum */
-    while (list_size(&matches) == 0 /*&& fgetc(pf) != EOF*/) {
+    while (list_size(&matches) == 0 /*&& fgetc(pf) != EOF*/ ) {
         matches = *parse_file_buffered(pf, start_line, \
                                        (start_line + BUFFER_LENGTH), word, &matches);
 
         start_line += BUFFER_LENGTH;
 
-        if (fgetc(pf) == EOF && list_size(&matches) == 0) {
+        if (list_size(&matches) == 0) {
             printf("No matches for %s have been found.\n", word);
             return 1;
         }
@@ -74,8 +74,6 @@ int ftsh_find(char **args, FILE *pf) {
 
  	match_display(&curMatch);
 
-
-    /* NEEDS FIX */
     while (STATUS) {
         printf("ftsh> ");
         input = fgets(buf, 5, stdin);

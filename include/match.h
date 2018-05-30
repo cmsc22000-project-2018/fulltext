@@ -82,7 +82,7 @@ char* match_get_line(match* match);
 
 /**
   @brief Goes to next item in linked list
-  @param match: pointer to match
+  @param index index of current match
   @param matches: doubly linked list (dll) of matches
   @return pointer to next match, or NULL if not found
 */
@@ -90,7 +90,7 @@ match* match_next(int index, list_t* matches);
 
 /**
  @brief Goes to previous item in linked list
- @param match* match: pointer to match
+ @param index index of current match
  @param matches: dll of matches
  @return pointer to previous match, or NULL if not found
 */
