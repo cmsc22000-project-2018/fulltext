@@ -40,7 +40,6 @@ int ftsh_exit(char **args, FILE *pf) {
     return 0;
 }
 
-
 int ftsh_find(char **args, FILE *pf) {
     int STATUS = 1;
     char buf[100];
@@ -48,8 +47,7 @@ int ftsh_find(char **args, FILE *pf) {
 
     int start_line = 1;
     int BUFFER_LENGTH = 100;
-    
-    /* Implement words into trie */
+   
     char *word = args[1];
 
     match curMatch;
@@ -95,7 +93,7 @@ int ftsh_find(char **args, FILE *pf) {
 
         } else if (strncmp(input, "prev", 5) == 0) {
 
-            display_prev_match(&matches, index--);
+            display_prev_match(&matches, index);
             index = (index-1+list_size(&matches))/list_size(&matches);
 
         }

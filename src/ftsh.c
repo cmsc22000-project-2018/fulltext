@@ -32,6 +32,16 @@ char** ftsh_get_input(char *input) {
     return args;
 }
 
+char **ftsh_get_words(char **args) {
+    char **words = malloc(8 * sizeof(char *));
+    int i = 1; // 0 = `find`
+    while (args[i] != '\0') {
+        words[i] = args[i];
+        i++;
+    }
+    words[i] = NULL;
+    return words;
+}
 
 void ftsh_loop(FILE *pf) {
     char *input;
