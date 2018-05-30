@@ -10,7 +10,7 @@ jobs:
   include:
     - stage: build
       script:
-        - make all && make -C tests clean all
+        - make clean all
     - stage: test
       script: 
         - make -C tests clean all
