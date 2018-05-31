@@ -83,6 +83,16 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    if (argc == 3) {
+        printf("Batch mode detected\n");
+        /*if (!strncmp(argv[1], "-b", 2) || !strncmp(argv[2], "-b", 2)) {
+            mode = 2;
+            printf("Batch mode detected\n");
+        }*/
+    }
+
+    ftsh_loop(pf);
+
     // Interactive mode
     if (mode == 1) {
         ftsh_loop(pf);
