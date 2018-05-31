@@ -13,8 +13,8 @@ jobs:
         - make clean all
     - stage: test
       script: 
-        - make -C tests clean all
-        - cd tests && ./test-fulltext
+        - make tests
+        - tests/test-fulltext
 
 after_script:
     - echo "Finished Travis CI tests on /dev branch build"
