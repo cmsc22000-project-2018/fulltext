@@ -25,7 +25,8 @@ before_install:
 script:
     # pwd: fulltext
     - make all && make -C tests clean all
-    - tests/test-fulltext
+    - cd tests/
+    - ./test-fulltext
 
 after_script:
     - echo "Finished Travis CI tests on /dev branch build"
