@@ -3,7 +3,7 @@
 
 CC = gcc 
 CFLAGS = -fPIC -Wall -std=gnu99 -O2 -g -I../include/ -I../src/ -I../api/include/ 
-LDFLAGS = -L./tests/ -Wl,-rpath=./tests/ -L./api/ -Wl,-rpath=./api/ 
+LDFLAGS = -L../tests/ -Wl,-rpath=../tests/ -L../api/ -Wl,-rpath=../api/ 
 RM = rm -f
 BIN = test-fulltext
 LDLIBS = -lcriterion -lfulltext -lreadline -lredisApi
