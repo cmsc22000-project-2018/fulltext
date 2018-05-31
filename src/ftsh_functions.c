@@ -43,7 +43,7 @@ int ftsh_exit(char **args, FILE *pf) {
 int ftsh_find(char **args, FILE *pf) {
     int STATUS = 1;
     char buf[10];
-    char *input = "NULL";
+    char *input;
 
     int start_line = 1;
     int BUFFER_LENGTH = 100;
