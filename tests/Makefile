@@ -1,9 +1,9 @@
-#Makefile based on template at https://gist.github.com/xuhdev/1873316
+# Makefile based on template at https://gist.github.com/xuhdev/1873316
 # Makefile partially based on CMSC 220 Lab 3 and Lab 5
 
 CC = gcc 
 CFLAGS = -fPIC -Wall -std=gnu99 -O2 -g -I../include/ -I../src/ -I../api/include/ 
-LDFLAGS = -L../tests/ -Wl,-rpath=../tests/ -L../api/ -Wl,-rpath=../api/ 
+LDFLAGS = -L../tests/ -Wl,-rpath=./tests/ -L../api/ -Wl,-rpath=./api/ 
 RM = rm -f
 BIN = test-fulltext
 LDLIBS = -lcriterion -lfulltext -lreadline -lredisApi
