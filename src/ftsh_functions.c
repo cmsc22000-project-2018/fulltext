@@ -42,8 +42,8 @@ int ftsh_exit(char **args, FILE *pf) {
 
 int ftsh_find(char **args, FILE *pf) {
     int STATUS = 1;
-    char buf[100];
-    char *input;
+    char buf[10];
+    char *input = "NULL";
 
     int start_line = 1;
     int BUFFER_LENGTH = 100;
@@ -77,30 +77,28 @@ int ftsh_find(char **args, FILE *pf) {
 
     while (STATUS) {
         printf("ftsh> ");
-        input = fgets(buf, 5, stdin);
-
+        input = fgets(buf, 6, stdin);
+        
         // exit ./ftsh
-        if (!input || strncmp(input, "exit", 5) == 0) exit(1);
+        if (!input || strncmp(input, "exit\n", 5) == 0) exit(1);
 
         // exit find()
-        if (strncmp(input, "quit", 5) == 0) STATUS = 0;
+        if (strncmp(input, "quit\n", 5) == 0) STATUS = 0;
 
     	// next/prev match
-        if (strncmp(input, "next", 5) == 0) {
+        if (strncmp(input, "next\n", 5) == 0) {
 
             display_next_match(&matches, index);
             index = (index+1)%list_size(&matches);
 
-        } else if (strncmp(input, "prev", 5) == 0) {
+        } else if (strncmp(input, "prev\n", 5) == 0) {
 
             display_prev_match(&matches, index);
             index = (index-1+list_size(&matches))/list_size(&matches);
 
         }
     }
-
     return 1;
-
 }
 
 int ftsh_num_builtins() {
