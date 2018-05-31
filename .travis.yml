@@ -25,7 +25,7 @@ before_install:
 
 script:
     # pwd: fulltext
-    - redis-cli MODULE LOAD api/lib/redis-tries/module/trie.so
+    # redis-cli MODULE LOAD api/lib/redis-tries/module/trie.so
     - make all && make -C tests clean all
     - cd tests/
     - ./test-fulltext
