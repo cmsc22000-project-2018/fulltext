@@ -149,7 +149,7 @@ Test(match, next_match_regular) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* nextMatch = match_next(a, &matches);
+    match* nextMatch = match_next(0, &matches);
 
     cr_assert_eq(nextMatch, b, "Expected %s but got %s", b->word, nextMatch->word);
 }
@@ -170,7 +170,7 @@ Test(match, next_match_wraparound) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* nextMatch = match_next(c, &matches);
+    match* nextMatch = match_next(2, &matches);
 
     cr_assert_eq(nextMatch, a, "Expected %s but got %s", a->word, nextMatch->word);
 }
@@ -191,7 +191,7 @@ Test(match, prev_match_regular) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* prevMatch = match_prev(c, &matches);
+    match* prevMatch = match_prev(2, &matches);
 
     cr_assert_eq(prevMatch, b, "Expected %s but got %s", b->word, prevMatch->word);
 }
@@ -212,7 +212,7 @@ Test(match, prev_match_wraparound) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* prevMatch = match_prev(a, &matches);
+    match* prevMatch = match_prev(0, &matches);
 
     cr_assert_eq(prevMatch, c, "Expected %s but got %s", c->word, prevMatch->word);
 }
