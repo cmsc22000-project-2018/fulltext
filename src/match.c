@@ -129,7 +129,7 @@ void match_insert_at(match* newMatch, int index, list_t* matches) {
 }
 
 
-void match_append_(match* newMatch, list_t* matches) {
+void match_append(match* newMatch, list_t* matches) {
     list_append(matches, newMatch);
 }
 
@@ -204,16 +204,15 @@ void match_print_line(match* match) {
 }
 
 
-int match_display(match* match) {
+void match_display(match* match) {
     if (match != NULL) {
         printf("> word: %s\n", match_get_word(match));
         printf("  [%d]: ", match_get_line_num(match));
         match_print_line(match);
         printf("   pos: %d\n", match_get_position(match));
-        return 1;
+        return;
     }
 
     printf("Match is empty\n");
-    return -1;
 }
 

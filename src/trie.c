@@ -41,7 +41,7 @@ int trie_free(trie_t *t) {
     }
 
     free(t);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 
@@ -54,7 +54,7 @@ int trie_add_node(trie_t *t, char current) {
     if (t->children[c] == NULL)
         t->children[c] = trie_new(current);
 
-    return 0;
+    return EXIT_SUCCESS;
 
 }
 
@@ -64,7 +64,7 @@ int trie_insert_string(trie_t *t, char *word) {
 
     if (*word == '\0') {
         t->is_word=1;
-        return 0;
+        return EXIT_SUCCESS;
 
     } else {
 
@@ -73,7 +73,7 @@ int trie_insert_string(trie_t *t, char *word) {
         int rc = trie_add_node(t, curr);
         if (rc != 0) {
             error("Fail to add_node");
-            return 1;
+            return EXIT_FAILURE;
         }
 
         word++;
@@ -86,7 +86,7 @@ int trie_from_stringarray(trie_t* t, char **strarr) {
 
     for (int i = 0; strarr[i] != NULL; i++) {
         ret = trie_insert_string(t, strarr[i]);
-        if (ret == 1) return 1;
+        if (ret == 1) return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }

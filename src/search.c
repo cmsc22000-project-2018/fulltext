@@ -25,7 +25,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
-            match_append_(foundMatch, matches);
+            match_append(foundMatch, matches);
 
             /* Clean-up */
             free(dup);
