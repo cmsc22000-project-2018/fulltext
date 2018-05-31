@@ -94,7 +94,7 @@ int ftsh_find(char **args, FILE *pf) {
         } else if (strncmp(input, "prev\n", 5) == 0) {
 
             display_prev_match(&matches, index);
-            index = (index-1+list_size(&matches))/list_size(&matches);
+            index = ((index - 1) + list_size(&matches)) % list_size(&matches);
 
         }
     }
