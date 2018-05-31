@@ -67,7 +67,8 @@ int ftsh_find(char **args, FILE *pf) {
         }
     }
 
-    curMatch = *match_get_at_index(0, &matches);
+    int index = 0;
+    curMatch = *match_get_at_index(index, &matches);
 
     match_display(&curMatch);
     list_info(&matches);
@@ -82,12 +83,13 @@ int ftsh_find(char **args, FILE *pf) {
 
         // next match
         if (strncmp(input, "next", 5) == 0) {
-            match_display(&curMatch);
-            display_next_match(&matches, &curMatch);
+            display_next_match(&matches, index);
+            index = (index+1)%list_size(&matches);
 
         } else if (strncmp(input, "prev", 5) == 0) {
 
-            display_prev_match(&matches, &curMatch);
+            display_prev_match(&matches, index);
+            index = (index-1+list_size(&matches))/list_size(&matches);
 
         }
 

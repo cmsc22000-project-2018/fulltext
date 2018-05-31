@@ -92,29 +92,15 @@ int match_get_position(match* match) {
 }
 
 
-match* match_next(match* match, list_t* matches) {
-    if (match == NULL) {
-        return NULL;
-    }
-    int rc = list_locate(matches, match);
-    if (rc < 0) {
-        return NULL;
-    }
+match* match_next(int index, list_t* matches) {
     int size = list_size(matches);
-    return list_get_at(matches, (rc + 1) % size);
+    return list_get_at(matches, (index + 1) % size);
 }
 
 
-match* match_prev(match* match, list_t* matches) {
-    if (match == NULL) {
-        return NULL;
-    }
-    int rc = list_locate(matches, match);
-    if (rc < 0) {
-        return NULL;
-    }
+match* match_prev(int index, list_t* matches) {
     int size = list_size(matches);
-    return list_get_at(matches, ((rc - 1) + size) % size);
+    return list_get_at(matches, ((index - 1) + size) % size);
 }
 
 
