@@ -49,7 +49,6 @@ int find_match(char* line, char* word,
 list_t* parse_file_buffered(FILE* pf, int start_line, 
 	int end_line, char* word, list_t* matches)
 {
-
     char* line = NULL;
     int wordlen = strlen(word);
     size_t len = 0;
@@ -58,6 +57,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
     int found = -1;
     int lineNum = start_line;
 
+    printf("Iterating through lines %d - %d\n", start_line, end_line);
     while (lineNum <= end_line &&
      (read = getline(&line, &len, pf)) != -1) {
         char sanitized[strlen(line) + 1];
@@ -86,6 +86,17 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 
         lineNum++;
         free(dupLine);
+    }
+    //if no matches found and is not EOF, look through next 100 lines. 
+    if (list_size(matches) == 0 && !feof(pf))
+    {
+        printf("No matches found. Looking through the next 100 lines.\n");
+        parse_file_buffered(pf, end_line+1, end_line + 101, word, matches);
+    }
+    //if EOF, notify user
+    if (feof(pf))
+    {
+        printf("Reached EOF\n");
     }
 
     return matches;
