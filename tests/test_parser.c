@@ -1,27 +1,38 @@
-Test(parser, trie_from_stringarray) {
-    char* s1 = "an";
-    char* s2 = "anti";
-    char* s3 = "ants";
-    trie_t *t = trie_new('\0');
+#include <stdlib.h>
+#include <stdio.h>
 
-    char **strarray = malloc(4*sizeof(char*));
-    strarray[0] = s1;
-    strarray[1] = s2;
-    strarray[2] = s3;
-    strarray[3] = NULL;
+#include "parser.h"
+#include "trie.h"
 
-    cr_assert_eq(strarray[1], "anti", "Failed to build strarray");
+void test_parser()
+{
+	printf(" ----- INSERTING ----- \n");
+	char* s1 = "apples";
+	char* s2 = "bananas";
+	trie_t* new_trie = trie_new("test");
 
-    int r = trie_from_stringarray(t, strarray);
-    cr_assert_eq(r,0,"trie_insert_string failed");
-    cr_assert_not_null(t->children['a'], "trie_add_node failed to allocate new entry");
-    cr_assert_eq(t->children['a']->is_word,0, "trie_add_node failed to set is_word for new trie");
-    cr_assert_not_null(t->children['a']->children['n'] , "trie_add_node failed to allocate new entry");
-    cr_assert_eq(t->children['a']->children['n']->is_word,1, "trie_insert_string failed to set is_word for end character");
+	char **strarray = malloc(3*sizeof(char*));
+	strarray[0] = s1;
+	strarray[1] = s2;
+	strarray[2] = NULL;
 
-    cr_assert_eq(t->children['a']->children['n']->is_word,1, "trie_insert_string failed to set is_word for end character");
-    cr_assert_eq(t->children['a']->children['n']->children['t']->children['i']->is_word,1, "trie_insert_string failed to set is_word for end character");
+	int r = trie_from_stringarray(new_trie, strarray);
+	
+	int contain1 = trie_contains(new_trie, "apples"); // 0
+	int contain2 = trie_contains(new_trie, "bananas"); // 0
+	int uncontain = trie_contains(new_trie, "carrots"); // 1
+	int prefix = trie_contains(new_trie, "app"); // 2
 
-    cr_assert_eq(t->children['a']->children['n']->children['t']->is_word,0, "trie_insert_string failed to set is_word for middle character");
-    cr_assert_eq(t->children['a']->children['n']->children['t']->children['s']->is_word,1, "trie_insert_string failed to set is_word for end character");
+	printf(" ----- KEY ----- \n");
+	printf("0 - word is contained in trie \n");
+	printf("1 - word is not contained in trie \n");
+	printf("2 - word is a prefix in the trie \n");
+	printf("\n");
+
+	printf("TRIE_CONTAINS(apples): %d\n", contain1);
+	printf("TRIE_CONTAINS(bananas): %d\n", contain2);
+	printf("TRIE_CONTAINS(carrots): %d\n", uncontain);
+	printf("TRIE_CONTAINS(app): %d\n", prefix);
+	
+	trie_free(new_trie);
 }

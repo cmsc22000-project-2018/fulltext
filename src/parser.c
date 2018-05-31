@@ -65,9 +65,8 @@ char **parse_to_arr(FILE *fp) {
     return strarr;
 }
 
-int trie_from_stringarray(char **strarr) {
+int trie_from_stringarray(trie_t* t, char **strarr) {
     int ret = 0;
-    trie_t* t = trie_new('\0');
 
     for (int i = 0; strarr[i] != NULL; i++) {
         ret = trie_insert(t, strarr[i]);
