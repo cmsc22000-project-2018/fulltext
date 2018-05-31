@@ -43,6 +43,9 @@ char **parse_to_arr(FILE *fp);
 */
 int trie_from_stringarray(trie_t* t, char **strarray);
 
+/**
+    @brief Test redis trie
+*/
 void test_parser();
 
 #endif /* INCLUDE_FULLTEXT_PARSER_H_ */

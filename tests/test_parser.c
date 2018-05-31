@@ -4,6 +4,7 @@
 #include "parser.h"
 #include "trie.h"
 
+/* See parser.h */
 void test_parser()
 {
 	printf(" ----- INSERTING ----- \n");

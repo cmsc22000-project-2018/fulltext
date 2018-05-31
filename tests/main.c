@@ -2,7 +2,11 @@
 
 	@file         test_ftsh_functions.c
 
+	@file         test_parser.c
+
 	@author       Max Bronckers
+
+	@author       Cameron Dignan
 
 	@date         Thursday, 6 May 2018
 
