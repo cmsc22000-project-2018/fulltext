@@ -26,7 +26,7 @@ match* match_new(char* word, int lineNum, int position, char* line) {
 
 int match_init(match* match, char* word, int lineNum, int position, char* line) {
     if (match == NULL) {
-        return -1;
+        return EXIT_FAILURE;
     }
 
     match->word = strdup(word);
@@ -34,21 +34,21 @@ int match_init(match* match, char* word, int lineNum, int position, char* line) 
     match->position = position;
     match->line = strdup(line);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int match_set_line(match* match, char* line) {
     if (match == NULL) {
-        return -1;
+        return EXIT_FAILURE;
     }
 
     match->line = strdup(line);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int match_free(match* match) {
     if (match == NULL) {
-        return -1;
+        return EXIT_FAILURE;
     }
 
     if (match->word != NULL) {
@@ -61,7 +61,7 @@ int match_free(match* match) {
 
     free(match);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 char* match_get_word(match* match) {
     if (match == NULL) {

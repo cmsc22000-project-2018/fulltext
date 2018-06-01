@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
@@ -109,7 +110,7 @@ int ftsh_execute(char **args, FILE *pf) {
 
     if (args[0] == NULL) {
         // An empty command was entered.
-        return 1;
+        return EXIT_FAILURE;
     }
 
     for (i = 0; i < ftsh_num_builtins(); i++) {
@@ -118,5 +119,5 @@ int ftsh_execute(char **args, FILE *pf) {
         }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

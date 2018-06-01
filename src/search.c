@@ -39,6 +39,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
     }
 
+    // Nothing has been found
     return false;
 
 }
@@ -57,14 +58,14 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
 
         char sanitized[strlen(line) + 1];
         strncpy(sanitized, line, strlen(line));
-        sanitized[strcspn(sanitized, "\r\n")] = 0;
+        sanitized[strcspn(sanitized, "\r\n")] = '\0';
         char* dupLine = strdup(sanitized);
 
         char line2[strlen(sanitized) + 1];
         strncpy(line2, sanitized, strlen(sanitized));
         found = find_match(sanitized, word, 1, lineNum, matches);
 
-        while (!found && found + wordlen < read) {
+        while (found != false && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
             found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
 
@@ -84,7 +85,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
 
 void display_prev_match(list_t* matches, int index) {
     if (index == 0) {
-        printf("\n...wrap-around to last match found...\n\n");
+        printf("\n...search hit top, continuing at bottom...\n\n");
     }
 
     match_display(match_prev(index, matches));
@@ -93,7 +94,7 @@ void display_prev_match(list_t* matches, int index) {
 void display_next_match(list_t* matches, int index) {
 
     if (index == list_size(matches) - 1) {
-        printf("\n...wrap-around to first match found...\n\n");
+        printf("\n...search hit bottom, continuing at top...\n\n");
 
         // parse more
         // if EOF has been reached (how do we know that?),

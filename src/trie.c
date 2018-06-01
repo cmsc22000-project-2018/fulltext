@@ -72,7 +72,7 @@ int trie_insert_string(trie_t *t, char *word) {
         char curr = *word;
 
         int rc = trie_add_node(t, curr);
-        if (rc) {
+        if (rc == EXIT_FAILURE) {
             error("Fail to add_node");
             return EXIT_FAILURE;
         }
@@ -83,11 +83,13 @@ int trie_insert_string(trie_t *t, char *word) {
 }
 
 int trie_from_stringarray(trie_t* t, char **strarr) {
-    int ret = 0;
+    int ret = EXIT_SUCCESS;
 
     for (int i = 0; strarr[i] != NULL; i++) {
         ret = trie_insert_string(t, strarr[i]);
-        if (ret == 1) return EXIT_FAILURE;
+
+        if (ret == EXIT_FAILURE) 
+            return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
 }
