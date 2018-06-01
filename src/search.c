@@ -39,7 +39,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
     }
 
-    return -1;
+    return false;
 
 }
 
@@ -50,7 +50,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
     size_t len = 0;
     ssize_t read;
 
-    int found = -1;
+    int found = false;
     int lineNum = start_line;
 
     while (lineNum <= end_line && (read = getline(&line, &len, pf)) != -1) {
@@ -64,7 +64,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
         strncpy(line2, sanitized, strlen(sanitized));
         found = find_match(sanitized, word, 1, lineNum, matches);
 
-        while (found != -1 && found + wordlen < read) {
+        while (!found && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
             found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
 
@@ -84,9 +84,9 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
 
 void display_prev_match(list_t* matches, int index) {
     if (index == 0) {
-      printf("\n...wrap-around to last match found...\n\n");
+        printf("\n...wrap-around to last match found...\n\n");
     }
-    
+
     match_display(match_prev(index, matches));
 }
 
@@ -94,7 +94,7 @@ void display_next_match(list_t* matches, int index) {
 
     if (index == list_size(matches) - 1) {
         printf("\n...wrap-around to first match found...\n\n");
-        
+
         // parse more
         // if EOF has been reached (how do we know that?),
         //  we say ...wrap-around to first match found...

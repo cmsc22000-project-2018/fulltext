@@ -33,10 +33,10 @@ trie_t *trie_new(char current) {
 
 /* See trie.h */
 int trie_free(trie_t *t) {
-    assert( t != NULL);
+    assert(t != NULL);
 
-    for (int i=0; i<256; i++ ) {
-        if (t->children[i] !=NULL)
+    for (int i=0; i<256; i++) {
+        if (t->children[i] != NULL)
             trie_free(t->children[i]);
     }
 
@@ -51,11 +51,12 @@ int trie_add_node(trie_t *t, char current) {
 
     unsigned c = (unsigned) current;
 
-    if (t->children[c] == NULL)
+    if (t->children[c] == NULL) {
         t->children[c] = trie_new(current);
+        return EXIT_SUCCESS;
+    }
 
-    return EXIT_SUCCESS;
-
+    return EXIT_FAILURE;
 }
 
 /* See trie.h */
@@ -71,7 +72,7 @@ int trie_insert_string(trie_t *t, char *word) {
         char curr = *word;
 
         int rc = trie_add_node(t, curr);
-        if (rc != 0) {
+        if (rc) {
             error("Fail to add_node");
             return EXIT_FAILURE;
         }
