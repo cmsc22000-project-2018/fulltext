@@ -163,22 +163,22 @@ void ftsh_reset_color() {
 
 
 void match_print_line(match* match) {
-    int i = 0;
-    int wl = 0;
+    int line_pos = 0;
+    int word_pos = 0;
 
-    char* w = match_get_word(match);
-    char* s = match_get_line(match);
+    char* word = match_get_word(match);
+    char* line = match_get_line(match);
 
-    while (w[wl] != '\0') wl++;
+    while (word[word_pos] != '\0') word_pos++;
 
-    while (s[i] != '\0') {
-        if (i == match_get_position(match) - 1) {
+    while (line[line_pos] != '\0') {
+        if (line_pos == match_get_position(match) - 1) {
             ftsh_set_color_red();
-        } else if (i == match_get_position(match) + wl) {
+        } else if (line_pos == match_get_position(match) + word_pos) {
             ftsh_reset_color();
         }
-        printf("%c", s[i]);
-        i++;
+        printf("%c", line[line_pos]);
+        line_pos++;
     }
 
     printf("\n");

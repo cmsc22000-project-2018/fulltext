@@ -5,6 +5,13 @@
 #include "match.h"
 #include "../src/simclist.h"
 
+
+/* 
+    Defined variables for greater readability
+*/
+#define SHOULD_CONTINUE 1
+#define SHOULD_EXIT 0
+
 /*
     List of builtin commands, followed by their corresponding functions.
  */
@@ -32,17 +39,17 @@ int ftsh_help(char **args, FILE *pf) {
         printf("  %s\n", builtin_str[i]);
     }
 
-    return 1;
+    return SHOULD_EXIT;
 }
 
 
 int ftsh_exit(char **args, FILE *pf) {
-    return 0;
+    return SHOULD_EXIT;
 }
 
 
 int ftsh_find(char **args, FILE *pf) {
-    int STATUS = 1;
+    int status = SHOULD_CONTINUE;
     char buf[100];
     char *input;
 
@@ -64,7 +71,7 @@ int ftsh_find(char **args, FILE *pf) {
 
         if (fgetc(pf) == EOF && list_size(&matches) == 0) {
             printf("No matches for %s have been found.\n", word);
-            return 1;
+            return SHOULD_EXIT;
         }
     }
 
@@ -75,12 +82,12 @@ int ftsh_find(char **args, FILE *pf) {
     list_info(&matches);
 
     /* NEEDS FIX */
-    while (STATUS) {
+    while (status == SHOULD_CONTINUE) {
         printf("ftsh> ");
         input = fgets(buf, 5, stdin);
 
         // exit find()
-        if (!input || strncmp(input, "exit", 5) == 0) exit(1);
+        if (!input || strncmp(input, "exit", 5) == 0) exit(SHOULD_EXIT);
 
         // next match
         if (strncmp(input, "next", 5) == 0) {
@@ -96,7 +103,7 @@ int ftsh_find(char **args, FILE *pf) {
 
     }
 
-    return 1;
+    return SHOULD_EXIT;
 
 }
 
