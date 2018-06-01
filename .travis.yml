@@ -25,7 +25,7 @@ jobs:
         - make clean all
     - stage: test
       script: 
-        - make -C tests clean all
+        - make all && make -C tests clean all
         - tests/test-fulltext
 
 after_script:
