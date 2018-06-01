@@ -9,11 +9,11 @@ BIN = test-fulltext
 LDLIBS = -lcriterion -lfulltext -lreadline -lredisApi
 
 # Add your test file below in SRCS
-SRCS = main.c test_ftsh.c test_match.c test_parser.c
+SRCS = main.c test_ftsh.c test_match.c #test_parser.c
 OBJS = $(SRCS:.c=.o)
 
 # Add the src/c files that your test files depend on below in LIB_SRCS
-LIB_SRCS = ../src/ftsh.c ../src/ftsh_functions.c ../src/match.c ../src/search.c ../src/parser.c
+LIB_SRCS = ../src/ftsh.c ../src/ftsh_functions.c ../src/match.c ../src/search.c #../src/parser.c
 
 LIB_OBJS = $(LIB_SRCS:.c=.o)
 LIB_BIN = libfulltext.so
