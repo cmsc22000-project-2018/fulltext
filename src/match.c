@@ -92,29 +92,15 @@ int match_get_position(match* match) {
 }
 
 
-match* match_next(match* match, list_t* matches) {
-    if (match == NULL) {
-        return NULL;
-    }
-    int rc = list_locate(matches, match);
-    if (rc < 0) {
-        return NULL;
-    }
+match* match_next(int index, list_t* matches) {
     int size = list_size(matches);
-    return list_get_at(matches, (rc + 1) % size);
+    return list_get_at(matches, (index + 1) % size);
 }
 
 
-match* match_prev(match* match, list_t* matches) {
-    if (match == NULL) {
-        return NULL;
-    }
-    int rc = list_locate(matches, match);
-    if (rc < 0) {
-        return NULL;
-    }
+match* match_prev(int index, list_t* matches) {
     int size = list_size(matches);
-    return list_get_at(matches, ((rc - 1) + size) % size);
+    return list_get_at(matches, ((index - 1) + size) % size);
 }
 
 
@@ -129,7 +115,7 @@ void match_insert_at(match* newMatch, int index, list_t* matches) {
 }
 
 
-void match_append_(match* newMatch, list_t* matches) {
+void match_append(match* newMatch, list_t* matches) {
     list_append(matches, newMatch);
 }
 
@@ -204,16 +190,15 @@ void match_print_line(match* match) {
 }
 
 
-int match_display(match* match) {
+void match_display(match* match) {
     if (match != NULL) {
         printf("> word: %s\n", match_get_word(match));
         printf("  [%d]: ", match_get_line_num(match));
         match_print_line(match);
         printf("   pos: %d\n", match_get_position(match));
-        return 1;
+        return;
     }
 
     printf("Match is empty\n");
-    return -1;
 }
 

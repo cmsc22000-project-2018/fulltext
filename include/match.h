@@ -82,19 +82,19 @@ char* match_get_line(match* match);
 
 /**
   @brief Goes to next item in linked list
-  @param match: pointer to match
+  @param index index of current match
   @param matches: doubly linked list (dll) of matches
   @return pointer to next match, or NULL if not found
 */
-match* match_next(match* match, list_t* matches);
+match* match_next(int index, list_t* matches);
 
 /**
  @brief Goes to previous item in linked list
- @param match* match: pointer to match
+ @param index index of current match
  @param matches: dll of matches
  @return pointer to previous match, or NULL if not found
 */
-match* match_prev(match* match, list_t* matches);
+match* match_prev(int index, list_t* matches);
 
 /**
   @brief Inserts at specific index in match struct
@@ -109,7 +109,7 @@ void match_insert_at(match* newMatch, int index, list_t* matches);
   @param newMatch: pointer to new match struct
   @param matches: dll of matches
 */
-void match_append_(match* newMatch, list_t* matches);
+void match_append(match* newMatch, list_t* matches);
 
 /**
   @brief Removes at specific index in match struct
@@ -164,9 +164,8 @@ void match_print_line(match* match);
 /**
   @brief Displays the info of a match
   @param match: a match to print
-  @return 1 success
-  @return -1 failure
+  @return void
 */
-int match_display(match* match);
+void match_display(match* match);
 
 #endif /* _FULLTEXT_MATCH_H_ */

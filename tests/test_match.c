@@ -149,7 +149,7 @@ Test(match, next_match_regular) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* nextMatch = match_next(a, &matches);
+    match* nextMatch = match_next(0, &matches);
 
     cr_assert_eq(nextMatch, b, "Expected %s but got %s", b->word, nextMatch->word);
 }
@@ -170,7 +170,7 @@ Test(match, next_match_wraparound) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* nextMatch = match_next(c, &matches);
+    match* nextMatch = match_next(2, &matches);
 
     cr_assert_eq(nextMatch, a, "Expected %s but got %s", a->word, nextMatch->word);
 }
@@ -191,7 +191,7 @@ Test(match, prev_match_regular) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* prevMatch = match_prev(c, &matches);
+    match* prevMatch = match_prev(2, &matches);
 
     cr_assert_eq(prevMatch, b, "Expected %s but got %s", b->word, prevMatch->word);
 }
@@ -212,7 +212,7 @@ Test(match, prev_match_wraparound) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* prevMatch = match_prev(a, &matches);
+    match* prevMatch = match_prev(0, &matches);
 
     cr_assert_eq(prevMatch, c, "Expected %s but got %s", c->word, prevMatch->word);
 }
@@ -289,7 +289,7 @@ Test(match, insert_at_large) {
     cr_assert_eq(cur, toInsert, "Expected %s but got %s", toInsert->word, cur->word);
 }
 
-/* Testing append_() function */
+/* Testing append() function */
 Test(match, append) {
     list_t matches;
     list_init(&matches);
@@ -298,9 +298,9 @@ Test(match, append) {
     match* b = match_new("b", 1, 1, "b test");
     match* c = match_new("c", 1, 1, "c test");
 
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
+    match_append(a, &matches);
+    match_append(b, &matches);
+    match_append(c, &matches);
 
     cr_assert_not_null(&matches, "matches is null");
 
@@ -323,9 +323,9 @@ Test(match, remove_at_valid) {
     match* b = match_new("b", 1, 1, "b test");
     match* c = match_new("c", 1, 1, "c test");
 
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
+    match_append(a, &matches);
+    match_append(b, &matches);
+    match_append(c, &matches);
 
     cr_assert_not_null(&matches, "matches is null");
 
@@ -345,9 +345,9 @@ Test(match, remove_at_invalid) {
     match* b = match_new("b", 1, 1, "b test");
     match* c = match_new("c", 1, 1, "c test");
 
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
+    match_append(a, &matches);
+    match_append(b, &matches);
+    match_append(c, &matches);
 
     cr_assert_not_null(&matches, "matches is null");
 
@@ -372,9 +372,9 @@ Test(match, get_at_index_valid) {
     match* b = match_new("b", 1, 1, "b test");
     match* c = match_new("c", 1, 1, "c test");
 
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
+    match_append(a, &matches);
+    match_append(b, &matches);
+    match_append(c, &matches);
 
     cr_assert_not_null(&matches, "matches is null");
 
@@ -392,9 +392,9 @@ Test(match, get_at_index_invalid) {
     match* b = match_new("b", 1, 1, "b test");
     match* c = match_new("c", 1, 1, "c test");
 
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
+    match_append(a, &matches);
+    match_append(b, &matches);
+    match_append(c, &matches);
 
     cr_assert_not_null(&matches, "matches is null");
 
@@ -412,9 +412,9 @@ Test(match, get_index_valid) {
     match* b = match_new("b", 1, 1, "b test");
     match* c = match_new("c", 1, 1, "c test");
 
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
+    match_append(a, &matches);
+    match_append(b, &matches);
+    match_append(c, &matches);
 
     cr_assert_not_null(&matches, "matches is null");
 
@@ -433,9 +433,9 @@ Test(match, get_index_invalid) {
     match* c = match_new("c", 1, 1, "c test");
     match* d = match_new("d", 1, 1, "d test");
 
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
+    match_append(a, &matches);
+    match_append(b, &matches);
+    match_append(c, &matches);
 
     cr_assert_not_null(&matches, "matches is null");
 
