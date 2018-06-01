@@ -120,11 +120,6 @@ void match_append(match* newMatch, list_t* matches) {
 }
 
 
-void match_remove_at(int index, list_t* matches) {
-    list_delete_at(matches, index);
-}
-
-
 match* match_get_at_index(int index, list_t* matches) {
     if (list_size(matches) == 0) {
         return NULL;
