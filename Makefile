@@ -4,8 +4,8 @@ CC = gcc
 SRCS = src/ftsh.c src/ftsh_functions.c src/search.c src/match.c
 OBJS = $(SRCS:.c=.o)
 BIN = ftsh
-CFLAGS = -g -O2 -Wall -std=gnu99 -I ./include/ -I ./src/ -fPIC #`pkg-config --cflags --libs glib-2.0`
-LDLIBS = -lreadline #`pkg-config --libs glib-2.0`
+CFLAGS = -g -O2 -Wall -std=gnu99 -I ./include/ -I ./src/ -fPIC 
+LDLIBS = -lreadline 
 RM = rm -rf
 
 .PHONY: all
