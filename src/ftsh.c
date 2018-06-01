@@ -2,6 +2,7 @@
 #include "ftsh_functions.h"
 #include "search.h"
 #include "parser.h"
+#include "trie.h"
 
 
 char** ftsh_get_input(char *input) {
@@ -92,12 +93,21 @@ int main(int argc, char **argv) {
             char *batchpath = argv[3];
             pb = fopen(batchpath, "r");
             if (pb == NULL) {
-            	perror("Batch file could be opened");
+            	perror("Batch file could not be opened");
             	exit(1);
             }
             char **search_terms_arr = parse_to_arr(pb);
+            trie_t *t = trie_new('\0');
+            int ret = trie_from_stringarray(t, search_terms_arr);
+            assert (ret != EXIT_FAILURE); // trie created successfully
+
+
+
+
+            // Clean up            
             for (int i = 0; search_terms_arr[i] != NULL; i++)
-            	printf("%s\n", search_terms_arr[i]);
+            	free(search_terms_arr[i]);
+            trie_free(t);
         }
         // Returning from Batch mode
         if (pb) fclose(pb);
