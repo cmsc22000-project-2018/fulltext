@@ -4,6 +4,8 @@
 // next_token, read_string, init_parser borrowed
 // from CS152 Win 18, project blockchain
 
+#include "trie.h"
+
 /**
     @brief Read the next non-empty char.
     @param fp: pointer to the file to be read
@@ -32,5 +34,18 @@ void init_parser(FILE *fp);
     @return a pointer to the array, setting last entry to NULL
  */
 char **parse_to_arr(FILE *fp);
+
+/**
+    @brief Load array of strings into trie
+    @param t: Trie to load strings into
+    @param strarray: array of strings
+    @return 0 if success, otherwise -1
+*/
+int trie_from_stringarray(trie_t* t, char **strarray);
+
+/**
+    @brief Test redis trie
+*/
+void test_parser();
 
 #endif /* INCLUDE_FULLTEXT_PARSER_H_ */

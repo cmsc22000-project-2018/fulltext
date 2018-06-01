@@ -26,8 +26,8 @@
   @return position number of match if match found
   @return -1 if no match found
  */
-int find_match(char* line, char* word, int pos_start
-  , int line_num, list_t* matches);
+int find_match(char* line, char* word, int pos_start,
+ int line_num, list_t* matches);
 
 /**
   @brief Searches a file from line x to line y looking for given word
@@ -45,7 +45,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 /**
   @brief Prints out the prev match from list to std out
   @param matches List of matches
-  @param index index of current match
+  @param index Current match index
   @return void
  */
 void display_prev_match(list_t* matches, int index);
@@ -53,7 +53,7 @@ void display_prev_match(list_t* matches, int index);
 /**
   @brief Prints out the next match from list to std out
   @param matches List of matches
-  @param index index of current match
+  @param index Current match index
   @return void
  */
 void display_next_match(list_t* matches, int index);

@@ -109,7 +109,7 @@ void match_insert_at(match* newMatch, int index, list_t* matches);
   @param newMatch: pointer to new match struct
   @param matches: dll of matches
 */
-void match_append_(match* newMatch, list_t* matches);
+void match_append(match* newMatch, list_t* matches);
 
 /**
   @brief Removes at specific index in match struct
@@ -164,9 +164,8 @@ void match_print_line(match* match);
 /** 
   @brief Displays the info of a match
   @param match: a match to print
-  @return 1 success
-  @return -1 failure
+  @return void
 */
-int match_display(match* match);
+void match_display(match* match);
 
 #endif /* _FULLTEXT_MATCH_H_ */

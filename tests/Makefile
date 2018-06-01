@@ -1,19 +1,19 @@
-#Makefile based on template at https://gist.github.com/xuhdev/1873316
+# Makefile based on template at https://gist.github.com/xuhdev/1873316
 # Makefile partially based on CMSC 220 Lab 3 and Lab 5
 
 CC = gcc 
-CFLAGS = -fPIC -Wall -std=gnu99 -O2 -g -I../include/ -I../src/ 
-LDFLAGS = -L../tests/ -Wl,-rpath=../tests/ 
+CFLAGS = -fPIC -Wall -std=gnu99 -O2 -g -I../include/ -I../src/ -I../api/include/ 
+LDFLAGS = -L../tests/ -Wl,-rpath=./tests/ -L../api/ -Wl,-rpath=./api/ 
 RM = rm -f
 BIN = test-fulltext
-LDLIBS = -lcriterion -lfulltext -lreadline
+LDLIBS = -lcriterion -lfulltext -lreadline -lredisApi
 
 # Add your test file below in SRCS
-SRCS = main.c test_ftsh.c test_match.c test_trie.c
+SRCS = main.c test_ftsh.c test_match.c #test_parser.c
 OBJS = $(SRCS:.c=.o)
 
 # Add the src/c files that your test files depend on below in LIB_SRCS
-LIB_SRCS = ../src/ftsh.c ../src/ftsh_functions.c ../src/match.c ../src/search.c ../src/trie.c
+LIB_SRCS = ../src/ftsh.c ../src/ftsh_functions.c ../src/match.c ../src/search.c #../src/parser.c
 
 LIB_OBJS = $(LIB_SRCS:.c=.o)
 LIB_BIN = libfulltext.so
