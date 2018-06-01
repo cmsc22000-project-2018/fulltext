@@ -56,7 +56,7 @@ char **parse_to_arr(FILE *fp) {
             strarr[i] = NULL;
             break;
         }
-        strncpy(strarr[i], s, sizeof(strarr[i]));
+        strncpy(strarr[i], s, strlen(s)+1);
         next_token(fp);
     }
 

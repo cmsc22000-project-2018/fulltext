@@ -1,6 +1,7 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
+#include "parser.h"
 
 
 char** ftsh_get_input(char *input) {
@@ -72,23 +73,35 @@ int main(int argc, char **argv) {
     // Config
     char* path = get_path(argc, argv);
     if (argc == 1 || path == NULL) {
-        printf("Usage: ./ftsh <text_search_file>\n");
+        printf("Usage: ./ftsh <text_search_file> {-i | -b <text_search_terms>}\n");
         exit(0);
     }
     FILE *pf = fopen(path, "r");
+    FILE *pb = NULL;
+    // 1 for interactive and 0 for batch
     int mode = 1;
 
     if (pf == NULL) {
-        perror("File could not be opened");
+        perror("Search file could not be opened");
         exit(1);
     }
 
-    if (argc == 3) {
-        printf("Batch mode detected\n");
-        /*if (!strncmp(argv[1], "-b", 2) || !strncmp(argv[2], "-b", 2)) {
-            mode = 2;
-            printf("Batch mode detected\n");
-        }*/
+    if (argc == 4) {
+        if (!strncmp(argv[2], "-b", 2)) {
+            mode = 0;
+            char *batchpath = argv[3];
+            pb = fopen(batchpath, "r");
+            if (pb == NULL) {
+            	perror("Batch file could be opened");
+            	exit(1);
+            }
+            char **search_terms_arr = parse_to_arr(pb);
+            for (int i = 0; search_terms_arr[i] != NULL; i++)
+            	printf("%s\n", search_terms_arr[i]);
+        }
+        // Returning from Batch mode
+        if (pb) fclose(pb);
+        exit(0);
     }
 
     ftsh_loop(pf);
@@ -96,11 +109,6 @@ int main(int argc, char **argv) {
     // Interactive mode
     if (mode == 1) {
         ftsh_loop(pf);
-    }
-
-    // Batch mode
-    if (!mode) {
-        printf("To be implemented.\n");
     }
 
     // Clean up
