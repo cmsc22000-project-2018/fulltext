@@ -44,6 +44,10 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
 }
 
+//in the case that string is not null-terminated
+//this will prevent a segfault
+#define MATCH_MAXLEN 100
+
 list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, list_t* matches) {
 
     char* line = NULL;
@@ -56,20 +60,20 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
 
     while (lineNum <= end_line && (read = getline(&line, &len, pf)) != -1) {
 
-        char sanitized[strlen(line) + 1];
-        strncpy(sanitized, line, strlen(line));
+        char sanitized[MATCH_MAXLEN + 1];
+        strncpy(sanitized, line, MATCH_MAXLEN);
         sanitized[strcspn(sanitized, "\r\n")] = '\0';
         char* dupLine = strdup(sanitized);
 
-        char line2[strlen(sanitized) + 1];
-        strncpy(line2, sanitized, strlen(sanitized));
+        char line2[MATCH_MAXLEN + 1];
+        strncpy(line2, sanitized, MATCH_MAXLEN);
         found = find_match(sanitized, word, 1, lineNum, matches);
 
         while (found != false && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
             found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
 
-            if (strncmp(sanitized, dupLine, strlen(sanitized)) != 0) {
+            if (strncmp(sanitized, dupLine, MATCH_MAXLEN) != 0) {
                 match* foundMatch = match_get_at_index(list_size(matches) - 1, matches);
                 match_set_line(foundMatch, dupLine);
             }
@@ -95,13 +99,6 @@ void display_next_match(list_t* matches, int index) {
 
     if (index == list_size(matches) - 1) {
         printf("\n...search hit bottom, continuing at top...\n\n");
-
-        // parse more
-        // if EOF has been reached (how do we know that?),
-        //  we say ...wrap-around to first match found...
-        // else
-        //  display next match
-
     }
 
     match_display(match_next(index, matches));
