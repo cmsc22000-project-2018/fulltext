@@ -101,6 +101,10 @@ int main(int argc, char **argv) {
             int ret = trie_from_stringarray(t, search_terms_arr);
             assert (ret != EXIT_FAILURE); // trie created successfully
 
+            list_t matches;
+            list_init(&matches);
+            matches = *find_matches_batch(pf, t, &matches);
+            display_matches_batch(&matches);
 
 
 
