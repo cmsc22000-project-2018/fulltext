@@ -15,5 +15,3 @@
 #include <stdbool.h>
 #include "ftsh.h"
 
-Test(ftsh, input)
-{

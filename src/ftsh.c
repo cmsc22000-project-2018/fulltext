@@ -1,5 +1,6 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
+#include "search.h"
 
 
 char** ftsh_get_input(char *input) {
@@ -15,7 +16,7 @@ char** ftsh_get_input(char *input) {
     }
 
     /* Exit on Ctrl-D */
-    if (input == NULL) {  
+    if (input == NULL) {
         printf("\n");
         exit(0);
     }
@@ -24,7 +25,7 @@ char** ftsh_get_input(char *input) {
 
     while (parsed != NULL) {
         args[index++] = parsed;
-        parsed = strtok(NULL, separator); 
+        parsed = strtok(NULL, separator);
     }
 
     args[index] = NULL;
@@ -32,36 +33,7 @@ char** ftsh_get_input(char *input) {
 }
 
 
-int ftsh_launch(char **args)
-{
-    pid_t pid;
-    int status;
-
-    pid = fork();
-    if (pid == 0) {
-        // Child process
-        if (execvp(args[0], args) == -1) {
-            printf("Your command was not recognized by our system.\n");
-            printf("Please type 'help' to get an overview of the commands.\n");
-            perror("ftsh command execution error");
-        }
-        exit(EXIT_FAILURE);
-    } else if (pid < 0) {
-        // Error forking
-        perror("ftsh: forking error");
-    } else {
-        // Parent process
-        do {
-            waitpid(pid, &status, WUNTRACED);
-        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-    }
-
-    return 1;
-}
-
-
-void ftsh_loop(void)
-{
+void ftsh_loop(FILE *pf) {
     char *input;
     char **args;
     int status;
@@ -69,7 +41,7 @@ void ftsh_loop(void)
     do {
         input = readline("ftsh> ");
         args = ftsh_get_input(input);
-        status = ftsh_execute(args);
+        status = ftsh_execute(args, pf);
 
         free(input);
         free(args);
@@ -77,10 +49,42 @@ void ftsh_loop(void)
 }
 
 
-int main(int argc, char **argv)
-{
+char* get_path(int argc, char **argv) {
+    if (argc <= 1) {
+        return NULL;
+    }
 
-    ftsh_loop();
+    return (argv[1] != NULL) ? argv[1] : NULL;
+}
+
+int main(int argc, char **argv) {
+
+    // Config
+    char* path = get_path(argc, argv);
+    if (argc == 1 || path == NULL) {
+        printf("Usage: ./ftsh <text_search_file>\n");
+        exit(0);
+    }
+    FILE *pf = fopen(path, "r");
+    int mode = 1;
+
+    if (pf == NULL) {
+        perror("File could not be opened");
+        exit(1);
+    }
+
+    // Interactive mode
+    if (mode == 1) {
+        ftsh_loop(pf);
+    }
+
+    // Batch mode
+    if (!mode) {
+        printf("To be implemented.\n");
+    }
+
+    // Clean up
+    fclose(pf);
 
     return EXIT_SUCCESS;
 }

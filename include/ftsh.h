@@ -29,20 +29,21 @@
 char** ftsh_get_input(char *input);
 
 
-/**
-    @brief Launch a program and wait for it to terminate.
-    @param args Null terminated list of arguments (including program).
-    @return Always returns 1, to continue execution.
- */
-int ftsh_launch(char **args);
-
 
 /**
      @brief Loop getting input and executing it.
+     @args pf Pointer to text file.
  */
-void ftsh_loop(void);
+void ftsh_loop(FILE *pf);
 
 
+/**
+    @brief Takes arguments and returns the file path from the args.
+    @param argc Argument count.
+    @param argv Argument vector.
+    @return pointer to file path
+  */
+char* get_path(int argc, char **argv);
 /**
      @brief Main entry point.
      @param argc Argument count.

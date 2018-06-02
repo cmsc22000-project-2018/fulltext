@@ -4,15 +4,6 @@
 // next_token, read_string, init_parser borrowed
 // from CS152 Win 18, project blockchain
 
-/* @struct stringArray struct
-   @contains a string array as well as an int for length
-*/
-typedef struct stringArray {
-	char **array;
-	int len;
-} stringArray;
-
-
 /**
     @brief Read the next non-empty char.
     @param fp: pointer to the file to be read
@@ -38,8 +29,8 @@ void init_parser(FILE *fp);
 /**
     @brief Parse file into a string array
     @param fp: pointer to the file to be read
-    @return a pointer to the struct StringArray.
+    @return a pointer to the array, setting last entry to NULL
  */
-stringArray *parse_to_arr(FILE *fp);
+char **parse_to_arr(FILE *fp);
 
 #endif /* INCLUDE_FULLTEXT_PARSER_H_ */
