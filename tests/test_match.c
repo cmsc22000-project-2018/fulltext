@@ -149,7 +149,7 @@ Test(match, next_match_regular) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* nextMatch = match_next(a, &matches);
+    match* nextMatch = match_next(0, &matches);
 
     cr_assert_eq(nextMatch, b, "Expected %s but got %s", b->word, nextMatch->word);
 }
@@ -170,7 +170,7 @@ Test(match, next_match_wraparound) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* nextMatch = match_next(c, &matches);
+    match* nextMatch = match_next(2, &matches);
 
     cr_assert_eq(nextMatch, a, "Expected %s but got %s", a->word, nextMatch->word);
 }
@@ -191,7 +191,7 @@ Test(match, prev_match_regular) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* prevMatch = match_prev(c, &matches);
+    match* prevMatch = match_prev(2, &matches);
 
     cr_assert_eq(prevMatch, b, "Expected %s but got %s", b->word, prevMatch->word);
 }
@@ -212,7 +212,7 @@ Test(match, prev_match_wraparound) {
 
     cr_assert_not_null(&matches, "matches is null");
 
-    match* prevMatch = match_prev(a, &matches);
+    match* prevMatch = match_prev(0, &matches);
 
     cr_assert_eq(prevMatch, c, "Expected %s but got %s", c->word, prevMatch->word);
 }
@@ -303,55 +303,6 @@ Test(match, append) {
     match_append_(c, &matches);
 
     cr_assert_not_null(&matches, "matches is null");
-
-    match* aRet = list_get_at(&matches, 0);
-    cr_assert_eq(aRet, a, "Expected %s but got %s", a->word, aRet->word);
-
-    match* bRet = list_get_at(&matches, 1);
-    cr_assert_eq(bRet, b, "Expected %s but got %s", b->word, bRet->word);
-
-    match* cRet = list_get_at(&matches, 2);
-    cr_assert_eq(cRet, c, "Expected %s but got %s", c->word, cRet->word);
-}
-
-/* Testing remove_at for valid input */
-Test(match, remove_at_valid) {
-    list_t matches;
-    list_init(&matches);
-
-    match* a = match_new("a", 1, 1, "a test");
-    match* b = match_new("b", 1, 1, "b test");
-    match* c = match_new("c", 1, 1, "c test");
-
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
-
-    cr_assert_not_null(&matches, "matches is null");
-
-    match_remove_at(0, &matches);
-
-    match* first = list_get_at(&matches, 0);
-    cr_assert_eq(first, b, "Expected first to be %s but got %s", b->word, first->word);
-
-}
-
-/* Testing remove_at for invalid input */
-Test(match, remove_at_invalid) {
-    list_t matches;
-    list_init(&matches);
-
-    match* a = match_new("a", 1, 1, "a test");
-    match* b = match_new("b", 1, 1, "b test");
-    match* c = match_new("c", 1, 1, "c test");
-
-    match_append_(a, &matches);
-    match_append_(b, &matches);
-    match_append_(c, &matches);
-
-    cr_assert_not_null(&matches, "matches is null");
-
-    match_remove_at(3, &matches);
 
     match* aRet = list_get_at(&matches, 0);
     cr_assert_eq(aRet, a, "Expected %s but got %s", a->word, aRet->word);

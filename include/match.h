@@ -112,13 +112,6 @@ void match_insert_at(match* newMatch, int index, list_t* matches);
 void match_append_(match* newMatch, list_t* matches);
 
 /**
-  @brief Removes at specific index in match struct
-  @param index: index of match to remove
-  @param matches: dll of matches
-*/
-void match_remove_at(int index, list_t* matches);
-
-/**
   @brief Returns the match at the given index
   @param index: index of desired match
   @param matches: dll of matches

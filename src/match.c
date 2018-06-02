@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "simclist.c"
 #include "simclist.h"
 #include "match.h"
 #include "trie.h"
@@ -126,12 +125,6 @@ void match_append_(match* newMatch, list_t* matches) {
 	list_append(matches, newMatch);
 }
 
-
-void match_remove_at(int index, list_t* matches) {
-	list_delete_at(matches, index);
-}
-
-
 match* match_get_at_index(int index, list_t* matches) {
 	if (list_size(matches) == 0) {
 		return NULL;
@@ -139,7 +132,6 @@ match* match_get_at_index(int index, list_t* matches) {
 	match* cur = list_get_at(matches, index);
 	return cur;
 }
-
 
 int match_get_index(match* match, list_t* matches) {
 	int position = list_locate(matches, match);
