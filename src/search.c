@@ -40,7 +40,7 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
     }
 
     // Nothing has been found
-    return false;
+    return -1;
 
 }
 
@@ -55,7 +55,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
     size_t len = 0;
     ssize_t read;
 
-    int found = false;
+    int found = -1;
     int lineNum = start_line;
 
     while (lineNum <= end_line && (read = getline(&line, &len, pf)) != -1) {
@@ -69,7 +69,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, 
         strncpy(line2, sanitized, MATCH_MAXLEN);
         found = find_match(sanitized, word, 1, lineNum, matches);
 
-        while (found != false && found + wordlen < read) {
+        while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
             found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
 
