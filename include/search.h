@@ -17,10 +17,11 @@
   @brief Searches for a match in a line given a starting position
          and an end position
   @param line Line to search
-  @param word Word to search for
+  @param t Trie containing all search terms
   @param pos_start Character number in sentence to start search at
   @param line_num Line number to keep track of match's line number
   @param matches List of matches
+  @param found_token A token that is found to match a word in trie
   #updated return
   @return list of matches
   ---
@@ -31,11 +32,11 @@ int find_match_trie(char* line, trie_t *t, int pos_start,
         int line_num, list_t* matches, char *found_token);
 
 /**
-  @brief Searches a file from line x to line y looking for given word
+  @brief Searches a file from line x to line y looking for given trie
   @param pf Pointer to file
   @param start_line Start text line to search through
   @param end_line Last text line to search through (inclusive)
-  @param word Word to search for
+  @param t Trie containing all search terms
   @param matches List of matches
   @return list of matches
  */
@@ -71,6 +72,21 @@ int find_match(char* line, char* word, int pos_start
 list_t* parse_file_buffered(FILE* pf, int start_line,
  int end_line, char* word, list_t* matches);
 
+/**
+  @brief Searches a file for matches present in a trie from batch file
+  @param fp Pointer to file
+  @param t Trie containing search terms
+  @param matches List of matches
+  @return list of matches
+ */
+list_t *find_matches_batch(FILE *fp, trie_t *t, list_t *matches);
+
+/**
+  @brief Displays matches present in a trie from batch file
+  @param matches List of matches
+  @return None
+ */
+void display_matches_batch(list_t *matches);
 
 /**
   @brief Prints out the prev match from list to std out

@@ -13,6 +13,10 @@
 int find_match_trie(char* line, trie_t *t, 
     int pos_start, int lineNum, list_t* matches, char *found_token)
 {
+	if (t == NULL) {
+		perror("empty trie");
+		return NULL;
+	}
     char* dup = strdup(line);
     char* line2 = strdup(line);
     int pos = pos_start;
@@ -48,7 +52,10 @@ int find_match_trie(char* line, trie_t *t,
 list_t* parse_file_buffered_trie(FILE* pf, int start_line, 
     int end_line, trie_t *t, list_t* matches)
 {
-
+	if (t == NULL) {
+		perror("empty trie");
+		return NULL;
+	}
     char *line = NULL;
     char *found_token = NULL;
     int wordlen = 0;
