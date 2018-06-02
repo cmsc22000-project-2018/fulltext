@@ -15,7 +15,7 @@ int find_match_trie(char* line, trie_t *t,
 {
 	if (t == NULL) {
 		perror("empty trie");
-		return NULL;
+		return -1;
 	}
     char* dup = strdup(line);
     char* line2 = strdup(line);
@@ -180,6 +180,67 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
     }
 
     return matches;
+}
+
+list_t *find_matches_batch(FILE *fp, trie_t *t, list_t *matches)
+{
+	if (t == NULL) {
+		perror("empty trie");
+		return NULL;
+	}
+    char *line = NULL;
+    char *found_token = NULL;
+    int wordlen = 0;
+    size_t len = 0;
+    ssize_t read;
+
+    int found = -1;
+    int lineNum = 0;
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        char sanitized[strlen(line) + 1];
+        strncpy(sanitized, line, strlen(line));
+        sanitized[strcspn(sanitized, "\r\n")] = 0;
+        char* dupLine = strdup(sanitized);
+
+        char line2[strlen(sanitized) + 1];
+        strncpy(line2, sanitized, strlen(sanitized));
+        found = find_match_trie(sanitized, t, 1, lineNum, matches, found_token);
+
+        if (found_token != NULL)
+            wordlen = strlen(found_token);
+        while (found != -1 && found + wordlen < read) {
+            memset(sanitized, ' ', found + wordlen);
+            found_token = NULL; // where to free found_token ?
+            found = find_match_trie(sanitized, t, found + wordlen + 2,
+             lineNum, matches, found_token);
+            
+            if (strncmp(sanitized, dupLine, strlen(sanitized)) != 0) {
+                match* foundMatch = match_get_at_index(list_size(matches) - 1,
+                 matches);
+
+                match_set_line(foundMatch, dupLine);
+            }
+
+        }
+
+        lineNum++;
+        free(dupLine);
+    }
+
+    return matches;
+}
+
+void display_matches_batch(list_t *matches)
+{
+	list_iterator_start(matches);               /* starting an iteration "session" */
+
+	while (list_iterator_hasnext(matches)) {   // tell whether more values available
+		match cur = *(match *)list_iterator_next(matches); /* get the next value */
+		match_display(&cur);
+	}
+
+	list_iterator_stop(matches);
 }
 
 void display_prev_match(list_t* matches, int index) {
