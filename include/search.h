@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include "match.h"
 #include "../src/simclist.h"
+#include "trie.h"
 
 /**
   @brief Searches for a match in a line given a starting position
@@ -26,8 +27,8 @@
   @return position number of match if match found
   @return -1 if no match found
  */
-int find_match_trie(char* line, trie_t *t, int pos_start
-  , int line_num, list_t* matches);
+int find_match_trie(char* line, trie_t *t, int pos_start,
+        int line_num, list_t* matches, char *found_token);
 
 /**
   @brief Searches a file from line x to line y looking for given word

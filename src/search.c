@@ -11,12 +11,8 @@
 #include "trie.h"
 
 int find_match_trie(char* line, trie_t *t, 
-    int pos_start, int lineNum, list_t* matches)
+    int pos_start, int lineNum, list_t* matches, char *found_token)
 {
-    int wordlen = strlen(word);
-    
-    if (wordlen > strlen(line)) return -1;
-
     char* dup = strdup(line);
     char* line2 = strdup(line);
     int pos = pos_start;
@@ -30,7 +26,9 @@ int find_match_trie(char* line, trie_t *t,
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
             match_append_(foundMatch, matches);
-
+            /* Save the token found */
+            found_token = strdup(token);
+            assert (found_token);
             /* Clean-up */
             free(dup);
 
@@ -51,8 +49,9 @@ list_t* parse_file_buffered_trie(FILE* pf, int start_line,
     int end_line, trie_t *t, list_t* matches)
 {
 
-    char* line = NULL;
-    int wordlen = strlen(word);
+    char *line = NULL;
+    char *found_token = NULL;
+    int wordlen = 0;
     size_t len = 0;
     ssize_t read;
 
@@ -68,15 +67,17 @@ list_t* parse_file_buffered_trie(FILE* pf, int start_line,
 
         char line2[strlen(sanitized) + 1];
         strncpy(line2, sanitized, strlen(sanitized));
-        found = find_match(sanitized, word, 1, lineNum, matches);
+        found = find_match_trie(sanitized, t, 1, lineNum, matches, found_token);
 
+        if (found_token != NULL)
+            wordlen = strlen(found_token);
         while (found != -1 && found + wordlen < read) {
             memset(sanitized, ' ', found + wordlen);
-          
-            found = find_match(sanitized, word, found + wordlen + 2,
-             lineNum, matches);
+            found_token = NULL; // where to free found_token ?
+            found = find_match_trie(sanitized, t, found + wordlen + 2,
+             lineNum, matches, found_token);
             
-            if (strcmp(sanitized, dupLine) != 0) {
+            if (strncmp(sanitized, dupLine, strlen(sanitized)) != 0) {
                 match* foundMatch = match_get_at_index(list_size(matches) - 1,
                  matches);
 

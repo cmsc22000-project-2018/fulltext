@@ -6,8 +6,8 @@
 #include "../src/simclist.h"
 
 /*
-    List of builtin commands, followed by their corresponding functions.
- */
+   List of builtin commands, followed by their corresponding functions.
+   */
 char *builtin_str[] = {
     "help",
     "exit",
@@ -47,8 +47,19 @@ int ftsh_find(char **args, FILE *pf) {
 
     int start_line = 1;
     int BUFFER_LENGTH = 100;
-   
-    char *word = args[1];
+
+    char *w1 = "knowledge";
+    char *w2 = "ourselves";
+    char *w3 = "from";
+    char *strarr[4];
+    strarr[0] = strdup(w1);
+    strarr[1] = strdup(w2);
+    strarr[2] = strdup(w3);
+    strarr[3] = NULL;
+    
+    trie_t *trie = trie_new('\0');
+    int ret = trie_from_stringarray(trie, strarr);
+    assert (ret != EXIT_FAILURE);
 
     match curMatch;
     list_t matches;
@@ -57,13 +68,13 @@ int ftsh_find(char **args, FILE *pf) {
 
     /* Finding first match at minimum */
     while (list_size(&matches) == 0 /*&& fgetc(pf) != EOF*/ ) {
-        matches = *parse_file_buffered(pf, start_line, \
-                                       (start_line + BUFFER_LENGTH), word, &matches);
+        matches = *parse_file_buffered_trie(pf, start_line, \
+                (start_line + BUFFER_LENGTH), trie, &matches);
 
         start_line += BUFFER_LENGTH;
 
         if (list_size(&matches) == 0) {
-            printf("No matches for %s have been found.\n", word);
+            printf("No matches for %s have been found.\n", "TESTWORD");
             return 1;
         }
     }
@@ -71,9 +82,9 @@ int ftsh_find(char **args, FILE *pf) {
     int index = 0;
     curMatch = *match_get_at_index(index, &matches);
 
- 	list_info(&matches);
+    list_info(&matches);
 
- 	match_display(&curMatch);
+    match_display(&curMatch);
 
     while (STATUS) {
         printf("ftsh> ");
@@ -85,7 +96,7 @@ int ftsh_find(char **args, FILE *pf) {
         // exit find()
         if (strncmp(input, "quit", 5) == 0) STATUS = 0;
 
-    	// next/prev match
+        // next/prev match
         if (strncmp(input, "next", 5) == 0) {
 
             display_next_match(&matches, index);
