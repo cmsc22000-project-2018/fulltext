@@ -51,8 +51,10 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 {
     char* line = NULL;
     int wordlen = strlen(word);
+    int BUFFER_LENGTH = 100;
     size_t len = 0;
     ssize_t read;
+
 
     int found = -1;
     int lineNum = start_line;
@@ -90,8 +92,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
     //if no matches found and is not EOF, look through next 100 lines. 
     if (list_size(matches) == 0 && !feof(pf))
     {
-        printf("No matches found. Looking through the next 100 lines.\n");
-        parse_file_buffered(pf, end_line+1, end_line + 101, word, matches);
+        parse_file_buffered(pf, end_line+1, end_line + BUFFER_LENGTH, word, matches);
     }
     //if EOF, notify user
     if (feof(pf))
