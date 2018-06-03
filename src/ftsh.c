@@ -102,6 +102,15 @@ int main(int argc, char **argv) {
         perror("Search file could not be opened");
         exit(1);
     }
+    /////////////////////////////////////////////////////////////////
+    /* @Liam
+    * Comment out this function when you have search file and batch file */
+    // search_batch(searchfile, batchfile);
+    // As an example here
+    FILE *searchfile = fopen("./tests/test_file.txt", "r");
+    FILE *batchfile = fopen("./tests/test_batch.txt", "r");
+    search_batch(searchfile, batchfile);
+    /////////////////////////////////////////////////////////////////
 
 //<<<<<<< HEAD
     ftsh_loop(pf, interactive);

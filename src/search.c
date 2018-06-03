@@ -243,6 +243,19 @@ void display_matches_batch(list_t *matches)
 	list_iterator_stop(matches);
 }
 
+void search_batch(FILE *fileptr, FILE *batchptr)
+{
+	char **search_terms_arr = parse_to_arr(batchptr);
+    trie_t *t = trie_new('\0');
+    int ret = trie_from_stringarray(t, search_terms_arr);
+    assert (ret != EXIT_FAILURE); // trie created successfully
+
+    list_t matches;
+    list_init(&matches);
+    matches = *find_matches_batch(fileptr, t, &matches);
+    display_matches_batch(&matches);
+}
+
 void display_prev_match(list_t* matches, int index) {
 
     if (index == 0) {

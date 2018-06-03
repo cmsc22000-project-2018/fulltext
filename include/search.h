@@ -97,6 +97,14 @@ void display_matches_batch(list_t *matches);
 void display_prev_match(list_t* matches, int index);
 
 /**
+  @brief Prints out the prev match from list to std out
+  @param fileptr Pointer to file to be searched
+  @param batchptr Pointer to batch file
+  @return void
+ */
+void search_batch(FILE *fileptr, FILE *batchptr);
+
+/**
   @brief Prints out the next match from list to std out
   @param matches List of matches
   @param index index of current match
