@@ -59,7 +59,8 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
     int found = -1;
     int lineNum = start_line;
 
-    printf("Iterating through lines %d - %d\n", start_line, end_line);
+    printf("\n ... searching through lines %d - %d ... \n", start_line, end_line);
+    
     while (lineNum <= end_line &&
      (read = getline(&line, &len, pf)) != -1) {
         char sanitized[strlen(line) + 1];
