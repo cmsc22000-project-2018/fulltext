@@ -66,6 +66,23 @@ void check_find_match_matches(char* line, char* word, int pos_start, list_t* mat
 	}
 }
 
+void tcheck_find_match_matches(char* line, trie_t* trie_words, char* word, int pos_start, list_t* matches, int index)
+{
+	int lineNum = 1;
+	int result = find_match_trie(line, trie_words, pos_start, lineNum, matches, NULL);
+	if (result != -1) {
+		match expectedMatch;
+		expectedMatch.word = word;
+		expectedMatch.lineNum = lineNum;
+		expectedMatch.position = result;
+		expectedMatch.line = line;
+		match *foundMatch = match_get_at_index(index, matches);
+		cr_assert_not_null(foundMatch, "match wasn't found at pos %d", result);
+		cr_assert_not_null(matches, "match found but could not append");
+		match_equal(expectedMatch, *foundMatch);
+	}
+}
+
 // Case where there is a single match in line
 Test(search, find_one_existent_match)
 {
@@ -89,6 +106,7 @@ Test(search, trie_find_one_existent_match)
     list_init(&matches1);
 
     tcheck_find_match_pos(line, trie, 0, &matches1, NULL, 26);
+    tcheck_find_match_matches(line, trie, word1, 0, &matches1, 0);
 }
 
 // Case where the first word in line is a match
@@ -114,6 +132,7 @@ Test(search, trie_find_one_existent_match_first)
     list_init(&matches3);
 
     tcheck_find_match_pos(line3, trie, 0, &matches3, NULL, 0);
+    tcheck_find_match_matches(line3, trie, word, 0, &matches3, 0);
 }
 
 // Case where the last word in line is a match
@@ -139,6 +158,7 @@ Test(search, trie_find_one_existent_match_last)
     list_init(&matches2);
 	
     tcheck_find_match_pos(line2, trie, 0, &matches2, NULL, 64);
+    tcheck_find_match_matches(line2, trie, word2, 0, &matches2, 0);
 }
 
 // Cases where there are two matches in line
@@ -161,8 +181,8 @@ Test(search, find_two_existent_matches)
 Test(search, trie_find_two_existent_matches)
 {
     char line1[66] = "Scepticism is as much the result of knowledge, as knowledge is of";
-    /*char line1copy[66];
-    strncpy(line1copy, line1, 66);*/
+    char line1copy[66];
+    strncpy(line1copy, line1, 66);
         
     char *word1 = "knowledge";
     trie_t* trie = trie_new('\0');
@@ -172,9 +192,11 @@ Test(search, trie_find_two_existent_matches)
     list_init(&matches1);
 
     tcheck_find_match_pos(line1, trie, 0, &matches1, NULL, 36);
+    tcheck_find_match_matches(line1, trie, word1, 0, &matches1, 0);
 
     memset(line1, ' ', 46);
     tcheck_find_match_pos(line1, trie, 47, &matches1, NULL, 50);
+    tcheck_find_match_matches(line1copy, trie, word1, 47, &matches1, 1);
 }
 
 // Cases where there are two matches in line, first and last word
@@ -197,6 +219,8 @@ Test(search, find_two_existent_matches_first_last)
 Test(search, trie_find_two_existent_matches_first_last)
 {
     char line1[52] = "is as much the result of knowledge, as knowledge is";
+    char line1copy[52];
+    strncpy(line1copy, line1, 52);
     
     char *word1 = "is";
     trie_t* trie = trie_new('\0');
@@ -206,8 +230,10 @@ Test(search, trie_find_two_existent_matches_first_last)
     list_init(&matches1);
 	
     tcheck_find_match_pos(line1, trie, 0, &matches1, NULL, 0);
+    tcheck_find_match_matches(line1, trie, word1, 0, &matches1, 0);
     memset(line1, ' ', 3);
     tcheck_find_match_pos(line1, trie, 4, &matches1, NULL, 49);
+    tcheck_find_match_matches(line1copy, trie, word1, 4, &matches1, 1);
 }
 
 // Cases where there are mtultiple matches in line
@@ -235,6 +261,8 @@ Test(search, find_mult_existent_matches)
 Test(search, trie_find_mult_existent_matches)
 {
     char line1[41] = "pretty cats are pretty pretty and pretty";
+    char line1copy[41];
+    strncpy(line1copy, line1, 41);
 
     char *word1 = "pretty";
     trie_t* trie = trie_new('\0');
@@ -244,12 +272,16 @@ Test(search, trie_find_mult_existent_matches)
     list_init(&matches1);
 	
     tcheck_find_match_pos(line1, trie, 0, &matches1, NULL, 0);
+    tcheck_find_match_matches(line1, trie, word1, 0, &matches1, 0);
     memset(line1, ' ', 7);
     tcheck_find_match_pos(line1, trie, 7, &matches1, NULL, 16);
+    tcheck_find_match_matches(line1copy, trie, word1, 7, &matches1, 1);
     memset(line1, ' ', 17);
     tcheck_find_match_pos(line1, trie, 17, &matches1, NULL, 23);
+    //tcheck_find_match_matches(line1copy, trie, word1, 17, &matches1, 2);
     memset(line1, ' ', 25);
     tcheck_find_match_pos(line1, trie, 24, &matches1, NULL, 33);
+    tcheck_find_match_matches(line1copy, trie, word1, 32, &matches1, 3);
 }
 
 // Cases where there is no match in line
@@ -296,26 +328,35 @@ Test(search, trie_find_nonexistent_match)
 Test(search, multi_trie_multi_find)
 {
     char line[54] = "freshly prepared cups milk freshly sign cups prepared";
+    char linecopy[54];
+    strncpy(linecopy, line, 54);
     
     trie_t* trie = trie_new('\0');
-    trie_insert_string(trie, "freshly");
-    trie_insert_string(trie, "prepared");
-    trie_insert_string(trie, "cups");
+    char *word1 = "freshly", *word2 = "prepared", *word3 = "cups";
+    trie_insert_string(trie, word1);
+    trie_insert_string(trie, word2);
+    trie_insert_string(trie, word3);
 
     list_t matches;
     list_init(&matches);
 
     tcheck_find_match_pos(line, trie, 0, &matches, NULL, 0);
+    tcheck_find_match_matches(line, trie, word1, 0, &matches, 0);
     memset(line, ' ', 7);
     tcheck_find_match_pos(line, trie, 8, &matches, NULL, 8);
+    //tcheck_find_match_matches(linecopy, trie, word2, 8, &matches, 1);
     memset(line, ' ', 14);
     tcheck_find_match_pos(line, trie, 15, &matches, NULL, 18);
+    //tcheck_find_match_matches(line, trie, word3, 15, &matches, 2);
     memset(line, ' ', 20);
     tcheck_find_match_pos(line, trie, 20, &matches, NULL, 27);
+    //tcheck_find_match_matches(linecopy, trie, word1, 20, &matches, 3);
     memset(line, ' ', 34);
     tcheck_find_match_pos(line, trie, 35, &matches, NULL, 40);
+    //tcheck_find_match_matches(line, trie, word3, 35, &matches, 4);
     memset(line, ' ', 44);
     tcheck_find_match_pos(line, trie, 45, &matches, NULL, 45);
+    //tcheck_find_match_matches(linecopy, trie, word2, 45, &matches, 5);
     
 }
 
