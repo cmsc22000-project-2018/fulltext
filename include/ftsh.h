@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/types.h>
@@ -36,9 +35,8 @@ char **ftsh_get_words(char **args);
 /**
      @brief Loop getting input and executing it.
      @param pf: pointer to text file
-     @param interactive: boolean for interactive mode
  */
-void ftsh_loop(FILE *pf, bool interactive);
+void ftsh_loop(FILE *pf);
 
 /**
      @brief Main entry point.

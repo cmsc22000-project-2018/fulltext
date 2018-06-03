@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <unistd.h>
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
@@ -46,15 +47,10 @@ char **ftsh_get_words(char **args) {
     return words;
 }
 
-void ftsh_loop(FILE *pf, bool interactive) {
+void ftsh_loop(FILE *pf) {
     char *input;
     char **args;
     int status;
-
-    if (!interactive) {
-        printf("To be implemented.\n");
-        return;
-    }
 
     do {
         input = readline("ftsh> ");
@@ -66,84 +62,79 @@ void ftsh_loop(FILE *pf, bool interactive) {
     } while (status);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
+    // Default mode = batch
+    bool interactive = false;
+    int opt;
+    char *path = NULL;
+    char *words = NULL;
+    // if no batch output specified, output to stdout
+    char *output = "stdout";
+    FILE *searchfile = NULL;
+
+    const char *usage = "Usage: ./ftsh [-ib] <batch_output_file> -f <text_search_file> -w <words>\n";
+
     // Validating the correct number of parameters
     if (argc <= 1) {
-        printf("Usage: ./ftsh <text_search_file>\n");
-        printf("Add option '-b' to start batch mode\n");
-        exit(0);
-    }
-
-    // if interactive = false, then batch mode
-    bool interactive = true;
-    // Tracker to path argument position
-    int path_num = 1;
-
-    // Checking whether batch mode 
-    if (argc == 3) {
-        if (!strncmp(argv[1], "-b", 2)) {
-            printf("Batch mode detected\n");
-            path_num = 2;
-            interactive = false;
-        } else if (!strncmp(argv[2], "-b", 2)) {
-            printf("Batch mode detected\n");
-            path_num = 1;
-            interactive = false;
-        } else {
-            perror("Wrong command line options");
-            exit(1);
-        }
-    }
-
-    char *path = (argv[path_num] != NULL) ? argv[path_num] : NULL;
-    FILE *pf = fopen(path, "r");
-
-    if (pf == NULL) {
-        perror("Search file could not be opened");
+        printf("%s", usage);
         exit(1);
     }
-    /////////////////////////////////////////////////////////////////
-    /* @Liam
-    * Comment out this function when you have search file and batch file */
-    // search_batch(searchfile, batchfile);
-    // As an example here
-    FILE *searchfile = fopen("./tests/test_file.txt", "r");
-    FILE *batchfile = fopen("./tests/test_batch.txt", "r");
+
+    while ((opt = getopt(argc, argv, "ib::f:w:")) != -1)
+        switch (opt) {
+            case 'i': 
+                interactive = true;
+                break;
+            case 'b':
+                interactive = false;
+                if (optarg != NULL) {
+                    output = strdup(optarg);
+                }
+                break;
+            case 'f':
+                path = strdup(optarg);
+                searchfile = fopen(path, "r");
+                if (searchfile == NULL) {
+                    printf("ERROR: Search file could not be opened");
+                    exit(1);
+                }
+                break;
+            case 'w':
+                words = strdup(optarg);
+                break;
+            default:
+                printf("Unknown option -%c", opt);
+                exit(1);
+        }
+
+    if (path == NULL || searchfile == NULL) {
+        printf("ERROR: No search file entered\n");
+        printf("%s", usage);
+        exit(1);
+    }
+    
+    if (words == NULL) {
+        printf("ERROR: No search words entered\n");
+        printf("%s", usage);
+        exit(1);
+    }
+
+    if (interactive) {
+        ftsh_loop(searchfile);
+    } else {
+        // Testing batch
+        printf("Batch mode detected\n");
+        printf("Output: %s\n", output);
+        printf("Search file: %s\n", path);
+        printf("Word(s): %s\n", words);
+    }
+
+    /* Commented out for now until batch output is considered
     search_batch(searchfile, batchfile);
-    /////////////////////////////////////////////////////////////////
-
-//<<<<<<< HEAD
-    ftsh_loop(pf, interactive);
-/*
-=======
-    if (argc == 4) {
-        if (!strncmp(argv[2], "-b", 2)) {
-            mode = 0;
-            char *batchpath = argv[3];
-            pb = fopen(batchpath, "r");
-            if (pb == NULL) {
-            	perror("Batch file could not be opened");
-            	exit(1);
-            }
-            char **search_terms_arr = parse_to_arr(pb);
-            trie_t *t = trie_new('\0');
-            int ret = trie_from_stringarray(t, search_terms_arr);
-            assert (ret != EXIT_FAILURE); // trie created successfully
-
-            list_t matches;
-            list_init(&matches);
-            matches = *find_matches_batch(pf, t, &matches);
-            display_matches_batch(&matches);
->>>>>>> f7f33d53de1b1794283aa0415e03b63213cc31a2
-*/
+    */
 
     // Clean up
-    fclose(pf);
+    fclose(searchfile);
 
     return EXIT_SUCCESS;
-/*    
-        @ Ruolin!
-        I commented out this code because I think this belongs in search
-        once the program is running. Refactor it to however you see fit.
-        */
 }
