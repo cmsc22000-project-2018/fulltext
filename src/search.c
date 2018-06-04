@@ -117,7 +117,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 void display_prev_match(list_t* matches, int index) {
 
 	if (index == 0) {
-		rintf("\n...search hit top, continuing at bottom...\n\n");
+		printf("\n...search hit top, continuing at bottom...\n\n");
 	}
 
 	match_display(match_prev(index, matches));
