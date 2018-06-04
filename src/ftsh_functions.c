@@ -55,7 +55,7 @@ int ftsh_find(char **args, FILE *pf) {
 	char buf[10];
 	char *input;
 
-	int start_line = 1;
+	int section = 0;
 	int BUFFER_LENGTH = 100;
 
 	// Error handling
@@ -79,10 +79,9 @@ int ftsh_find(char **args, FILE *pf) {
 
 
 	while (list_size(&matches) == 0 ) {
-		matches = *parse_file_buffered(pf, start_line, \
-		                               (start_line + BUFFER_LENGTH), words, &matches);
+		matches = *parse_file_buffered(pf, section, words, &matches);
 
-		start_line += BUFFER_LENGTH;
+		//start_line += BUFFER_LENGTH;
 
 		if (list_size(&matches) == 0) {
 			printf("No matches have been found.\n");
@@ -110,7 +109,7 @@ int ftsh_find(char **args, FILE *pf) {
 		// next/prev match
 		else if (strncmp(input, "next\n", 5) == 0) {
 
-			display_next_match(&matches, index);
+			display_next_match(&matches, index, pf, words, section);
 			index = (index + 1) % list_size(&matches);
 
 		} else if (strncmp(input, "prev\n", 5) == 0) {
