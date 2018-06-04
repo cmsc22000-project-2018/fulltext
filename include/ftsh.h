@@ -30,8 +30,6 @@
 char** ftsh_get_input(char *input);
 
 
-char **ftsh_get_words(char **args);
-
 /**
      @brief Loop getting input and executing it.
      @args pf Pointer to text file.
