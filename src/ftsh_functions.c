@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <time.h>
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
@@ -58,6 +59,9 @@ int ftsh_find(char **args, FILE *pf) {
 	int start_line = 1;
 	int BUFFER_LENGTH = 100;
 
+	time_t current_time;
+    char* c_time_string;
+
 	// Error handling
 	if (args[1] == '\0') {
 		perror("No search words specified.\n");
@@ -65,7 +69,11 @@ int ftsh_find(char **args, FILE *pf) {
 	}
 
 	// Config trie
-	trie_t* words = trie_new("words");
+    
+    current_time = time(NULL);
+    c_time_string = ctime(&current_time);
+
+	trie_t* words = trie_new(c_time_string);
 	int i = 1;
 
 	while (args[i] != '\0') {
