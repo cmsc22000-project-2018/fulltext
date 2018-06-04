@@ -101,7 +101,7 @@ void search_batch(FILE *fileptr, FILE *batchptr, trie_t *words_trie);
 /**
   @brief Prints out the prev match from list to std out
   @param matches List of matches
-  @param index index of current match
+  @param index Current match index
   @return void
  */
 void display_prev_match(list_t* matches, int index);
@@ -109,7 +109,7 @@ void display_prev_match(list_t* matches, int index);
 /**
   @brief Prints out the next match from list to std out
   @param matches List of matches
-  @param index index of current match
+  @param index Current match index
   @return void
  */
 void display_next_match(list_t* matches, int index);

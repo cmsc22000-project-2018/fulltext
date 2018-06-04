@@ -109,7 +109,7 @@ void match_insert_at(match* newMatch, int index, list_t* matches);
   @param newMatch: pointer to new match struct
   @param matches: dll of matches
 */
-void match_append_(match* newMatch, list_t* matches);
+void match_append(match* newMatch, list_t* matches);
 
 /**
   @brief Returns the match at the given index
@@ -159,9 +159,9 @@ void match_print_line(FILE *fp, match* match);
   @brief Displays the info of a match
   @param fp Stream of outsource
   @param match: a match to print
-  @return 1 success
-  @return -1 failure
+  @return void
 */
-int match_display(FILE *fp, match* match);
+
+void match_display(FILE *fp, match* match);
 
 #endif /* _FULLTEXT_MATCH_H_ */

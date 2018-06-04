@@ -95,20 +95,15 @@ int match_get_position(match* match) {
 
 
 match* match_next(int index, list_t* matches) {
-
 	int size = list_size(matches);
 	return list_get_at(matches, (index + 1) % size);
-
 }
-
 
 match* match_prev(int index, list_t* matches) {
 
 	int size = list_size(matches);
 	return list_get_at(matches, ((index - 1) + size) % size);
-
 }
-
 
 void match_insert_at(match* newMatch, int index, list_t* matches) {
 	if (index > (int) (list_size(matches) - 1)) {
@@ -121,7 +116,7 @@ void match_insert_at(match* newMatch, int index, list_t* matches) {
 }
 
 
-void match_append_(match* newMatch, list_t* matches) {
+void match_append(match* newMatch, list_t* matches) {
 	list_append(matches, newMatch);
 }
 
@@ -187,16 +182,13 @@ void match_print_line(FILE *fp, match* match) {
 	fprintf(fp, "\n");
 }
 
-
-int match_display(FILE *fp, match* match) {
+void match_display(FILE *fp, match* match) {
 	if (match != NULL && fp != NULL) {
 		fprintf(fp, "> word: %s\n", match_get_word(match));
 		fprintf(fp, "  [%d]: ", match_get_line_num(match));
 		match_print_line(fp, match);
-		return 1;
 	}
 
 	fprintf(fp, "Match is empty\n");
-	return -1;
 }
 

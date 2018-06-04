@@ -29,7 +29,7 @@ int find_match_trie(char* line, trie_t *t,
         
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
-            match_append_(foundMatch, matches);
+            match_append(foundMatch, matches);
             /* Save the token found */
             found_token = strdup(token);
             assert (found_token);
@@ -119,7 +119,7 @@ int find_match(char* line, char* word,
         
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
-            match_append_(foundMatch, matches);
+            match_append(foundMatch, matches);
 
             /* Clean-up */
             free(dup);
@@ -181,6 +181,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 
     return matches;
 }
+
 
 list_t *find_matches_batch(FILE *fp, trie_t *t, list_t *matches)
 {
@@ -257,22 +258,12 @@ void display_prev_match(list_t* matches, int index) {
     }
     
     match_display(stdout, match_prev(index, matches));
-
 }
 
 void display_next_match(list_t* matches, int index) {
 
     if (index == list_size(matches) - 1) {
         printf("\n...wrap-around to first match found...\n\n");
-        
-        // parse more
-        // if EOF has been reached (how do we know that?),
-        //  we say ...wrap-around to first match found...
-        // else
-        //  display next match
-
     }
-
     match_display(stdout, match_next(index, matches));
-
 }
