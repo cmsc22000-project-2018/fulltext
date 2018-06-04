@@ -46,7 +46,7 @@ int ftsh_find(char **args, FILE *pf) {
 	char *input;
 
 	int start_line = 1;
-	int BUFFER_LENGTH = 3;
+	int BUFFER_LENGTH = 100;
 
 	// Error handling
 	if (args[1] == '\0') {

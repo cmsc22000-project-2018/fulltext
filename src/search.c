@@ -24,6 +24,7 @@ int find_match(char* line, trie_t* words,
 		for(int i = 0; token[i]; i++){
   			token[i] = tolower(token[i]);
 		}
+
 		
 		if (trie_contains(words, token) == 0) {
 		// if (strncasecmp(token, word, wordlen) == 0) {
@@ -104,8 +105,8 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 	{
 		parse_file_buffered(pf, end_line + 1, end_line + BUFFER_LENGTH, words, matches);
 	}
-	//if EOF, notify user
-	if (feof(pf))
+	// if EOF, notify user
+	else if (feof(pf))
 	{
 		printf("\n ... reached EOF ... \n");
 	}
