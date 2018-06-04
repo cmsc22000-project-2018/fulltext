@@ -87,6 +87,7 @@ int main(int argc, char **argv) {
 
     // Clean up
     fclose(pf);
+    
 
     return EXIT_SUCCESS;
 }

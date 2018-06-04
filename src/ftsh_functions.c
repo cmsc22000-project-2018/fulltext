@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <time.h>
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
@@ -41,8 +42,8 @@ int ftsh_help(char **args, FILE *pf) {
 	}
 
 	printf("When running find, you can iterate through the results using 'next' and 'prev'.\n");
-	
-	return SHOULD_EXIT;
+
+	return SHOULD_CONTINUE;
 }
 
 
@@ -58,6 +59,9 @@ int ftsh_find(char **args, FILE *pf) {
 	int start_line = 1;
 	int BUFFER_LENGTH = 100;
 
+	time_t current_time;
+	char* c_time_string;
+
 	// Error handling
 	if (args[1] == '\0') {
 		perror("No search words specified.\n");
@@ -65,7 +69,11 @@ int ftsh_find(char **args, FILE *pf) {
 	}
 
 	// Config trie
-	trie_t* words = trie_new("words");
+
+	current_time = time(NULL);
+	c_time_string = ctime(&current_time);
+
+	trie_t* words = trie_new(c_time_string);
 	int i = 1;
 
 	while (args[i] != '\0') {
@@ -77,6 +85,10 @@ int ftsh_find(char **args, FILE *pf) {
 	list_t matches;
 	list_init(&matches);
 
+	// Reset to head of file if EOF had been reached
+	if (feof(pf)) {
+		fseek(pf, 0, SEEK_SET);
+	}
 
 	while (list_size(&matches) == 0 ) {
 		matches = *parse_file_buffered(pf, start_line, \
@@ -102,10 +114,21 @@ int ftsh_find(char **args, FILE *pf) {
 		input = fgets(buf, 6, stdin);
 
 		// exit ./ftsh
-		if (!input || strncmp(input, "exit\n", 5) == 0) exit(SHOULD_EXIT);
+		if (!input || strncmp(input, "exit\n", 5) == 0) {
+			trie_free(words);
+			exit(SHOULD_EXIT);
+		}
 
 		// exit find()
-		else if (strncmp(input, "quit\n", 5) == 0) STATUS = 0;
+		else if (strncmp(input, "quit\n", 5) == 0) {
+			STATUS = 0;
+		}
+
+		// Rerun find
+		else if (strncmp(input, "find\n", 5) == 0) {
+			printf("Please `quit` first before you run `find` again. \n");
+			STATUS = 0;
+		}
 
 		// next/prev match
 		else if (strncmp(input, "next\n", 5) == 0) {
@@ -119,14 +142,16 @@ int ftsh_find(char **args, FILE *pf) {
 			index = ((index - 1) + list_size(&matches)) % list_size(&matches);
 
 		}
-		
+
 		// exit find()
 		else {
-			return SHOULD_EXIT;
+			trie_free(words);
+			return SHOULD_CONTINUE;
 		}
 	}
 
-	return SHOULD_EXIT;
+	trie_free(words);
+	return SHOULD_CONTINUE;
 }
 
 int ftsh_num_builtins() {
