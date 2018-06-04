@@ -86,7 +86,9 @@ int main(int argc, char **argv) {
     }
 
     // Clean up
+    // REMOVE TRIE OF SEARCH WORDS FROM REDIS
     fclose(pf);
+
 
     return EXIT_SUCCESS;
 }

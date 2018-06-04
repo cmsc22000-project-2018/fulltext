@@ -132,8 +132,6 @@ int ftsh_find(char **args, FILE *pf) {
 		
 		// exit find()
 		else {
-			// Clean up matches !!
-			
 			return SHOULD_CONTINUE;
 		}
 	}
