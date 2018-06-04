@@ -79,7 +79,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 		while (found != -1) {
 			match* foundMatch = match_get_at_index(list_size(matches) - 1,
 				                                       matches);
-
+			
 			int wordlen = strlen(match_get_word(foundMatch));
 
 			if (found + wordlen < read) {
