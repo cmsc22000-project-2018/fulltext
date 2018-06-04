@@ -77,6 +77,10 @@ int ftsh_find(char **args, FILE *pf) {
 	list_t matches;
 	list_init(&matches);
 
+	// Reset to head of file if EOF had been reached
+	if (feof(pf)) {
+		fseek(pf, 0, SEEK_SET);
+	}
 
 	while (list_size(&matches) == 0 ) {
 		matches = *parse_file_buffered(pf, start_line, \
@@ -107,6 +111,12 @@ int ftsh_find(char **args, FILE *pf) {
 		// exit find()
 		else if (strncmp(input, "quit\n", 5) == 0) STATUS = 0;
 
+		// Rerun find
+		else if (strncmp(input, "find\n", 5) == 0) {
+			printf("Please `quit` first before you run `find` again. \n");
+			STATUS = 0;
+		}
+
 		// next/prev match
 		else if (strncmp(input, "next\n", 5) == 0) {
 
@@ -122,11 +132,13 @@ int ftsh_find(char **args, FILE *pf) {
 		
 		// exit find()
 		else {
-			return SHOULD_EXIT;
+			// Clean up matches !!
+			
+			return SHOULD_CONTINUE;
 		}
 	}
 
-	return SHOULD_EXIT;
+	return SHOULD_CONTINUE;
 }
 
 int ftsh_num_builtins() {
