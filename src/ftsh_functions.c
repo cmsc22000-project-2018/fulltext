@@ -31,7 +31,7 @@ int (*builtin_func[]) (char **, FILE *pf) = {
 
 
 int ftsh_help(char **args, FILE *pf) {
-	printf("[FULL-TEXT SEARCH]\n");
+	printf("\n Full text search program \n");
 	printf("Type program names and arguments, and hit enter.\n");
 	printf("The following are built in:\n");
 
@@ -40,6 +40,8 @@ int ftsh_help(char **args, FILE *pf) {
 		printf("  %s\n", builtin_str[i]);
 	}
 
+	printf("When running find, you can iterate through the results using 'next' and 'prev'.\n");
+	
 	return SHOULD_EXIT;
 }
 
@@ -103,10 +105,10 @@ int ftsh_find(char **args, FILE *pf) {
 		if (!input || strncmp(input, "exit\n", 5) == 0) exit(SHOULD_EXIT);
 
 		// exit find()
-		if (strncmp(input, "quit\n", 5) == 0) STATUS = 0;
+		else if (strncmp(input, "quit\n", 5) == 0) STATUS = 0;
 
 		// next/prev match
-		if (strncmp(input, "next\n", 5) == 0) {
+		else if (strncmp(input, "next\n", 5) == 0) {
 
 			display_next_match(&matches, index);
 			index = (index + 1) % list_size(&matches);
@@ -117,8 +119,14 @@ int ftsh_find(char **args, FILE *pf) {
 			index = ((index - 1) + list_size(&matches)) % list_size(&matches);
 
 		}
+		
+		// exit find()
+		else {
+			return SHOULD_EXIT;
+		}
 	}
-	return SHOULD_EXIT;;
+
+	return SHOULD_EXIT;
 }
 
 int ftsh_num_builtins() {

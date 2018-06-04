@@ -60,8 +60,6 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 	int found = -1;
 	int lineNum = start_line;
 
-	printf("\n ... searching through lines %d - %d ... \n", start_line, end_line);
-
 	while (lineNum <= end_line &&
 	        (read = getline(&line, &len, pf)) != -1) {
 
@@ -79,7 +77,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 		while (found != -1) {
 			match* foundMatch = match_get_at_index(list_size(matches) - 1,
 				                                       matches);
-			
+
 			int wordlen = strlen(match_get_word(foundMatch));
 
 			if (found + wordlen < read) {
@@ -108,7 +106,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 	// if EOF, notify user
 	else if (feof(pf))
 	{
-		printf("\n ... reached EOF ... \n");
+		printf("\n...search completed...\n");
 	}
 
 	return matches;
