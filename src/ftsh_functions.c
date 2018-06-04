@@ -42,7 +42,7 @@ int ftsh_help(char **args, FILE *pf) {
 	}
 
 	printf("When running find, you can iterate through the results using 'next' and 'prev'.\n");
-	
+
 	return SHOULD_CONTINUE;
 }
 
@@ -60,7 +60,7 @@ int ftsh_find(char **args, FILE *pf) {
 	int BUFFER_LENGTH = 100;
 
 	time_t current_time;
-    char* c_time_string;
+	char* c_time_string;
 
 	// Error handling
 	if (args[1] == '\0') {
@@ -69,9 +69,9 @@ int ftsh_find(char **args, FILE *pf) {
 	}
 
 	// Config trie
-    
-    current_time = time(NULL);
-    c_time_string = ctime(&current_time);
+
+	current_time = time(NULL);
+	c_time_string = ctime(&current_time);
 
 	trie_t* words = trie_new(c_time_string);
 	int i = 1;
@@ -142,7 +142,7 @@ int ftsh_find(char **args, FILE *pf) {
 			index = ((index - 1) + list_size(&matches)) % list_size(&matches);
 
 		}
-		
+
 		// exit find()
 		else {
 			trie_free(words);
