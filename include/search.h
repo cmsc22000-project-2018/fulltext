@@ -83,10 +83,20 @@ list_t *find_matches_batch(FILE *fp, trie_t *t, list_t *matches);
 
 /**
   @brief Displays matches present in a trie from batch file
+  @param bp Stream of batch file
   @param matches List of matches
   @return None
  */
-void display_matches_batch(list_t *matches);
+void display_matches_batch(FILE *bp, list_t *matches);
+
+/**
+  @brief Prints out the prev match from list to std out
+  @param fileptr Pointer to file to be searched
+  @param batchptr Pointer to batch file
+  @param strarr Array of search words
+  @return void
+ */
+void search_batch(FILE *fileptr, FILE *batchptr, trie_t *words_trie);
 
 /**
   @brief Prints out the prev match from list to std out
@@ -95,14 +105,6 @@ void display_matches_batch(list_t *matches);
   @return void
  */
 void display_prev_match(list_t* matches, int index);
-
-/**
-  @brief Prints out the prev match from list to std out
-  @param fileptr Pointer to file to be searched
-  @param batchptr Pointer to batch file
-  @return void
- */
-void search_batch(FILE *fileptr, FILE *batchptr);
 
 /**
   @brief Prints out the next match from list to std out

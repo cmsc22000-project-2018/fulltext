@@ -3,9 +3,9 @@
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
-#include "parser.h"
 #include "trie.h"
 
+#define MAXWORDS 10
 
 char** ftsh_get_input(char *input) {
     char **args = malloc(8 * sizeof(char *));
@@ -65,12 +65,15 @@ void ftsh_loop(FILE *pf) {
 int main(int argc, char *argv[]) {
     // Default mode = batch
     bool interactive = false;
-    int opt;
+    int opt, ret;
+    char *tok;
+    char *words_string = NULL;
     char *path = NULL;
-    char *words = NULL;
-    // if no batch output specified, output to stdout
-    char *output = "stdout";
+    char *output = NULL;
+    FILE *outfile = NULL;
     FILE *searchfile = NULL;
+    trie_t *words_trie = trie_new('\0'); // should be "words" once integrated w/ api
+    assert (words_trie != NULL);
 
     const char *usage = "Usage: ./ftsh [-ib] <batch_output_file> -f <text_search_file> -w <words>\n";
 
@@ -80,7 +83,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    while ((opt = getopt(argc, argv, "ib::f:w:")) != -1)
+    while ((opt = getopt(argc, argv, ":ib:f:w:")) != -1)
         switch (opt) {
             case 'i': 
                 interactive = true;
@@ -89,7 +92,13 @@ int main(int argc, char *argv[]) {
                 interactive = false;
                 if (optarg != NULL) {
                     output = strdup(optarg);
+                    outfile = fopen(output, "r+");
+                    if (outfile == NULL) {
+                        outfile = fopen(output, "wb");
+                    }
                 }
+                else
+                    outfile = stdout;
                 break;
             case 'f':
                 path = strdup(optarg);
@@ -100,7 +109,13 @@ int main(int argc, char *argv[]) {
                 }
                 break;
             case 'w':
-                words = strdup(optarg);
+                words_string = strdup(optarg);
+                tok = strtok(words_string, " ");
+                while (tok != 0) {
+                    ret = trie_insert_string(words_trie, tok);
+                    assert (ret == EXIT_SUCCESS);
+                    tok = strtok(NULL, " ");
+                }
                 break;
             default:
                 printf("Unknown option -%c", opt);
@@ -113,7 +128,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     
-    if (words == NULL) {
+    if (words_string == NULL) {
         printf("ERROR: No search words entered\n");
         printf("%s", usage);
         exit(1);
@@ -122,11 +137,7 @@ int main(int argc, char *argv[]) {
     if (interactive) {
         ftsh_loop(searchfile);
     } else {
-        // Testing batch
-        printf("Batch mode detected\n");
-        printf("Output: %s\n", output);
-        printf("Search file: %s\n", path);
-        printf("Word(s): %s\n", words);
+        search_batch(searchfile, outfile, words_trie);
     }
 
     /* Commented out for now until batch output is considered
@@ -134,7 +145,11 @@ int main(int argc, char *argv[]) {
     */
 
     // Clean up
+    free(path);
+    free(output);
+    free(words_string);
     fclose(searchfile);
+    fclose(outfile);
 
     return EXIT_SUCCESS;
 }

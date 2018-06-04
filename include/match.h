@@ -148,18 +148,20 @@ void ftsh_reset_color();
 
 /**
   @brief Prints line in which match is found with color support
+  @param fp Stream of outsource
   @param match Match that is printed
   @return void
  */
-void match_print_line(match* match);
+void match_print_line(FILE *fp, match* match);
 
 
 /** 
   @brief Displays the info of a match
+  @param fp Stream of outsource
   @param match: a match to print
   @return 1 success
   @return -1 failure
 */
-int match_display(match* match);
+int match_display(FILE *fp, match* match);
 
 #endif /* _FULLTEXT_MATCH_H_ */

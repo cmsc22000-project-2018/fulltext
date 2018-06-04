@@ -146,7 +146,7 @@ void list_info(list_t* l) {
 
 	while (list_iterator_hasnext(l)) {   // tell whether more values available
 		match cur = *(match *)list_iterator_next(l); /* get the next value */
-		match_display(&cur);
+		match_display(stdout, &cur);
 	}
 
 	list_iterator_stop(l);                 /* ending the iteration "session" */
@@ -165,7 +165,7 @@ void ftsh_reset_color() {
 }
 
 
-void match_print_line(match* match) {
+void match_print_line(FILE *fp, match* match) {
 	int i = 0;
 	int wordlen = strlen(match_get_word(match));
 	int position = match_get_position(match);
@@ -175,7 +175,7 @@ void match_print_line(match* match) {
 			ftsh_set_color_red();
 		}
 		
-		printf("%c", s[i]);
+		fprintf(fp, "%c", s[i]);
 
 		if (i == position + wordlen - 1) {
 			ftsh_reset_color();
@@ -184,19 +184,19 @@ void match_print_line(match* match) {
 		i++;
 	}
 
-	printf("\n");
+	fprintf(fp, "\n");
 }
 
 
-int match_display(match* match) {
-	if (match != NULL) {
-		printf("> word: %s\n", match_get_word(match));
-		printf("  [%d]: ", match_get_line_num(match));
-		match_print_line(match);
+int match_display(FILE *fp, match* match) {
+	if (match != NULL && fp != NULL) {
+		fprintf(fp, "> word: %s\n", match_get_word(match));
+		fprintf(fp, "  [%d]: ", match_get_line_num(match));
+		match_print_line(fp, match);
 		return 1;
 	}
 
-	printf("Match is empty\n");
+	fprintf(fp, "Match is empty\n");
 	return -1;
 }
 

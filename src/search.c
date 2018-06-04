@@ -231,29 +231,23 @@ list_t *find_matches_batch(FILE *fp, trie_t *t, list_t *matches)
     return matches;
 }
 
-void display_matches_batch(list_t *matches)
+void display_matches_batch(FILE *bp, list_t *matches)
 {
 	list_iterator_start(matches);               /* starting an iteration "session" */
 
 	while (list_iterator_hasnext(matches)) {   // tell whether more values available
 		match cur = *(match *)list_iterator_next(matches); /* get the next value */
-		match_display(&cur);
+		match_display(bp, &cur);
 	}
-
 	list_iterator_stop(matches);
 }
 
-void search_batch(FILE *fileptr, FILE *batchptr)
+void search_batch(FILE *fileptr, FILE *batchptr, trie_t *words_trie)
 {
-	char **search_terms_arr = parse_to_arr(batchptr);
-    trie_t *t = trie_new('\0');
-    int ret = trie_from_stringarray(t, search_terms_arr);
-    assert (ret != EXIT_FAILURE); // trie created successfully
-
     list_t matches;
     list_init(&matches);
-    matches = *find_matches_batch(fileptr, t, &matches);
-    display_matches_batch(&matches);
+    matches = *find_matches_batch(fileptr, words_trie, &matches);
+    display_matches_batch(batchptr, &matches);
 }
 
 void display_prev_match(list_t* matches, int index) {
@@ -262,7 +256,7 @@ void display_prev_match(list_t* matches, int index) {
       printf("\n...wrap-around to last match found...\n\n");
     }
     
-    match_display(match_prev(index, matches));
+    match_display(stdout, match_prev(index, matches));
 
 }
 
@@ -279,6 +273,6 @@ void display_next_match(list_t* matches, int index) {
 
     }
 
-    match_display(match_next(index, matches));
+    match_display(stdout, match_next(index, matches));
 
 }

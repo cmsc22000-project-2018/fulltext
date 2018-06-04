@@ -84,7 +84,7 @@ int ftsh_find(char **args, FILE *pf) {
 
     list_info(&matches);
 
-    match_display(&curMatch);
+    match_display(stdout, &curMatch);
 
     while (STATUS) {
         printf("ftsh> ");
