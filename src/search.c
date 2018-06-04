@@ -117,7 +117,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
 void display_prev_match(list_t* matches, int index) {
 
 	if (index == 0) {
-		printf("\n...wrap-around to last match found...\n\n");
+		rintf("\n...search hit top, continuing at bottom...\n\n");
 	}
 
 	match_display(match_prev(index, matches));
@@ -126,16 +126,9 @@ void display_prev_match(list_t* matches, int index) {
 
 void display_next_match(list_t* matches, int index) {
 
-	if (index == list_size(matches) - 1) {
-		printf("\n...wrap-around to first match found...\n\n");
-
-		// parse more
-		// if EOF has been reached (how do we know that?),
-		//  we say ...wrap-around to first match found...
-		// else
-		//  display next match
-
-	}
+    if (index == list_size(matches) - 1) {
+        printf("\n...search hit bottom, continuing at top...\n\n");
+    }
 
 	match_display(match_next(index, matches));
 

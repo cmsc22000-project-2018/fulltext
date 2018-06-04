@@ -1,9 +1,17 @@
+#include <stdlib.h>
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
 #include "match.h"
 #include "trie.h"
 #include "../src/simclist.h"
+
+
+/* 
+    Defined variables for greater readability
+*/
+#define SHOULD_CONTINUE 1
+#define SHOULD_EXIT 0
 
 /*
     List of builtin commands, followed by their corresponding functions.
@@ -32,16 +40,16 @@ int ftsh_help(char **args, FILE *pf) {
 		printf("  %s\n", builtin_str[i]);
 	}
 
-	return 1;
+    return SHOULD_EXIT;
 }
 
 
 int ftsh_exit(char **args, FILE *pf) {
-	return 0;
+    return SHOULD_EXIT;
 }
 
 int ftsh_find(char **args, FILE *pf) {
-	int STATUS = 1;
+	int STATUS = SHOULD_CONTINUE;;
 	char buf[10];
 	char *input;
 
@@ -76,7 +84,7 @@ int ftsh_find(char **args, FILE *pf) {
 
 		if (list_size(&matches) == 0) {
 			printf("No matches have been found.\n");
-			return 1;
+			return SHOULD_EXIT;
 		}
 	}
 
@@ -92,7 +100,7 @@ int ftsh_find(char **args, FILE *pf) {
 		input = fgets(buf, 6, stdin);
 
 		// exit ./ftsh
-		if (!input || strncmp(input, "exit\n", 5) == 0) exit(1);
+		if (!input || strncmp(input, "exit\n", 5) == 0) exit(SHOULD_EXIT);
 
 		// exit find()
 		if (strncmp(input, "quit\n", 5) == 0) STATUS = 0;
@@ -107,10 +115,10 @@ int ftsh_find(char **args, FILE *pf) {
 
 			display_prev_match(&matches, index);
 			index = ((index - 1) + list_size(&matches)) % list_size(&matches);
-
+		
 		}
 	}
-	return 1;
+	return SHOULD_EXIT;;
 }
 
 int ftsh_num_builtins() {
@@ -123,7 +131,7 @@ int ftsh_execute(char **args, FILE *pf) {
 
 	if (args[0] == NULL) {
 		// An empty command was entered.
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	for (i = 0; i < ftsh_num_builtins(); i++) {
@@ -132,5 +140,5 @@ int ftsh_execute(char **args, FILE *pf) {
 		}
 	}
 
-	return 0;
+    return EXIT_SUCCESS;
 }

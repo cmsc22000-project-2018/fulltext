@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "simclist.c"
 #include "simclist.h"
 #include "match.h"
 #include "trie.h"
@@ -28,31 +27,32 @@ match* match_new(char* word, int lineNum, int position, char* line) {
 }
 
 int match_init(match* match, char* word, int lineNum, int position, char* line) {
-	if (match == NULL) {
-		return -1;
-	}
+    
+    if (match == NULL) {
+        return EXIT_FAILURE;
+    }
 
 	match->word = strdup(word);
 	match->lineNum = lineNum;
 	match->position = position;
 	match->line = strdup(line);
 
-	return 0;
+    return EXIT_SUCCESS;
 }
 
 int match_set_line(match* match, char* line) {
-	if (match == NULL) {
-		return -1;
-	}
+    if (match == NULL) {
+        return EXIT_FAILURE;
+    }
 
-	match->line = strdup(line);
-	return 0;
+    match->line = strdup(line);
+    return EXIT_SUCCESS;
 }
 
 int match_free(match* match) {
-	if (match == NULL) {
-		return -1;
-	}
+    if (match == NULL) {
+        return EXIT_FAILURE;
+    }
 
 	if (match->word != NULL) {
 		free(match->word);
@@ -64,7 +64,8 @@ int match_free(match* match) {
 
 	free(match);
 
-	return 0;
+    return EXIT_SUCCESS;
+
 }
 char* match_get_word(match* match) {
 	if (match == NULL) {
@@ -120,11 +121,6 @@ void match_insert_at(match* newMatch, int index, list_t* matches) {
 
 void match_append(match* newMatch, list_t* matches) {
     list_append(matches, newMatch);
-}
-
-
-void match_remove_at(int index, list_t* matches) {
-	list_delete_at(matches, index);
 }
 
 
@@ -189,6 +185,7 @@ void match_print_line(match* match) {
 	}
 
 	printf("\n");
+
 }
 
 void match_display(match* match) {
