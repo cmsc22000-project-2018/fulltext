@@ -9,6 +9,7 @@
 #include "match.h"
 #include "simclist.h"
 #include "search.h"
+#include "trie.h"
 
 // Helper for checking whether two matches equal
 // in word, lineNum, position and line
@@ -99,8 +100,8 @@ Test(search, trie_find_one_existent_match)
     char line[74] = "Scepticism is as much the result of knowledge, as knowledge is of cup man";
     
     char *word1 = "result";
-    trie_t *trie = trie_new('\0');
-    trie_insert_string(trie, word1);
+    trie_t *trie = trie_new("words");
+    trie_insert(trie, word1);
 
     list_t matches1;
     list_init(&matches1);
@@ -125,8 +126,8 @@ Test(search, trie_find_one_existent_match_first)
     char *line3 = "ourselves from, knowledge previously acquired; we must set aside old";
     
     char *word = "ourselves";
-    trie_t *trie = trie_new('\0');
-    trie_insert_string(trie, word);    
+    trie_t *trie = trie_new("words");
+    trie_insert(trie, word);    
 
     list_t matches3;
     list_init(&matches3);
@@ -151,8 +152,8 @@ Test(search, trie_find_one_existent_match_last)
     char *line2 = "ourselves from, knowledge previously acquired; we must set aside old";
 	
     char *word2 = "old";
-    trie_t *trie = trie_new('\0');
-    trie_insert_string(trie, word2);
+    trie_t *trie = trie_new("words");
+    trie_insert(trie, word2);
 
     list_t matches2;
     list_init(&matches2);
@@ -185,8 +186,8 @@ Test(search, trie_find_two_existent_matches)
     strncpy(line1copy, line1, 66);
         
     char *word1 = "knowledge";
-    trie_t* trie = trie_new('\0');
-    trie_insert_string(trie, word1);
+    trie_t* trie = trie_new("words");
+    trie_insert(trie, word1);
 	
     list_t matches1;
     list_init(&matches1);
@@ -223,8 +224,8 @@ Test(search, trie_find_two_existent_matches_first_last)
     strncpy(line1copy, line1, 52);
     
     char *word1 = "is";
-    trie_t* trie = trie_new('\0');
-    trie_insert_string(trie, word1);
+    trie_t* trie = trie_new("words");
+    trie_insert(trie, word1);
 
     list_t matches1;
     list_init(&matches1);
@@ -265,8 +266,8 @@ Test(search, trie_find_mult_existent_matches)
     strncpy(line1copy, line1, 41);
 
     char *word1 = "pretty";
-    trie_t* trie = trie_new('\0');
-    trie_insert_string(trie, word1);
+    trie_t* trie = trie_new("words");
+    trie_insert(trie, word1);
 
     list_t matches1;
     list_init(&matches1);
@@ -305,8 +306,8 @@ Test(search, trie_find_nonexistent_match)
     char *line1 = "Scepticism is as much the result of knowledge, as knowledge is of Scepticism.";
     
     char *word1 = "skepticism";
-    trie_t* trie = trie_new('\0');
-    trie_insert_string(trie, word1);
+    trie_t* trie = trie_new("words");
+    trie_insert(trie, word1);
 	
     list_t matches1;
     list_init(&matches1);
@@ -315,8 +316,8 @@ Test(search, trie_find_nonexistent_match)
 
     char *line2 = "unlearning something which it has cost us no small labour and anxiety to";
     char *word2 = "its";
-    trie_t* trie2 = trie_new('\0');
-    trie_insert_string(trie2, word2);
+    trie_t* trie2 = trie_new("words");
+    trie_insert(trie2, word2);
 
     list_t matches2;
     list_init(&matches2);
@@ -331,11 +332,11 @@ Test(search, multi_trie_multi_find)
     char linecopy[54];
     strncpy(linecopy, line, 54);
     
-    trie_t* trie = trie_new('\0');
+    trie_t* trie = trie_new("words");
     char *word1 = "freshly", *word2 = "prepared", *word3 = "cups";
-    trie_insert_string(trie, word1);
-    trie_insert_string(trie, word2);
-    trie_insert_string(trie, word3);
+    trie_insert(trie, word1);
+    trie_insert(trie, word2);
+    trie_insert(trie, word3);
 
     list_t matches;
     list_init(&matches);

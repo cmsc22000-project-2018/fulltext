@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
     char *output = NULL;
     FILE *outfile = NULL;
     FILE *searchfile = NULL;
-    trie_t *words_trie = trie_new('\0'); // should be "words" once integrated w/ api
+    trie_t *words_trie = trie_new("words"); // should be "words" once integrated w/ api
     assert (words_trie != NULL);
 
     const char *usage = "Usage: ./ftsh [-ib] <batch_output_file> -f <text_search_file> -w <words>\n";
@@ -112,8 +112,8 @@ int main(int argc, char *argv[]) {
                 words_string = strdup(optarg);
                 tok = strtok(words_string, " ");
                 while (tok != 0) {
-                    ret = trie_insert_string(words_trie, tok);
-                    assert (ret == EXIT_SUCCESS);
+                    ret = trie_insert(words_trie, tok);
+                    assert(ret == 0);
                     tok = strtok(NULL, " ");
                 }
                 break;
@@ -145,6 +145,10 @@ int main(int argc, char *argv[]) {
     */
 
     // Clean up
+    int fr = trie_free(words_trie);
+    if (fr == 1) {
+        printf("Error: trie failed to free\n");
+    }
     free(path);
     free(output);
     free(words_string);

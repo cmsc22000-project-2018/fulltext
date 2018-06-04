@@ -25,7 +25,7 @@ int find_match_trie(char* line, trie_t *t,
 
     while (token != NULL) {
 
-      if (trie_search(token, t) == 1) {
+      if (trie_contains(t, token) == 0) {
         
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);

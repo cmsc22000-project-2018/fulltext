@@ -4,6 +4,7 @@
 #include "match.h"
 #include "trie.h"
 #include "../src/simclist.h"
+#include "parser.h"
 
 /*
    List of builtin commands, followed by their corresponding functions.
@@ -57,9 +58,8 @@ int ftsh_find(char **args, FILE *pf) {
     strarr[2] = strdup(w3);
     strarr[3] = NULL;
     
-    trie_t *trie = trie_new('\0');
+    trie_t *trie = trie_new("words");
     int ret = trie_from_stringarray(trie, strarr);
-    assert (ret != EXIT_FAILURE);
 
     match curMatch;
     list_t matches;
