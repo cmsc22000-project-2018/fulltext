@@ -51,7 +51,7 @@ list_t* parse_file_buffered(FILE* pf, int* section,
                             trie_t* words, list_t* matches)
 {
     char* line = NULL;
-    int BUFFER_LENGTH = 100;
+    int BUFFER_LENGTH = 160;
     size_t len = 0;
     ssize_t read;
 
@@ -88,7 +88,7 @@ list_t* parse_file_buffered(FILE* pf, int* section,
                 found = find_match(sanitized, words, found + wordlen + 1,
                                    lineNum, matches);
 
-                if (strncmp(sanitized, dupLine, 160) != 0) {
+                if (strncmp(sanitized, dupLine, BUFFER_LENGTH) != 0) {
 
                     foundMatch = match_get_at_index(list_size(matches) - 1,
                                                            matches);
