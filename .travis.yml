@@ -11,6 +11,7 @@ before_install:
     - sudo apt-get update -q
     - sudo apt-get install criterion-dev -y
     - git clone https://github.com/redis/hiredis.git
+    - git submodule update --init --recursive
     - cd hiredis
     - make
     - sudo make install
