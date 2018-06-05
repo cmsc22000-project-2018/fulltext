@@ -32,7 +32,6 @@ char** ftsh_get_input(char *input) {
     return args;
 }
 
-
 void ftsh_loop(FILE *pf) {
     char *input;
     char **args;
@@ -61,10 +60,13 @@ int main(int argc, char **argv) {
 
     // Config
     char* path = get_path(argc, argv);
+    
+    // Error Handling
     if (argc == 1 || path == NULL) {
         printf("Usage: ./ftsh <text_search_file>\n");
         exit(0);
     }
+    
     FILE *pf = fopen(path, "r");
     int mode = 1;
 
@@ -85,6 +87,7 @@ int main(int argc, char **argv) {
 
     // Clean up
     fclose(pf);
+    
 
     return EXIT_SUCCESS;
 }

@@ -1,14 +1,16 @@
 #include <stdlib.h>
+#include <time.h>
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
 #include "match.h"
+#include "trie.h"
 #include "../src/simclist.h"
 
 
-/* 
+/*
     Defined variables for greater readability
-*/
+ */
 #define SHOULD_CONTINUE 1
 #define SHOULD_EXIT 0
 
@@ -30,7 +32,7 @@ int (*builtin_func[]) (char **, FILE *pf) = {
 
 
 int ftsh_help(char **args, FILE *pf) {
-    printf("[FULL-TEXT SEARCH]\n");
+    printf("\n Full text search program \n");
     printf("Type program names and arguments, and hit enter.\n");
     printf("The following are built in:\n");
 
@@ -39,7 +41,9 @@ int ftsh_help(char **args, FILE *pf) {
         printf("  %s\n", builtin_str[i]);
     }
 
-    return SHOULD_EXIT;
+    printf("When running find, you can iterate through the results using 'next' and 'prev'.\n");
+
+    return SHOULD_CONTINUE;
 }
 
 
@@ -47,30 +51,53 @@ int ftsh_exit(char **args, FILE *pf) {
     return SHOULD_EXIT;
 }
 
-
 int ftsh_find(char **args, FILE *pf) {
-    int status = SHOULD_CONTINUE;
-    char buf[100];
+    int STATUS = SHOULD_CONTINUE;
+    char buf[10];
     char *input;
 
     int start_line = 1;
     int BUFFER_LENGTH = 100;
-    char *word = args[1];
+
+    time_t current_time;
+    char* c_time_string;
+
+    // Error handling
+    if (args[1] == '\0') {
+        perror("No search words specified.\n");
+        exit(1);
+    }
+
+    // Config trie
+
+    current_time = time(NULL);
+    c_time_string = ctime(&current_time);
+
+    trie_t* words = trie_new(c_time_string);
+    int i = 1;
+
+    while (args[i] != '\0') {
+        trie_insert(words, args[i]);
+        i++;
+    }
 
     match curMatch;
     list_t matches;
     list_init(&matches);
 
+    // Reset to head of file if EOF had been reached
+    if (feof(pf)) {
+        fseek(pf, 0, SEEK_SET);
+    }
 
-    /* Finding first match at minimum */
-    while (list_size(&matches) == 0 && fgetc(pf) != EOF) {
-        matches = *parse_file_buffered(pf, start_line, \
-                                       (start_line + BUFFER_LENGTH), word, &matches);
+    while (list_size(&matches) == 0 ) {
+        matches = *parse_file_buffered(pf, start_line,
+                                       (start_line + BUFFER_LENGTH), words, &matches);
 
         start_line += BUFFER_LENGTH;
 
-        if (fgetc(pf) == EOF && list_size(&matches) == 0) {
-            printf("No matches for %s have been found.\n", word);
+        if (list_size(&matches) == 0) {
+            printf("No matches have been found.\n");
             return SHOULD_EXIT;
         }
     }
@@ -78,33 +105,53 @@ int ftsh_find(char **args, FILE *pf) {
     int index = 0;
     curMatch = *match_get_at_index(index, &matches);
 
-    match_display(&curMatch);
     list_info(&matches);
 
-    /* NEEDS FIX */
-    while (status == SHOULD_CONTINUE) {
+    match_display(&curMatch);
+
+    while (STATUS) {
         printf("ftsh> ");
-        input = fgets(buf, 5, stdin);
+        input = fgets(buf, 6, stdin);
+
+        // exit ./ftsh
+        if (!input || strncmp(input, "exit\n", 5) == 0) {
+            trie_free(words);
+            exit(SHOULD_EXIT);
+        }
 
         // exit find()
-        if (!input || strncmp(input, "exit", 5) == 0) exit(SHOULD_EXIT);
+        else if (strncmp(input, "quit\n", 5) == 0) {
+            STATUS = 0;
+        }
 
-        // next match
-        if (strncmp(input, "next", 5) == 0) {
+        // Rerun find
+        else if (strncmp(input, "find\n", 5) == 0) {
+            printf("Please `quit` first before you run `find` again. \n");
+            STATUS = 0;
+        }
+
+        // next/prev match
+        else if (strncmp(input, "next\n", 5) == 0) {
+
             display_next_match(&matches, index);
-            index = (index+1)%list_size(&matches);
+            index = (index + 1) % list_size(&matches);
 
-        } else if (strncmp(input, "prev", 5) == 0) {
+        } else if (strncmp(input, "prev\n", 5) == 0) {
 
             display_prev_match(&matches, index);
-            index = (index-1+list_size(&matches))/list_size(&matches);
+            index = ((index - 1) + list_size(&matches)) % list_size(&matches);
 
         }
 
+        // exit find()
+        else {
+            trie_free(words);
+            return SHOULD_CONTINUE;
+        }
     }
 
-    return SHOULD_EXIT;
-
+    trie_free(words);
+    return SHOULD_CONTINUE;
 }
 
 int ftsh_num_builtins() {
@@ -116,12 +163,11 @@ int ftsh_execute(char **args, FILE *pf) {
     int i;
 
     if (args[0] == NULL) {
-        // An empty command was entered.
         return EXIT_FAILURE;
     }
 
     for (i = 0; i < ftsh_num_builtins(); i++) {
-        if (strcmp(args[0], builtin_str[i]) == 0) {
+        if (strncmp(args[0], builtin_str[i], 5) == 0) {
             return (*builtin_func[i])(args, pf);
         }
     }

@@ -5,15 +5,16 @@
 #include <string.h>
 #include <assert.h>
 #include <stddef.h>
+#include <ctype.h>
 #include <simclist.h>
 #include "search.h"
 #include "match.h"
+#include "trie.h"
 
-int find_match(char* line, char* word, int pos_start, int lineNum, list_t* matches) {
-    if (strlen(word) > strlen(line)) return -1;
-
+int find_match(char* line, trie_t* words,
+               int pos_start, int lineNum, list_t* matches)
+{
     char* dup = strdup(line);
-
     char* line2 = strdup(line);
     int pos = pos_start;
     char* token = strtok(line2, " ,.!?\r\t\n");
@@ -21,7 +22,11 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
     while (token != NULL) {
 
-        if (strncmp(token, word, strlen(word)) == 0) {
+        for(int i = 0; token[i]; i++){
+            token[i] = tolower(token[i]);
+        }
+        
+        if (trie_contains(words, token) == 0) {
 
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
@@ -39,60 +44,82 @@ int find_match(char* line, char* word, int pos_start, int lineNum, list_t* match
 
     }
 
-    // Nothing has been found
-    return false;
+    return -1;
 
 }
 
-//in the case that string is not null-terminated
-//this will prevent a segfault
-#define MATCH_MAXLEN 100
-
-list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, list_t* matches) {
-
+list_t* parse_file_buffered(FILE* pf, int start_line,
+                            int end_line, trie_t* words, list_t* matches)
+{
     char* line = NULL;
-    int wordlen = strlen(word);
+    int BUFFER_LENGTH = 100;
     size_t len = 0;
     ssize_t read;
 
-    int found = false;
+    int found = -1;
     int lineNum = start_line;
 
-    while (lineNum <= end_line && (read = getline(&line, &len, pf)) != -1) {
+    while (lineNum <= end_line &&
+            (read = getline(&line, &len, pf)) != -1) {
 
-        char sanitized[MATCH_MAXLEN + 1];
-        strncpy(sanitized, line, MATCH_MAXLEN);
-        sanitized[strcspn(sanitized, "\r\n")] = '\0';
+        // Filter text lines
+        char sanitized[strlen(line) + 1];
+        strncpy(sanitized, line, strlen(line));
+        sanitized[strcspn(sanitized, "\r\n")] = 0;
         char* dupLine = strdup(sanitized);
 
-        char line2[MATCH_MAXLEN + 1];
-        strncpy(line2, sanitized, MATCH_MAXLEN);
-        found = find_match(sanitized, word, 1, lineNum, matches);
+        char line2[strlen(sanitized) + 1];
+        strncpy(line2, sanitized, strlen(sanitized));
+        found = find_match(sanitized, words, 1, lineNum, matches);
+        
+        // Multiple occurences in a sentence
+        while (found != -1) {
+            match* foundMatch = match_get_at_index(list_size(matches) - 1,
+                                                       matches);
 
-        while (found != false && found + wordlen < read) {
-            memset(sanitized, ' ', found + wordlen);
-            found = find_match(sanitized, word, found + wordlen + 2, lineNum, matches);
+            int wordlen = strlen(match_get_word(foundMatch));
 
-            if (strncmp(sanitized, dupLine, MATCH_MAXLEN) != 0) {
-                match* foundMatch = match_get_at_index(list_size(matches) - 1, matches);
-                match_set_line(foundMatch, dupLine);
+            if (found + wordlen < read) {
+                memset(sanitized, ' ', found + wordlen);
+
+                found = find_match(sanitized, words, found + wordlen + 1,
+                                   lineNum, matches);
+
+                if (strncmp(sanitized, dupLine, 160) != 0) {
+                    foundMatch = match_get_at_index(list_size(matches) - 1,
+                                                           matches);
+
+                    match_set_line(foundMatch, dupLine);
+                }
             }
-
         }
 
         lineNum++;
         free(dupLine);
+    }
+    
+    //if no matches found and is not EOF, look through next 100 lines.
+    if (list_size(matches) == 0 && !feof(pf))
+    {
+        parse_file_buffered(pf, end_line + 1, end_line + BUFFER_LENGTH, words, matches);
+    }
+    // if EOF, notify user
+    else if (feof(pf))
+    {
+        printf("\n...search completed...\n");
     }
 
     return matches;
 }
 
 void display_prev_match(list_t* matches, int index) {
+
     if (index == 0) {
         printf("\n...search hit top, continuing at bottom...\n\n");
     }
 
     match_display(match_prev(index, matches));
+
 }
 
 void display_next_match(list_t* matches, int index) {
