@@ -4,6 +4,7 @@
 #include "ftsh_functions.h"
 #include "search.h"
 #include "trie.h"
+#include "time.h"
 
 #define MAXWORDS 10
 
@@ -72,7 +73,14 @@ int main(int argc, char *argv[]) {
     char *output = NULL;
     FILE *outfile = NULL;
     FILE *searchfile = NULL;
-    trie_t *words_trie = trie_new("words"); // should be "words" once integrated w/ api
+
+    time_t current_time;
+    char *c_time_string;
+    current_time = time(NULL);
+    c_time_string = ctime(&current_time);
+    assert(c_time_string != NULL);
+
+    trie_t *words_trie = trie_new(c_time_string); 
     assert (words_trie != NULL);
 
     const char *usage = "Usage: ./ftsh [-ib] <batch_output_file> -f <text_search_file> -w <words>\n";
@@ -128,7 +136,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     
-    if (words_string == NULL) {
+    if (words_string == NULL && interactive == false) {
         printf("ERROR: No search words entered\n");
         printf("%s", usage);
         exit(1);
@@ -139,10 +147,6 @@ int main(int argc, char *argv[]) {
     } else {
         search_batch(searchfile, outfile, words_trie);
     }
-
-    /* Commented out for now until batch output is considered
-    search_batch(searchfile, batchfile);
-    */
 
     // Clean up
     int fr = trie_free(words_trie);
