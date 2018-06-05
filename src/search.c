@@ -43,18 +43,21 @@ int find_match(char* line, trie_t* words,
         token = strtok(NULL, " ,.!?\r\t\n");
 
     }
-
     return -1;
 
 }
 
-list_t* parse_file_buffered(FILE* pf, int start_line,
-                            int end_line, trie_t* words, list_t* matches)
+list_t* parse_file_buffered(FILE* pf, int* section,
+                            trie_t* words, list_t* matches)
 {
     char* line = NULL;
-    int BUFFER_LENGTH = 100;
+    int BUFFER_LENGTH = 160;
     size_t len = 0;
     ssize_t read;
+
+    (*section)++;
+    int end_line = (*section) * BUFFER_LENGTH;
+    int start_line = end_line - (BUFFER_LENGTH - 1);
 
     int found = -1;
     int lineNum = start_line;
@@ -85,7 +88,8 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
                 found = find_match(sanitized, words, found + wordlen + 1,
                                    lineNum, matches);
 
-                if (strncmp(sanitized, dupLine, 160) != 0) {
+                if (strncmp(sanitized, dupLine, BUFFER_LENGTH) != 0) {
+
                     foundMatch = match_get_at_index(list_size(matches) - 1,
                                                            matches);
 
@@ -97,11 +101,11 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
         lineNum++;
         free(dupLine);
     }
-    
+
     //if no matches found and is not EOF, look through next 100 lines.
     if (list_size(matches) == 0 && !feof(pf))
     {
-        parse_file_buffered(pf, end_line + 1, end_line + BUFFER_LENGTH, words, matches);
+        parse_file_buffered(pf, section, words, matches);
     }
     // if EOF, notify user
     else if (feof(pf))
@@ -122,10 +126,14 @@ void display_prev_match(list_t* matches, int index) {
 
 }
 
-void display_next_match(list_t* matches, int index) {
+void display_next_match(list_t* matches, int index, FILE* pf, trie_t* words, int* section) {
 
-    if (index == list_size(matches) - 1) {
+    
+    if (index == list_size(matches) - 1 && feof(pf)) {
         printf("\n...search hit bottom, continuing at top...\n\n");
+    } else if (index == list_size(matches) - 1 && !feof(pf)) {
+        printf("\n...looking for more matches...\n\n");
+        parse_file_buffered(pf, section, words, matches);
     }
 
     match_display(match_next(index, matches));
