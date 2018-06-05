@@ -79,7 +79,7 @@ int ftsh_find(char **args, FILE *pf) {
 
 
 	while (list_size(&matches) == 0 ) {
-		matches = *parse_file_buffered(pf, section, words, &matches);
+		matches = *parse_file_buffered(pf, &section, words, &matches);
 
 		//start_line += BUFFER_LENGTH;
 
@@ -109,7 +109,7 @@ int ftsh_find(char **args, FILE *pf) {
 		// next/prev match
 		else if (strncmp(input, "next\n", 5) == 0) {
 
-			display_next_match(&matches, index, pf, words, section);
+			display_next_match(&matches, index, pf, words, &section);
 			index = (index + 1) % list_size(&matches);
 
 		} else if (strncmp(input, "prev\n", 5) == 0) {
@@ -117,7 +117,9 @@ int ftsh_find(char **args, FILE *pf) {
 			display_prev_match(&matches, index);
 			index = ((index - 1) + list_size(&matches)) % list_size(&matches);
 
-		}
+		} else if (strncmp(input, "disp\n", 5) == 0) {
+                        list_info(&matches);
+                }
 		
 		// exit find()
 		else {

@@ -49,7 +49,7 @@ int find_match(char* line, trie_t* words,
 
 }
 
-list_t* parse_file_buffered(FILE* pf, int section,
+list_t* parse_file_buffered(FILE* pf, int* section,
                             trie_t* words, list_t* matches)
 {
 	char* line = NULL;
@@ -57,9 +57,9 @@ list_t* parse_file_buffered(FILE* pf, int section,
 	size_t len = 0;
 	ssize_t read;
 
-        section++;
-        int end_line = section * BUFFER_LENGTH;
-        int start_line = end_line - BUFFER_LENGTH - 1;
+        (*section)++;
+        int end_line = (*section) * BUFFER_LENGTH;
+        int start_line = end_line - (BUFFER_LENGTH - 1);
 
 	int found = -1;
 	int lineNum = start_line;
@@ -126,12 +126,13 @@ void display_prev_match(list_t* matches, int index) {
 
 }
 
-void display_next_match(list_t* matches, int index, FILE* pf, trie_t* words, int section) {
+void display_next_match(list_t* matches, int index, FILE* pf, trie_t* words, int* section) {
 
     
     if (index == list_size(matches) - 1 && feof(pf)) {
         printf("\n...search hit bottom, continuing at top...\n\n");
     } else if (index == list_size(matches) - 1 && !feof(pf)) {
+        printf("\n...looking for more matches...\n\n");
         parse_file_buffered(pf, section, words, matches);
     }
 

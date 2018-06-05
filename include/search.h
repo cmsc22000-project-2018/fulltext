@@ -33,12 +33,12 @@ int find_match(char* line, trie_t* words, int pos_start,
 /**
   @brief Searches a file from line x to line y looking for given word
   @param pf Pointer to file
-  @param section the section# of the file that was last parsed
+  @param section the pointer to the section# of the file that was last parsed
   @param word Words to search for
   @param matches List of matches
   @return list of matches
  */
-list_t* parse_file_buffered(FILE* pf, int section, trie_t* words, list_t* matches);
+list_t* parse_file_buffered(FILE* pf, int* section, trie_t* words, list_t* matches);
 
 
 /**
@@ -55,9 +55,9 @@ void display_prev_match(list_t* matches, int index);
   @param index Current match index
   @param pf Pointer to file
   @param words Words to search for
-  @param section section# of file last parsed
+  @param section the pointer to the section# of file last parsed
   @return void
  */
-void display_next_match(list_t* matches, int index, FILE* pf, trie_t* words, int section);
+void display_next_match(list_t* matches, int index, FILE* pf, trie_t* words, int* section);
 
 #endif /* _FULLTEXT_SEARCH_H_ */
