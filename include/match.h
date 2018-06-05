@@ -111,7 +111,6 @@ void match_insert_at(match* newMatch, int index, list_t* matches);
 */
 void match_append(match* newMatch, list_t* matches);
 
-
 /**
   @brief Returns the match at the given index
   @param index: index of desired match
@@ -149,17 +148,20 @@ void ftsh_reset_color();
 
 /**
   @brief Prints line in which match is found with color support
+  @param fp Stream of outsource
   @param match Match that is printed
   @return void
  */
-void match_print_line(match* match);
+void match_print_line(FILE *fp, match* match);
 
 
 /**
   @brief Displays the info of a match
+  @param fp Stream of outsource
   @param match: a match to print
   @return void
 */
-void match_display(match* match);
+
+void match_display(FILE *fp, match* match);
 
 #endif /* _FULLTEXT_MATCH_H_ */

@@ -11,6 +11,96 @@
 #include "match.h"
 #include "trie.h"
 
+int find_match_trie(char* line, trie_t *t, 
+    int pos_start, int lineNum, list_t* matches, char *found_token)
+{
+	if (t == NULL) {
+		perror("empty trie");
+		return -1;
+	}
+    char* dup = strdup(line);
+    char* line2 = strdup(line);
+    int pos = pos_start;
+    char* token = strtok(line2, " ,.!?\r\t\n");
+    match* foundMatch = NULL;
+
+    while (token != NULL) {
+
+      if (trie_contains(t, token) == 0) {
+        
+            /* Config match */
+            foundMatch = match_new(token, lineNum, pos, dup);
+            match_append(foundMatch, matches);
+            /* Save the token found */
+            found_token = strdup(token);
+            assert (found_token);
+            /* Clean-up */
+            free(dup);
+
+            /* Return */
+            return pos;
+        }
+
+        pos += strlen(token) + 1;
+        token = strtok(NULL, " ,.!?\r\t\n");
+
+    }
+
+    return -1;
+
+}
+
+list_t* parse_file_buffered_trie(FILE* pf, int start_line, 
+    int end_line, trie_t *t, list_t* matches)
+{
+	if (t == NULL) {
+		perror("empty trie");
+		return NULL;
+	}
+    char *line = NULL;
+    char *found_token = NULL;
+    int wordlen = 0;
+    size_t len = 0;
+    ssize_t read;
+
+    int found = -1;
+    int lineNum = start_line;
+
+    while (lineNum <= end_line &&
+     (read = getline(&line, &len, pf)) != -1) {
+        char sanitized[strlen(line) + 1];
+        strncpy(sanitized, line, strlen(line));
+        sanitized[strcspn(sanitized, "\r\n")] = 0;
+        char* dupLine = strdup(sanitized);
+
+        char line2[strlen(sanitized) + 1];
+        strncpy(line2, sanitized, strlen(sanitized));
+        found = find_match_trie(sanitized, t, 1, lineNum, matches, found_token);
+
+        if (found_token != NULL)
+            wordlen = strlen(found_token);
+        while (found != -1 && found + wordlen < read) {
+            memset(sanitized, ' ', found + wordlen);
+            found_token = NULL; // where to free found_token ?
+            found = find_match_trie(sanitized, t, found + wordlen + 2,
+             lineNum, matches, found_token);
+            
+            if (strncmp(sanitized, dupLine, strlen(sanitized)) != 0) {
+                match* foundMatch = match_get_at_index(list_size(matches) - 1,
+                 matches);
+
+                match_set_line(foundMatch, dupLine);
+            }
+
+        }
+
+        lineNum++;
+        free(dupLine);
+    }
+
+    return matches;
+}
+
 int find_match(char* line, trie_t* words,
                int pos_start, int lineNum, list_t* matches)
 {
@@ -116,15 +206,84 @@ list_t* parse_file_buffered(FILE* pf, int* section,
     return matches;
 }
 
+
+list_t *find_matches_batch(FILE *fp, trie_t *t, list_t *matches)
+{
+	if (t == NULL) {
+		perror("empty trie");
+		return NULL;
+	}
+    char *line = NULL;
+    char *found_token = NULL;
+    int wordlen = 0;
+    size_t len = 0;
+    ssize_t read;
+
+    int found = -1;
+    int lineNum = 0;
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        char sanitized[strlen(line) + 1];
+        strncpy(sanitized, line, strlen(line));
+        sanitized[strcspn(sanitized, "\r\n")] = 0;
+        char* dupLine = strdup(sanitized);
+
+        char line2[strlen(sanitized) + 1];
+        strncpy(line2, sanitized, strlen(sanitized));
+        found = find_match_trie(sanitized, t, 1, lineNum, matches, found_token);
+
+        if (found_token != NULL)
+            wordlen = strlen(found_token);
+        while (found != -1 && found + wordlen < read) {
+            memset(sanitized, ' ', found + wordlen);
+            found_token = NULL; // where to free found_token ?
+            found = find_match_trie(sanitized, t, found + wordlen + 2,
+             lineNum, matches, found_token);
+            
+            if (strncmp(sanitized, dupLine, strlen(sanitized)) != 0) {
+                match* foundMatch = match_get_at_index(list_size(matches) - 1,
+                 matches);
+
+                match_set_line(foundMatch, dupLine);
+            }
+
+        }
+
+        lineNum++;
+        free(dupLine);
+    }
+
+    return matches;
+}
+
+void display_matches_batch(FILE *bp, list_t *matches)
+{
+	list_iterator_start(matches);               /* starting an iteration "session" */
+
+	while (list_iterator_hasnext(matches)) {   // tell whether more values available
+		match cur = *(match *)list_iterator_next(matches); /* get the next value */
+		match_display(bp, &cur);
+	}
+	list_iterator_stop(matches);
+}
+
+void search_batch(FILE *fileptr, FILE *batchptr, trie_t *words_trie)
+{
+    list_t matches;
+    list_init(&matches);
+    matches = *find_matches_batch(fileptr, words_trie, &matches);
+    display_matches_batch(batchptr, &matches);
+}
+
 void display_prev_match(list_t* matches, int index) {
 
     if (index == 0) {
         printf("\n...search hit top, continuing at bottom...\n\n");
     }
-
-    match_display(match_prev(index, matches));
-
+    
+    match_display(stdout, match_prev(index, matches));
 }
+
 
 void display_next_match(list_t* matches, int index, FILE* pf, trie_t* words, int* section) {
 
@@ -135,7 +294,5 @@ void display_next_match(list_t* matches, int index, FILE* pf, trie_t* words, int
         printf("\n...looking for more matches...\n\n");
         parse_file_buffered(pf, section, words, matches);
     }
-
-    match_display(match_next(index, matches));
-
+    match_display(stdout, match_next(index, matches));
 }

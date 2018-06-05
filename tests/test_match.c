@@ -315,7 +315,6 @@ Test(match, append) {
 }
 
 
-
 /* Testing get_at_index for valid input */
 Test(match, get_at_index_valid) {
     list_t matches;
