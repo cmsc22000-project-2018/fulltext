@@ -42,7 +42,6 @@ int ftsh_help(char **args, FILE *pf) {
     }
 
     printf("When running find, you can iterate through the results using 'next' and 'prev'.\n");
-
     return SHOULD_CONTINUE;
 }
 
@@ -56,7 +55,7 @@ int ftsh_find(char **args, FILE *pf) {
     char buf[10];
     char *input;
 
-    int start_line = 1;
+    int section = 0;
     int BUFFER_LENGTH = 100;
 
     time_t current_time;
@@ -69,7 +68,6 @@ int ftsh_find(char **args, FILE *pf) {
     }
 
     // Config trie
-
     current_time = time(NULL);
     c_time_string = ctime(&current_time);
 
@@ -84,17 +82,14 @@ int ftsh_find(char **args, FILE *pf) {
     match curMatch;
     list_t matches;
     list_init(&matches);
-
+  
     // Reset to head of file if EOF had been reached
     if (feof(pf)) {
         fseek(pf, 0, SEEK_SET);
     }
 
     while (list_size(&matches) == 0 ) {
-        matches = *parse_file_buffered(pf, start_line,
-                                       (start_line + BUFFER_LENGTH), words, &matches);
-
-        start_line += BUFFER_LENGTH;
+        matches = *parse_file_buffered(pf, &section, words, &matches);
 
         if (list_size(&matches) == 0) {
             printf("No matches have been found.\n");
@@ -133,7 +128,7 @@ int ftsh_find(char **args, FILE *pf) {
         // next/prev match
         else if (strncmp(input, "next\n", 5) == 0) {
 
-            display_next_match(&matches, index);
+            display_next_match(&matches, index, pf, words, &section);
             index = (index + 1) % list_size(&matches);
 
         } else if (strncmp(input, "prev\n", 5) == 0) {
@@ -141,15 +136,16 @@ int ftsh_find(char **args, FILE *pf) {
             display_prev_match(&matches, index);
             index = ((index - 1) + list_size(&matches)) % list_size(&matches);
 
+        } else if (strncmp(input, "disp\n", 5) == 0) {
+             list_info(&matches);
         }
-
+        
         // exit find()
         else {
             trie_free(words);
             return SHOULD_CONTINUE;
         }
     }
-
     trie_free(words);
     return SHOULD_CONTINUE;
 }
