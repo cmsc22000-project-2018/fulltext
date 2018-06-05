@@ -42,7 +42,6 @@ int ftsh_help(char **args, FILE *pf) {
     }
 
     printf("When running find, you can iterate through the results using 'next' and 'prev'.\n");
-    
     return SHOULD_CONTINUE;
 }
 
@@ -71,6 +70,7 @@ int ftsh_find(char **args, FILE *pf) {
     // Config trie
     current_time = time(NULL);
     c_time_string = ctime(&current_time);
+
     trie_t* words = trie_new(c_time_string);
     int i = 1;
 
@@ -82,12 +82,11 @@ int ftsh_find(char **args, FILE *pf) {
     match curMatch;
     list_t matches;
     list_init(&matches);
-    
+  
     // Reset to head of file if EOF had been reached
     if (feof(pf)) {
         fseek(pf, 0, SEEK_SET);
     }
-
 
     while (list_size(&matches) == 0 ) {
         matches = *parse_file_buffered(pf, &section, words, &matches);
@@ -110,20 +109,20 @@ int ftsh_find(char **args, FILE *pf) {
         input = fgets(buf, 6, stdin);
 
         // exit ./ftsh
-        if (!input || strncmp(input, "exit\n", 5) == 0) {        
-                trie_free(words);        
-                exit(SHOULD_EXIT);        
+        if (!input || strncmp(input, "exit\n", 5) == 0) {
+            trie_free(words);
+            exit(SHOULD_EXIT);
         }
 
         // exit find()
         else if (strncmp(input, "quit\n", 5) == 0) {
-                    STATUS = 0;
+            STATUS = 0;
         }
 
         // Rerun find
-        else if (strncmp(input, "find\n", 5) == 0) {                         
-            printf("Please `quit` first before you run `find` again. \n");        
-            STATUS = 0;        
+        else if (strncmp(input, "find\n", 5) == 0) {
+            printf("Please `quit` first before you run `find` again. \n");
+            STATUS = 0;
         }
 
         // next/prev match
@@ -164,7 +163,7 @@ int ftsh_execute(char **args, FILE *pf) {
     }
 
     for (i = 0; i < ftsh_num_builtins(); i++) {
-        if (strcmp(args[0], builtin_str[i]) == 0) {
+        if (strncmp(args[0], builtin_str[i], 5) == 0) {
             return (*builtin_func[i])(args, pf);
         }
     }
