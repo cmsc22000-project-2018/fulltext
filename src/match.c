@@ -3,7 +3,6 @@
 #include <string.h>
 #include "simclist.h"
 #include "match.h"
-#include "trie.h"
 
 /* See match.h for descriptions of functions */
 
@@ -11,15 +10,13 @@ match* match_new(char* word, int lineNum, int position, char* line) {
     match* m = malloc(sizeof(match));
     int rc;
     if (m == NULL) {
-        printf("Could not allocate memory for match\n");
+        printf("could not allocate memory for match\n");
         return NULL;
     }
 
     rc = match_init(m, word, lineNum, position, line);
-
     if (rc != 0) {
-        printf("Could not init match word %s on line [%d] position %d\n",
-               word, lineNum, position);
+        printf("Could not init match word %s on line [%d] position %d\n", word, lineNum, position);
         return NULL;
     }
 
@@ -27,7 +24,6 @@ match* match_new(char* word, int lineNum, int position, char* line) {
 }
 
 int match_init(match* match, char* word, int lineNum, int position, char* line) {
-    
     if (match == NULL) {
         return EXIT_FAILURE;
     }
@@ -65,7 +61,6 @@ int match_free(match* match) {
     free(match);
 
     return EXIT_SUCCESS;
-
 }
 char* match_get_word(match* match) {
     if (match == NULL) {
@@ -139,7 +134,8 @@ int match_get_index(match* match, list_t* matches) {
 }
 
 void list_info(list_t* l) {
-    printf("\n...displaying info about list...\n\n");
+    printf("\n");
+    printf("... displaying info about list ...\n");
     printf("The list now holds %u elements:\n", list_size(l));
 
     list_iterator_start(l);               /* starting an iteration "session" */
@@ -151,7 +147,7 @@ void list_info(list_t* l) {
 
     list_iterator_stop(l);                 /* ending the iteration "session" */
 
-    printf("\n... finished ...\n\n");
+    printf("... finished ...\n");
 }
 
 
@@ -166,33 +162,34 @@ void ftsh_reset_color() {
 
 
 void match_print_line(match* match) {
-    int i = 0;
-    int wordlen = strlen(match_get_word(match));
-    int position = match_get_position(match);
-    char* s = match_get_line(match);
-    while (s[i] != '\0') {
-        if (i == position - 1) {
-            ftsh_set_color_red();
-        }
-        
-        printf("%c", s[i]);
+    int line_pos = 0;
+    int word_pos = 0;
 
-        if (i == position + wordlen - 1) {
+    char* word = match_get_word(match);
+    char* line = match_get_line(match);
+
+    while (word[word_pos] != '\0') word_pos++;
+
+    while (line[line_pos] != '\0') {
+        if (line_pos == match_get_position(match) - 1) {
+            ftsh_set_color_red();
+        } else if (line_pos == match_get_position(match) + word_pos) {
             ftsh_reset_color();
         }
-        
-        i++;
+        printf("%c", line[line_pos]);
+        line_pos++;
     }
 
     printf("\n");
-
 }
+
 
 void match_display(match* match) {
     if (match != NULL) {
         printf("> word: %s\n", match_get_word(match));
         printf("  [%d]: ", match_get_line_num(match));
         match_print_line(match);
+        printf("   pos: %d\n", match_get_position(match));
         return;
     }
 

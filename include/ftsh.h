@@ -3,13 +3,13 @@
 
 /***************************************************************************//**
 
-    @file         ftsh_functions.h
+	@file         ftsh_functions.h
 
-    @author       Max Bronckers
+	@author       Max Bronckers
 
-    @date         15 May 2018
+	@date         15 May 2018
 
-    @brief        FullText SHell main file
+	@brief        FullText SHell main file
 
 *******************************************************************************/
 
@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <readline/readline.h>
-#include <readline/history.h>
 #include <sys/types.h>
 
 /**
@@ -28,6 +27,7 @@
     @return Null-terminated array of args.
  */
 char** ftsh_get_input(char *input);
+
 
 
 /**

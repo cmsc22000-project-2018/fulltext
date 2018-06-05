@@ -2,11 +2,7 @@
 
 	@file         test_ftsh_functions.c
 
-	@file         test_parser.c
-
 	@author       Max Bronckers
-
-	@author       Cameron Dignan
 
 	@date         Thursday, 6 May 2018
 
@@ -21,7 +17,6 @@
 #include <criterion/output.h>
 #include "ftsh_functions.h"
 #include "ftsh.h"
-//#include "parser.h"
 
 int main(int argc, char *argv[]) {
     struct criterion_test_set *tests = criterion_initialize();
@@ -33,6 +28,5 @@ int main(int argc, char *argv[]) {
         result = !criterion_run_all_tests(tests);
 
     criterion_finalize(tests);
-    //test_parser();
     return result;
 }

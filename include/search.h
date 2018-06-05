@@ -11,11 +11,9 @@
 #include <unistd.h>
 #include "match.h"
 #include "../src/simclist.h"
-#include "trie.h"
 
 /**
-  @brief Searches for a match in a line given a starting position
-         and an end position
+  @brief ...
   @param line Line to search
   @param word Word to search for
   @param pos_start Character number in sentence to start search at
@@ -27,8 +25,7 @@
   @return position number of match if match found
   @return -1 if no match found
  */
-int find_match(char* line, trie_t* words, int pos_start,
- int line_num, list_t* matches);
+int find_match(char* line, char* word, int pos_start, int line_num, list_t* matches);
 
 /**
   @brief Searches a file from line x to line y looking for given word
@@ -39,8 +36,7 @@ int find_match(char* line, trie_t* words, int pos_start,
   @param matches List of matches
   @return list of matches
  */
-list_t* parse_file_buffered(FILE* pf, int start_line,
- int end_line, trie_t* words, list_t* matches);
+list_t* parse_file_buffered(FILE* pf, int start_line, int end_line, char* word, list_t* matches);
 
 
 /**
