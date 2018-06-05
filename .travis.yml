@@ -27,7 +27,6 @@ jobs:
       script: 
         - make all && make -C tests clean all
         - tests/test-fulltext
-        - ./ftsh tests/large_test_file.txt
 
 after_script:
     - echo "Finished Travis CI tests on /dev branch build"
