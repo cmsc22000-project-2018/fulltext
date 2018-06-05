@@ -6,8 +6,6 @@
 #include "match.h"
 #include "trie.h"
 #include "../src/simclist.h"
-#include "parser.h"
-
 
 /*
     Defined variables for greater readability

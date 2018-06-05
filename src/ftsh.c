@@ -145,8 +145,10 @@ int main(int argc, char *argv[]) {
     free(path);
     free(output);
     free(words_string);
-    fclose(searchfile);
-    fclose(outfile);
+    if (searchfile != NULL)
+        fclose(searchfile);
+    if (outfile != NULL)
+        fclose(outfile);
 
     return EXIT_SUCCESS;
 }

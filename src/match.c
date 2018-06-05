@@ -191,27 +191,3 @@ void match_display(FILE *fp, match* match) {
 	}
 }
 
-void match_print_line(match* match) {
-    int i = 0;
-    int wordlen = strlen(match_get_word(match));
-    int position = match_get_position(match);
-    char* s = match_get_line(match);
-    while (s[i] != '\0') {
-        if (i == position - 1) {
-            ftsh_set_color_red();
-        }
-        
-        printf("%c", s[i]);
-
-        if (i == position + wordlen - 1) {
-            ftsh_reset_color();
-        }
-        
-        i++;
-    }
-
-    printf("\n");
-
-}
-
-
