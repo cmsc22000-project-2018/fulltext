@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 else
-                    outfile = stdout;
+                        outfile = stdout;
                 break;
             case 'f':
                 path = strdup(optarg);
@@ -147,8 +147,10 @@ int main(int argc, char *argv[]) {
     free(words_string);
     if (searchfile != NULL)
         fclose(searchfile);
-    if (outfile != NULL)
+    if (outfile != NULL) {
         fclose(outfile);
+        printf("Fulltext search batch mode complete\n");
+    }
 
     return EXIT_SUCCESS;
 }
