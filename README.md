@@ -34,7 +34,7 @@ Then, from the root project directory, run make
 
 Type the following from the root of the fulltext directory to open interactive mode:
 
-./ftsh <text-search-file>
+./ftsh [text-search-file]
 
 This will open the Fulltext search shell, from which the following commands can be run:
 
@@ -42,4 +42,4 @@ This will open the Fulltext search shell, from which the following commands can 
 
 Type the following from the root of the fulltext directory to run batch mode:
 
-./ftsh [-ib] <batch-output-file> -f <text-search-file> -w <words>
+./ftsh [-ib] [batch-output-file] -f [text-search-file] -w [words]
