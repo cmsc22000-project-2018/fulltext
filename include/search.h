@@ -33,7 +33,7 @@ int find_match(char* line, trie_t* words, int pos_start,
 /**
   @brief Searches a file from line x to line y looking for given word
   @param pf Pointer to file
-  @param section the pointer to the section# of the file that was last parsed
+  @param section the pointer to the section# of the file that was last parsed, so the most recent value of the int will be available.
   @param word Words to search for
   @param matches List of matches
   @return list of matches

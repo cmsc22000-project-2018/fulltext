@@ -139,7 +139,6 @@ int ftsh_find(char **args, FILE *pf) {
         } else if (strncmp(input, "disp\n", 5) == 0) {
              list_info(&matches);
         }
-        
         // exit find()
         else {
             trie_free(words);
