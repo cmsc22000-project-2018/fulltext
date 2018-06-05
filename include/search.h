@@ -57,20 +57,18 @@ list_t* parse_file_buffered_trie(FILE* pf, int start_line,
   @return position number of match if match found
   @return -1 if no match found
  */
-int find_match(char* line, char* word, int pos_start
-  , int line_num, list_t* matches);
+int find_match(char* line, trie_t* words, int pos_start,
+ int line_num, list_t* matches);
 
 /**
   @brief Searches a file from line x to line y looking for given word
   @param pf Pointer to file
-  @param start_line Start text line to search through
-  @param end_line Last text line to search through (inclusive)
-  @param word Word to search for
+  @param section the pointer to the section# of the file that was last parsed, so the most recent value of the int will be available.
+  @param word Words to search for
   @param matches List of matches
   @return list of matches
  */
-list_t* parse_file_buffered(FILE* pf, int start_line,
- int end_line, char* word, list_t* matches);
+list_t* parse_file_buffered(FILE* pf, int* section, trie_t* words, list_t* matches);
 
 /**
   @brief Searches a file for matches present in a trie from batch file
@@ -110,8 +108,11 @@ void display_prev_match(list_t* matches, int index);
   @brief Prints out the next match from list to std out
   @param matches List of matches
   @param index Current match index
+  @param pf Pointer to file
+  @param words Words to search for
+  @param section the pointer to the section# of file last parsed
   @return void
  */
-void display_next_match(list_t* matches, int index);
+void display_next_match(list_t* matches, int index, FILE* pf, trie_t* words, int* section);
 
 #endif /* _FULLTEXT_SEARCH_H_ */

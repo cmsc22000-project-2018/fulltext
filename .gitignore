@@ -6,3 +6,6 @@ ftsh
 # OS generated files #
 ######################
 
+# Redis Library #
+#################
+redis-stable/

@@ -3,13 +3,13 @@
 
 /***************************************************************************//**
 
-	@file         ftsh_functions.h
+    @file         ftsh_functions.h
 
-	@author       Max Bronckers
+    @author       Max Bronckers
 
-	@date         15 May 2018
+    @date         15 May 2018
 
-	@brief        FullText SHell main file
+    @brief        FullText SHell main file
 
 *******************************************************************************/
 
@@ -29,8 +29,6 @@
  */
 char** ftsh_get_input(char *input);
 
-
-char **ftsh_get_words(char **args);
 
 /**
      @brief Loop getting input and executing it.
