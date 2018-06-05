@@ -19,9 +19,13 @@ git clone https://github.com/cmsc22000-project-2018/fulltext.git
 Make sure all submodules are also added: it may be necessary to run the following if the api submodule is empty after pulling:
 
 git rm -f api/
+
 git submodule add https://github.com/cmsc22000-project-2018/api.git
+
 cd api/lib/
+
 git rm -f redis-tries/
+
 git submodule add https://github.com/cmsc22000-project-2018/redis-tries.git
 
 Then, from the root project directory, run make
