@@ -188,7 +188,5 @@ void match_display(FILE *fp, match* match) {
 		fprintf(fp, "  [%d]: ", match_get_line_num(match));
 		match_print_line(fp, match);
 	}
-
-	fprintf(fp, "Match is empty\n");
 }
 
