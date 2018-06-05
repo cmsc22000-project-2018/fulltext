@@ -21,14 +21,13 @@ int find_match(char* line, trie_t* words,
     match* foundMatch = NULL;
 
     while (token != NULL) {
+
         for(int i = 0; token[i]; i++){
             token[i] = tolower(token[i]);
         }
-
         
         if (trie_contains(words, token) == 0) {
-        // if (strncasecmp(token, word, wordlen) == 0) {
-            
+
             /* Config match */
             foundMatch = match_new(token, lineNum, pos, dup);
             match_append(foundMatch, matches);
@@ -83,10 +82,10 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
             if (found + wordlen < read) {
                 memset(sanitized, ' ', found + wordlen);
 
-                found = find_match(sanitized, words, found + wordlen + 2,
+                found = find_match(sanitized, words, found + wordlen + 1,
                                    lineNum, matches);
 
-                if (strcmp(sanitized, dupLine) != 0) {
+                if (strncmp(sanitized, dupLine, 160) != 0) {
                     foundMatch = match_get_at_index(list_size(matches) - 1,
                                                            matches);
 
@@ -98,6 +97,7 @@ list_t* parse_file_buffered(FILE* pf, int start_line,
         lineNum++;
         free(dupLine);
     }
+    
     //if no matches found and is not EOF, look through next 100 lines.
     if (list_size(matches) == 0 && !feof(pf))
     {

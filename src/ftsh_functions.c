@@ -91,7 +91,7 @@ int ftsh_find(char **args, FILE *pf) {
     }
 
     while (list_size(&matches) == 0 ) {
-        matches = *parse_file_buffered(pf, start_line, \
+        matches = *parse_file_buffered(pf, start_line,
                                        (start_line + BUFFER_LENGTH), words, &matches);
 
         start_line += BUFFER_LENGTH;
@@ -167,7 +167,7 @@ int ftsh_execute(char **args, FILE *pf) {
     }
 
     for (i = 0; i < ftsh_num_builtins(); i++) {
-        if (strcmp(args[0], builtin_str[i]) == 0) {
+        if (strncmp(args[0], builtin_str[i], 5) == 0) {
             return (*builtin_func[i])(args, pf);
         }
     }
