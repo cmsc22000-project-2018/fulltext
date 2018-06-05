@@ -8,102 +8,34 @@ Interactive Mode: User must be able to open a text file, specify word(s) to be s
 
 Batch Mode: Program must take a text file plus word(s) to be searched via command line arguments and produce the amount of occurences of the provided word(s) to either standard output or to a new file. It must also find all lines containing the specified word(s) and return those lines plus a configurable amount of lines before or after the found lines with the specified word(s).
 
-We will be implementing the full-text search feature using a prefix trie by implementing the Aho-Corasick algorithm. The search pattern will be implemented with regular expression (regex).
-
-For an in-depth explanation of Aho-Corasick, visit https://www.geeksforgeeks.org/aho-corasick-algorithm-pattern-searching/. For more information on regex, visit https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference.
-
 # Implementation
 
-## Classes: Match, FTSH, Trie, Search
+## Installing
 
-### Match
+To use our program, first run the following command:
 
-Purpose: A class for operations related to matches.
+git clone https://github.com/cmsc22000-project-2018/fulltext.git
 
-match struct:
+Make sure all submodules are also added: it may be necessary to run the following if the api submodule is empty after pulling:
 
-- char* word 
-- int line
-- match* next
-- match* prev
+git rm -f api/
+git submodule add https://github.com/cmsc22000-project-2018/api.git
+cd api/lib/
+git rm -f redis-tries/
+git submodule add https://github.com/cmsc22000-project-2018/redis-tries.git
 
-Operations:
+Then, from the root project directory, run make
 
-match* new_match(char* word, int line)
-void init_match(match* match, char* word, int line)
-void free_match(match* match)
-char* get_word(match* match)
-int get_line(match* match)
+## Interactive Mode
 
-Linked list operations on match:
+Type the following from the root of the fulltext directory to open interactive mode:
 
-- match* next_match(match* match)
-- match* prev_match(match* match)
-- void insert_at(match* match, match* new, int index)
-- void append(match* match, match* new)
-- void remove_at(match* match, int index)
-- match* get_at_index(match* match, int index)
-- int get_index(match* match)
+./ftsh <text-search-file>
 
-Notes:
+This will open the Fulltext search shell, from which the following commands can be run:
 
-Last match should point to first match as next match to include wrap-around functionality (and first match should point to last match as previous match).
+## Batch Mode
 
+Type the following from the root of the fulltext directory to run batch mode:
 
-
-### Input/Output
-
-input struct:
-
-char **command // array of strings
-
-Operations for input:
-
-void parse_input(char** commands)
-
-sample commands:
-
-list of options -b // batch mode -i // interactive mode (ie. fulltext -b [list of search words]) -l (number of lines) // specifies the number of lines before & after the searched word
-
-commands fulltext // starts the program n // jumps to next matched word in interactive mode p // jumps to previous matched word in interactive mode Purpose: A class for interactive user input and output to stdout or another file.
-
-### Search
-
-Purpose: The core class for full-text program.
-
-
-Below is documentation for a mock trie implementation,
-used to develop the fulltext program (will be deleted once 
-fulltext is fully implemented.) 
------------------------------------------------------
-Sprint 2 Mock Trie
-
-File Usage
-run 'make' in fulltext/
-run 'make' in fulltext/tests
-run './test-mtrie' in fulltext/tests
-
----
-Mock Trie with trie_show()
-
-		""
-	a	b
-  an  at      be
-and        
-
----
-Inserts include:
-bee
-o
-of; this also triggers insertion of o 
-off; this also triggers insertion of o, of
-
----
-Mock File for Parsing
-
-a
-an at
-and
-b
-be
-
+./ftsh [-ib] <batch-output-file> -f <text-search-file> -w <words>
