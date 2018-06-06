@@ -32,20 +32,13 @@ char** ftsh_get_input(char *input);
 
 /**
      @brief Loop getting input and executing it.
-     @args pf Pointer to text file.
+     @param pf: pointer to text file
  */
 void ftsh_loop(FILE *pf);
 
-
-/**
-    @brief Takes arguments and returns the file path from the args.
-    @param argc Argument count.
-    @param argv Argument vector.
-    @return pointer to file path
-  */
-char* get_path(int argc, char **argv);
 /**
      @brief Main entry point.
+            Takes in file path and determines mode.
      @param argc Argument count.
      @param argv Argument vector.
      @return status code

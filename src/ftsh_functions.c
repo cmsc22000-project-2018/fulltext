@@ -7,7 +7,6 @@
 #include "trie.h"
 #include "../src/simclist.h"
 
-
 /*
     Defined variables for greater readability
  */
@@ -15,8 +14,8 @@
 #define SHOULD_EXIT 0
 
 /*
-    List of builtin commands, followed by their corresponding functions.
- */
+   List of builtin commands, followed by their corresponding functions.
+   */
 char *builtin_str[] = {
     "help",
     "exit",
@@ -102,7 +101,8 @@ int ftsh_find(char **args, FILE *pf) {
 
     list_info(&matches);
 
-    match_display(&curMatch);
+
+    match_display(stdout, &curMatch);
 
     while (STATUS) {
         printf("ftsh> ");

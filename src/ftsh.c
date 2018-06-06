@@ -1,7 +1,12 @@
+#include <stdbool.h>
+#include <unistd.h>
 #include "ftsh.h"
 #include "ftsh_functions.h"
 #include "search.h"
+#include "trie.h"
+#include "time.h"
 
+#define MAXWORDS 10
 
 char** ftsh_get_input(char *input) {
     char **args = malloc(8 * sizeof(char *));
@@ -47,47 +52,105 @@ void ftsh_loop(FILE *pf) {
     } while (status);
 }
 
+int main(int argc, char *argv[]) {
+    // Default mode = batch
+    bool interactive = false;
+    int opt, ret;
+    char *tok;
+    char *words_string = NULL;
+    char *path = NULL;
+    char *output = NULL;
+    FILE *outfile = NULL;
+    FILE *searchfile = NULL;
 
-char* get_path(int argc, char **argv) {
+    time_t current_time;
+    char *c_time_string;
+    current_time = time(NULL);
+    c_time_string = ctime(&current_time);
+    assert(c_time_string != NULL);
+
+    trie_t *words_trie = trie_new(c_time_string); 
+    assert (words_trie != NULL);
+
+    const char *usage = "Usage: ./ftsh [-ib] <batch_output_file> -f <text_search_file> -w <words>\n";
+
+    // Validating the correct number of parameters
     if (argc <= 1) {
-        return NULL;
-    }
-
-    return (argv[1] != NULL) ? argv[1] : NULL;
-}
-
-int main(int argc, char **argv) {
-
-    // Config
-    char* path = get_path(argc, argv);
-    
-    // Error Handling
-    if (argc == 1 || path == NULL) {
-        printf("Usage: ./ftsh <text_search_file>\n");
-        exit(0);
-    }
-    
-    FILE *pf = fopen(path, "r");
-    int mode = 1;
-
-    if (pf == NULL) {
-        perror("File could not be opened");
+        printf("%s", usage);
         exit(1);
     }
 
-    // Interactive mode
-    if (mode == 1) {
-        ftsh_loop(pf);
+    while ((opt = getopt(argc, argv, ":ib:f:w:")) != -1)
+        switch (opt) {
+            case 'i': 
+                interactive = true;
+                break;
+            case 'b':
+                interactive = false;
+                if (optarg != NULL) {
+                    output = strdup(optarg);
+                    outfile = fopen(output, "r+");
+                    if (outfile == NULL) {
+                        outfile = fopen(output, "wb");
+                    }
+                }
+                else
+                        outfile = stdout;
+                break;
+            case 'f':
+                path = strdup(optarg);
+                searchfile = fopen(path, "r");
+                if (searchfile == NULL) {
+                    printf("ERROR: Search file could not be opened");
+                    exit(1);
+                }
+                break;
+            case 'w':
+                words_string = strdup(optarg);
+                tok = strtok(words_string, " ");
+                while (tok != 0) {
+                    ret = trie_insert(words_trie, tok);
+                    assert(ret == 0);
+                    tok = strtok(NULL, " ");
+                }
+                break;
+            default:
+                printf("Unknown option -%c", opt);
+                exit(1);
+        }
+
+    if (path == NULL || searchfile == NULL) {
+        printf("ERROR: No search file entered\n");
+        printf("%s", usage);
+        exit(1);
+    }
+    
+    if (words_string == NULL && interactive == false) {
+        printf("ERROR: No search words entered\n");
+        printf("%s", usage);
+        exit(1);
     }
 
-    // Batch mode
-    if (!mode) {
-        printf("To be implemented.\n");
+    if (interactive) {
+        ftsh_loop(searchfile);
+    } else {
+        search_batch(searchfile, outfile, words_trie);
     }
 
     // Clean up
-    fclose(pf);
-    
+    int fr = trie_free(words_trie);
+    if (fr == 1) {
+        printf("Error: trie failed to free\n");
+    }
+    free(path);
+    free(output);
+    free(words_string);
+    if (searchfile != NULL)
+        fclose(searchfile);
+    if (outfile != NULL) {
+        fclose(outfile);
+        printf("Fulltext search batch mode complete\n");
+    }
 
     return EXIT_SUCCESS;
 }
